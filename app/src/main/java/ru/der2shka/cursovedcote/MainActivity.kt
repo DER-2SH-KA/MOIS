@@ -25,10 +25,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             CursovedCotETheme {
                 Box(modifier = Modifier.fillMaxSize()) {
