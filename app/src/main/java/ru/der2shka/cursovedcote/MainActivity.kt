@@ -36,22 +36,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            CursovedCotETheme {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier
-                            .background(Color.White)
-                    )
-                }
-            }
+            MyAppMainWindow()
+        }
+    }
+}
+
+@Composable
+fun MyAppMainWindow() {
+    CursovedCotETheme {
+        Box(modifier = Modifier.fillMaxSize()) {
+            AppContentMainWindow()
         }
     }
 }
 
 @SuppressLint("ResourceAsColor")
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun AppContentMainWindow() {
     val height = 50.dp
 
     Column(
