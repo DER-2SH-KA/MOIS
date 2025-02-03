@@ -47,6 +47,12 @@ import androidx.compose.ui.unit.dp
 import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
+var current_page = "splash_screen"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,19 +68,44 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Main procedure which manipulate MainActivity Content.
+ * **/
 @Composable
 fun MyAppMainWindow() {
     CursovedCotETheme {
+        val navController = rememberNavController()
+
+        NavHost(
+            navController = navController,
+            startDestination = "splash_screen"
+        ) {
+            composable(route = "splash_screen") {
+                SplashScreenPage(navController)
+            }
+            composable(route = "color_test_page") {
+                ColorTestPage(navController)
+            }
+        }
+
         Box(modifier = Modifier.fillMaxSize()) {
             // AppContentMainWindow()
-            SplashScreenPage()
+
         }
     }
 }
 
+
+/**
+ * This is a procedure which show
+ * colors test page.
+ * @param navController App Navigation Controller
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
-fun AppContentMainWindow() {
+fun ColorTestPage(
+    navController: NavHostController
+) {
     val height = 50.dp
 
     Column(

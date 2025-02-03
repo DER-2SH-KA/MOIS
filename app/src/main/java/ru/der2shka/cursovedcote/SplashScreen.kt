@@ -31,14 +31,18 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
 
 @SuppressLint("ResourceAsColor")
 @Composable
-fun SplashScreenPage() {
+fun SplashScreenPage(
+    navController: NavHostController
+) {
     val config = LocalConfiguration.current;
     val width = (config.screenWidthDp * 0.5f).dp
 
+    // Background of splash screen with icon.
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,6 +60,7 @@ fun SplashScreenPage() {
         val visibleIconState = remember { mutableStateOf(false) }
         val animationDuration: Int = 1000
 
+        // Animation of show the app white icon.
         AnimatedVisibility(
             visible = visibleIconState.value,
             enter = fadeIn(
@@ -87,11 +92,15 @@ fun SplashScreenPage() {
             )
         }
 
+        // Animation visible state manipulation.
         LaunchedEffect(key1 = Unit) {
             delay(500)
             visibleIconState.value = true
-            delay(animationDuration.toLong() + 1000)
+            delay(animationDuration.toLong() + 700)
             visibleIconState.value = false
+
+            current_page = "color_test_page"
+            navController.navigate(current_page)
         }
     }
 }
