@@ -1,6 +1,11 @@
 package ru.der2shka.cursovedcote.ui.theme
 
+import android.annotation.SuppressLint
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import ru.der2shka.cursovedcote.R
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
@@ -35,3 +40,4 @@ val VeryLightGray = Color(0xe0e0e0)
 val DarkGray = Color(0xa0a0a0)
 val VeryLightViolet = Color(0xab6bff)
 val VeryDarkGrayMostlyBlack = Color(0x1e1e1e)
+

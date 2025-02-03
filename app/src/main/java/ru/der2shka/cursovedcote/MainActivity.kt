@@ -5,6 +5,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseInExpo
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -14,9 +31,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,7 +66,8 @@ class MainActivity : ComponentActivity() {
 fun MyAppMainWindow() {
     CursovedCotETheme {
         Box(modifier = Modifier.fillMaxSize()) {
-            AppContentMainWindow()
+            // AppContentMainWindow()
+            SplashScreenPage()
         }
     }
 }
@@ -142,5 +164,30 @@ fun AppContentMainWindow() {
             text = isSystemInDarkTheme().toString(),
             color = Color.White
         )
+
+        /*var visible = remember { mutableStateOf(false) }
+
+        // Кнопка для переключения видимости
+        Button(onClick = { visible.value = !visible.value }) {
+            Text(if (visible.value) "Скрыть" else "Показать")
+        }
+
+        // Анимированное появление/исчезновение
+        AnimatedVisibility(visible = visible.value,
+            /*enter = slideInHorizontally() + expandHorizontally(expandFrom = Alignment.Start)
+                    + fadeIn(),
+            exit = slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth })
+                    + shrinkHorizontally() + fadeOut(),*/
+            enter = slideInHorizontally(),
+            exit = slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth / 2 }
+            )
+            ) {
+            Box(
+                modifier = Modifier
+                    .size(200.dp)
+                    .background(Color.Blue)
+            )
+        }*/
     }
 }
