@@ -83,7 +83,10 @@ fun MyAppMainWindow() {
             composable(route = "splash_screen") {
                 SplashScreenPage(navController)
             }
-            composable(route = "color_test_page") {
+            composable(route = "welcome_pages") {
+                WelcomePagesPage(navController)
+            }
+            composable(route = "colors_test_page") {
                 ColorTestPage(navController)
             }
         }

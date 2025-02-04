@@ -98,9 +98,14 @@ fun SplashScreenPage(
             visibleIconState.value = true
             delay(animationDuration.toLong() + 700)
             visibleIconState.value = false
+            delay(400)
 
-            current_page = "color_test_page"
-            navController.navigate(current_page)
+            GoToWelcomePhrases(navController)
         }
     }
+}
+
+fun GoToWelcomePhrases(navController: NavHostController) {
+    current_page = "welcome_pages"
+    navController.navigate(current_page)
 }
