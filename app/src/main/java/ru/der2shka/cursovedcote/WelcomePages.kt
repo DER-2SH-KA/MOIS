@@ -132,11 +132,10 @@ fun WelcomePagesPage(
                             .fillMaxSize()
                             .background(
                                 brush = Brush.verticalGradient(
-                                    0f to colorResource(R.color.primary_blue),
-                                    0.8f to colorResource(R.color.primary_blue),
-                                    1f to colorResource(R.color.secondary_cyan),
-                                    startY = 0f,
-                                    endY = 1f
+                                    colors = listOf(
+                                        colorResource(R.color.primary_blue),
+                                        colorResource(R.color.secondary_cyan)
+                                    )
                                 )
                             )
                         ,
@@ -178,11 +177,10 @@ fun WelcomePagesPage(
                             .fillMaxSize()
                             .background(
                                 brush = Brush.verticalGradient(
-                                    0f to colorResource(R.color.primary_blue),
-                                    0.8f to colorResource(R.color.primary_blue),
-                                    1f to colorResource(R.color.secondary_cyan),
-                                    startY = 0f,
-                                    endY = 1f
+                                    colors = listOf(
+                                        colorResource(R.color.primary_blue),
+                                        colorResource(R.color.secondary_cyan)
+                                    )
                                 )
                             )
                         ,
