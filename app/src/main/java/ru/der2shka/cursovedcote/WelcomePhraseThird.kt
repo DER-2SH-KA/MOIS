@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,9 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
 @SuppressLint("ResourceAsColor")
 @Composable
@@ -40,10 +45,16 @@ fun WelcomePhraseThird() {
             modifier = Modifier
                 .fillMaxSize()
             ,
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            //Spacer(modifier = Modifier.height(100.dp))
+            val spacer_height = (config.screenHeightDp * 1/10).dp
+
+            Spacer(
+                modifier = Modifier
+                    .height( spacer_height )
+            )
+
             Image(
                 modifier = Modifier
                     .width( widthForPicture.dp )
@@ -52,6 +63,11 @@ fun WelcomePhraseThird() {
                 painter = painterResource(id = R.drawable.graph),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .height( spacer_height )
             )
 
             Column(
@@ -68,7 +84,11 @@ fun WelcomePhraseThird() {
                     maxLines = 2,
                     textAlign = TextAlign.Center,
                     fontSize = font_size_main_text,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = TextUnit(
+                        line_height_main_text,
+                        TextUnitType.Sp
+                    )
                 )
                 Text(
                     modifier = Modifier,
@@ -76,7 +96,11 @@ fun WelcomePhraseThird() {
                     color = colorResource(R.color.secondary_text_gray),
                     maxLines = 3,
                     textAlign = TextAlign.Center,
-                    fontSize = font_size_secondary_text
+                    fontSize = font_size_secondary_text,
+                    lineHeight = TextUnit(
+                        line_height_secondary_text,
+                        TextUnitType.Sp
+                    )
                 )
             }
         }
