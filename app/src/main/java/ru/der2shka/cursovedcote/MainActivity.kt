@@ -71,29 +71,38 @@ class MainActivity : ComponentActivity() {
 /**
  * Main procedure which manipulate MainActivity Content.
  * **/
+@SuppressLint("ResourceAsColor")
 @Composable
 fun MyAppMainWindow() {
     CursovedCotETheme {
         val navController = rememberNavController()
 
-        NavHost(
-            navController = navController,
-            startDestination = "splash_screen"
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    colorResource(R.color.background_color)
+                )
         ) {
-            composable(route = "splash_screen") {
-                SplashScreenPage(navController)
+            NavHost(
+                navController = navController,
+                startDestination = "splash_screen"
+            ) {
+                composable(route = "splash_screen") {
+                    SplashScreenPage(navController)
+                }
+                composable(route = "welcome_pages") {
+                    WelcomePagesPage(navController)
+                }
+                composable(route = "colors_test_page") {
+                    ColorTestPage(navController)
+                }
             }
-            composable(route = "welcome_pages") {
-                WelcomePagesPage(navController)
-            }
-            composable(route = "colors_test_page") {
-                ColorTestPage(navController)
-            }
-        }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            // AppContentMainWindow()
+            /*Box(modifier = Modifier.fillMaxSize()) {
+                // AppContentMainWindow()
 
+            }*/
         }
     }
 }
