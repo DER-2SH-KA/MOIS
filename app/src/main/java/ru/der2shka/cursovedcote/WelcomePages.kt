@@ -22,6 +22,8 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +35,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import kotlin.coroutines.coroutineContext
 
 @SuppressLint("ResourceAsColor")
 @Composable
@@ -46,6 +51,8 @@ fun WelcomePagesPage(
         ,
         contentAlignment = Alignment.Center
     ) {
+        val pagerState = rememberPagerState(pageCount = { 3 })
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -56,8 +63,6 @@ fun WelcomePagesPage(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val pagerState = rememberPagerState(pageCount = { 3 })
-
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
@@ -105,46 +110,93 @@ fun WelcomePagesPage(
                 }
             }
 
-            Button(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(0.5f)
-                    .fillMaxWidth(0.8f)
-                    .background(
-                        Color.Yellow
-                    )
-                ,
-                onClick = {
-                    current_page = "colors_test_page"
-                    navController.navigate(current_page)
-                },
-                colors = ButtonDefaults.buttonColors(Color.Transparent),
-                shape = RoundedCornerShape(20.dp),
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Box(
+            if (pagerState.currentPage == pagerState.pageCount - 1) {
+
+
+                Button(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                0f to colorResource(R.color.primary_blue),
-                                0.8f to colorResource(R.color.primary_blue),
-                                1f to colorResource(R.color.secondary_cyan),
-                                startY = 0f,
-                                endY = 1f
-                            )
-                        )
+                        .weight(0.8f)
+                        .fillMaxHeight(0.5f)
+                        .fillMaxWidth(0.8f)
                     ,
-                    contentAlignment = Alignment.Center
+                    onClick = {
+                        current_page = "colors_test_page"
+                        navController.navigate(current_page)
+                    },
+                    colors = ButtonDefaults.buttonColors(Color.Transparent),
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text(
-                        text = stringResource(R.string.skip),
-                        maxLines = 1,
-                        color = colorResource(R.color.background_color),
-                        textAlign = TextAlign.Center,
-                        fontSize = font_size_main_text,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    0f to colorResource(R.color.primary_blue),
+                                    0.8f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan),
+                                    startY = 0f,
+                                    endY = 1f
+                                )
+                            )
+                        ,
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.finish),
+                            maxLines = 1,
+                            color = colorResource(R.color.background_color),
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+            else {
+                val coroutineScope = rememberCoroutineScope()
+
+                Button(
+                    modifier = Modifier
+                        .weight(0.8f)
+                        .fillMaxHeight(0.5f)
+                        .fillMaxWidth(0.8f)
+                    ,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.scrollToPage(
+                                page = pagerState.pageCount - 1
+                            )
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(Color.Transparent),
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    0f to colorResource(R.color.primary_blue),
+                                    0.8f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan),
+                                    startY = 0f,
+                                    endY = 1f
+                                )
+                            )
+                        ,
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.skip),
+                            maxLines = 1,
+                            color = colorResource(R.color.background_color),
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
