@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MOIS</string>
+    <string name="welcome_phrase_1_main_text">Write down your task</string>
+    <string name="welcome_phrase_1_secondary_text">Use notes to always keep your assignments in mind!</string>
+    <string name="welcome_phrase_2_main_text">Write down your marks</string>
+    <string name="welcome_phrase_2_secondary_text">Record your marks daily to keep track of your study progress!</string>
+    <string name="welcome_phrase_3_main_text">See the your progress</string>
+    <string name="welcome_phrase_3_secondary_text">See the charts and track your study progress!</string>
+    <string name="skip">Skip</string>
+    <string name="finish">Finish</string>
+</resources>

@@ -21,8 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import ru.der2shka.cursovedcote.ui.theme.main_text_size
-import ru.der2shka.cursovedcote.ui.theme.secondary_text_size
+import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 
 @SuppressLint("ResourceAsColor")
 @Composable
@@ -67,7 +67,7 @@ fun WelcomePhraseSecond() {
                     color = colorResource(R.color.main_text_dark_gray),
                     maxLines = 2,
                     textAlign = TextAlign.Center,
-                    fontSize = main_text_size,
+                    fontSize = font_size_main_text,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
@@ -76,7 +76,7 @@ fun WelcomePhraseSecond() {
                     color = colorResource(R.color.secondary_text_gray),
                     maxLines = 3,
                     textAlign = TextAlign.Center,
-                    fontSize = secondary_text_size
+                    fontSize = font_size_secondary_text
                 )
             }
         }

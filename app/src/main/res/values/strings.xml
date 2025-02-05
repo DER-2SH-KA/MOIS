@@ -6,4 +6,6 @@
     <string name="welcome_phrase_2_secondary_text">Ежедневно записывайте полученные оценки, чтобы следить за своей успеваемостью!</string>
     <string name="welcome_phrase_3_main_text">Смотрите прогресс</string>
     <string name="welcome_phrase_3_secondary_text">Смотрите графики и отслеживайте свой прогресс!</string>
+    <string name="skip">Пропустить</string>
+    <string name="finish">Завершить</string>
 </resources>

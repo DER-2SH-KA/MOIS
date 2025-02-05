@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 
-val main_text_size = TextUnit(32f, TextUnitType.Sp)
-val secondary_text_size = TextUnit(24f, TextUnitType.Sp)
+val font_size_main_text = TextUnit(32f, TextUnitType.Sp)
+val font_size_secondary_text = TextUnit(24f, TextUnitType.Sp)
 
 private val DarkColorScheme = darkColorScheme(
     primary = VeryLightBlue,

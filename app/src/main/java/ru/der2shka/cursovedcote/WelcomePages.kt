@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,16 +16,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 
 @SuppressLint("ResourceAsColor")
 @Composable
@@ -98,16 +107,45 @@ fun WelcomePagesPage(
 
             Button(
                 modifier = Modifier
-                    .fillMaxSize(0.8f)
-                    .weight(1f),
+                    .weight(1f)
+                    .fillMaxHeight(0.5f)
+                    .fillMaxWidth(0.8f)
+                    .background(
+                        Color.Yellow
+                    )
+                ,
                 onClick = {
                     current_page = "colors_test_page"
                     navController.navigate(current_page)
-                }
+                },
+                colors = ButtonDefaults.buttonColors(Color.Transparent),
+                shape = RoundedCornerShape(20.dp),
+                contentPadding = PaddingValues(0.dp)
             ) {
-                Text(
-                    text = "Кнопка"
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                0f to colorResource(R.color.primary_blue),
+                                0.8f to colorResource(R.color.primary_blue),
+                                1f to colorResource(R.color.secondary_cyan),
+                                startY = 0f,
+                                endY = 1f
+                            )
+                        )
+                    ,
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.skip),
+                        maxLines = 1,
+                        color = colorResource(R.color.background_color),
+                        textAlign = TextAlign.Center,
+                        fontSize = font_size_main_text,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
