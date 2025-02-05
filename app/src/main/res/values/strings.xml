@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MOIS</string>
-    <string name="welcome_phrase_1_main_text">Write your task</string>
-    <string name="welcome_phrase_1_secondary_text">Use notes to always keep your assignments in mind!</string>
+    <string name="welcome_phrase_1_main_text">Write your home task</string>
+    <string name="welcome_phrase_1_secondary_text">Use notes to always keep your home tasks in mind!</string>
     <string name="welcome_phrase_2_main_text">Write your marks</string>
     <string name="welcome_phrase_2_secondary_text">Write down your marks in your diary every day!</string>
     <string name="welcome_phrase_3_main_text">See your progress</string>
