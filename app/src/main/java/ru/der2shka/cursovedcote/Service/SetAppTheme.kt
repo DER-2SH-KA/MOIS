@@ -3,6 +3,12 @@ package ru.der2shka.cursovedcote.Service
 import android.content.Context
 import android.content.res.Configuration
 
+/**
+ *  Change mobile app's color theme
+ *  by context and boolean value of night theme
+ *  @param context current app's context.
+ *  @param languageCode switch to night theme?
+ * **/
 fun setAppTheme(context: Context, isNightTheme: Boolean) {
 
     val nightModeFlags = if (isNightTheme) {

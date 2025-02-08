@@ -10,7 +10,7 @@ import java.util.Locale
 /**
  *  Change mobile app's language
  *  by context and locale code as string
- *  @param context current app's context,
+ *  @param context current app's context.
  *  @param languageCode language code which to switch.
  * **/
 fun setLocaleForApp(context: Context, languageCode: String) {
