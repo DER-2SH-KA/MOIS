@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Service.setAppTheme
 import ru.der2shka.cursovedcote.Service.setLocaleForApp
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
@@ -44,7 +44,7 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
 @SuppressLint("ResourceAsColor")
 @Composable
-fun ChooseLanguageFromStartAppPage(
+fun ChooseAppThemeFromStartAppPage(
     navHostController: NavHostController
 ) {
     val context = LocalContext.current
@@ -63,9 +63,9 @@ fun ChooseLanguageFromStartAppPage(
     ) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxHeight(0.7f)
-                    .fillMaxWidth()
+            Modifier
+                .fillMaxHeight(0.7f)
+                .fillMaxWidth()
             ,
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -101,7 +101,7 @@ fun ChooseLanguageFromStartAppPage(
                 )
                 Text(
                     modifier = Modifier,
-                    text= stringResource(R.string.select_locale_from_start_page),
+                    text= stringResource(R.string.select_app_theme_from_start_page),
                     color = colorResource(R.color.secondary_text_gray),
                     maxLines = 3,
                     textAlign = TextAlign.Center,
@@ -121,10 +121,10 @@ fun ChooseLanguageFromStartAppPage(
                     .fillMaxWidth(0.8f)
                 ,
                 onClick = {
-                    /* TODO: Обязательно добавить выбранный
-                    *   язык в SharedPreferences!
+                    /* TODO: Обязательно добавить выбранную
+                     *  цветовую тему в SharedPreferences!
                     * */
-                    setLocaleForApp(context, "en")
+                    setAppTheme(context, true)
                     GoToWelcomePhrasesPage(navHostController)
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
@@ -146,7 +146,7 @@ fun ChooseLanguageFromStartAppPage(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = stringResource(R.string.continue_with_english),
+                        text = stringResource(R.string.dark_theme),
                         maxLines = 2,
                         color = colorResource(R.color.background_color),
                         textAlign = TextAlign.Center,
@@ -156,31 +156,56 @@ fun ChooseLanguageFromStartAppPage(
                 }
             }
 
-            Text(
+            Button(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .clickable {
-                        /* TODO: Обязательно добавить выбранный
-                        *   язык в SharedPreferences!
-                        * */
-                        setLocaleForApp(context, "ru")
-                        GoToWelcomePhrasesPage(navHostController)
-                    }
+                    .height(
+                        (config.screenHeightDp * 0.1f).dp
+                    )
+                    .fillMaxWidth(0.8f)
                 ,
-                text = stringResource(R.string.continue_with_russian),
-                maxLines = 1,
-                color = colorResource(R.color.primary_blue),
-                textAlign = TextAlign.Center,
-                fontSize = font_size_secondary_text
-            )
+                onClick = {
+                    /* TODO: Обязательно добавить выбранную
+                     *  цветовую тему в SharedPreferences!
+                    * */
+                    setAppTheme(context, false)
+                    GoToWelcomePhrasesPage(navHostController)
+                },
+                colors = ButtonDefaults.buttonColors(Color.Transparent),
+                shape = RoundedCornerShape(20.dp),
+                contentPadding = PaddingValues(0.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    colorResource(R.color.primary_blue),
+                                    colorResource(R.color.secondary_cyan)
+                                )
+                            )
+                        )
+                    ,
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.light_theme),
+                        maxLines = 2,
+                        color = colorResource(R.color.background_color),
+                        textAlign = TextAlign.Center,
+                        fontSize = font_size_main_text,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }
 
 private fun GoToWelcomePhrasesPage(navHostController: NavHostController) {
-    current_page = "choose_app_theme_from_start_page"
+    current_page = "welcome_pages_page"
     navHostController.navigate(current_page) {
-        popUpTo("choose_language_from_start_page") {
+        popUpTo("choose_app_theme_from_start_page") {
             inclusive = true
         }
     }

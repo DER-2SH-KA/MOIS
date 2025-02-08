@@ -59,7 +59,7 @@ fun WelcomePagesPage(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.9f)
+                .fillMaxHeight(0.8f)
                 .background(
                     colorResource(R.color.background_color)
                 ),

@@ -49,7 +49,7 @@ fun WelcomePhraseThird() {
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val spacer_height = (config.screenHeightDp * 1/10).dp
+            val spacer_height = (config.screenHeightDp * 1/12).dp
 
             Spacer(
                 modifier = Modifier

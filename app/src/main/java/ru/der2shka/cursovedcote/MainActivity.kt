@@ -99,6 +99,10 @@ fun MyAppMainWindow() {
                     ChooseLanguageFromStartAppPage(navController)
                 }
 
+                composable(route = "choose_app_theme_from_start_page") {
+                    ChooseAppThemeFromStartAppPage(navController)
+                }
+
                 composable(route = "welcome_pages_page") {
                     WelcomePagesPage(navController)
                 }
