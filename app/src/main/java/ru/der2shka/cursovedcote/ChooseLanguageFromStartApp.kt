@@ -121,6 +121,9 @@ fun ChooseLanguageFromStartAppPage(
                     .fillMaxWidth(0.8f)
                 ,
                 onClick = {
+                    /* TODO: Обязательно добавить выбранный
+                    *   язык в SharedPreferences!
+                    * */
                     setLocaleForApp(context, "en")
                     GoToWelcomePhrasesPage(navHostController)
                 },
@@ -157,6 +160,9 @@ fun ChooseLanguageFromStartAppPage(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .clickable {
+                        /* TODO: Обязательно добавить выбранный
+                        *   язык в SharedPreferences!
+                        * */
                         setLocaleForApp(context, "ru")
                         GoToWelcomePhrasesPage(navHostController)
                     }
