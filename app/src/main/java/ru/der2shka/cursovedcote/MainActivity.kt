@@ -94,6 +94,11 @@ fun MyAppMainWindow() {
                 composable(route = "splash_screen_page") {
                     SplashScreenPage(navController)
                 }
+
+                composable(route = "choose_language_from_start_page") {
+                    ChooseLanguageFromStartAppPage(navController)
+                }
+
                 composable(route = "welcome_pages_page") {
                     WelcomePagesPage(navController)
                 }

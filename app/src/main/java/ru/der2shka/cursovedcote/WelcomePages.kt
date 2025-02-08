@@ -124,7 +124,11 @@ fun WelcomePagesPage(
                     ,
                     onClick = {
                         current_page = "colors_test_page"
-                        navController.navigate(current_page)
+                        navController.navigate(current_page) {
+                            popUpTo("welcome_pages_page") {
+                                inclusive = true
+                            }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                     shape = RoundedCornerShape(20.dp),

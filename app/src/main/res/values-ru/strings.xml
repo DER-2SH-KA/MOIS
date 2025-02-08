@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">MOIS</string>
+    <string name="select_locale_from_start_page">Please select the language of the mobile application</string>
+    <string name="continue_with_english">Continue with English</string>
+    <string name="continue_with_russian">Продолжить на русском</string>
     <string name="welcome_phrase_1_main_text">Записывайте задания</string>
     <string name="welcome_phrase_1_secondary_text">Используйте заметки, чтобы всегда помнить о своих заданиях!</string>
     <string name="welcome_phrase_2_main_text">Записывай оценки</string>

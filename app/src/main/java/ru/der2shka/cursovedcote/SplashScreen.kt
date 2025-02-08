@@ -105,8 +105,8 @@ fun SplashScreenPage(
     }
 }
 
-fun GoToWelcomePhrases(navController: NavHostController) {
-    current_page = "welcome_pages_page"
+private fun GoToWelcomePhrases(navController: NavHostController) {
+    current_page = "choose_language_from_start_page"
     navController.navigate(current_page) {
         popUpTo("splash_screen_page") { inclusive = true }
     }
