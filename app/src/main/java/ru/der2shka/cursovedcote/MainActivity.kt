@@ -53,7 +53,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
-var current_page = "splash_screen"
+var current_page = "splash_screen_page"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,12 +89,12 @@ fun MyAppMainWindow() {
         ) {
             NavHost(
                 navController = navController,
-                startDestination = "splash_screen"
+                startDestination = "splash_screen_page"
             ) {
-                composable(route = "splash_screen") {
+                composable(route = "splash_screen_page") {
                     SplashScreenPage(navController)
                 }
-                composable(route = "welcome_pages") {
+                composable(route = "welcome_pages_page") {
                     WelcomePagesPage(navController)
                 }
                 composable(route = "colors_test_page") {

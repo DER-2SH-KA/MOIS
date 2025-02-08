@@ -106,6 +106,8 @@ fun SplashScreenPage(
 }
 
 fun GoToWelcomePhrases(navController: NavHostController) {
-    current_page = "welcome_pages"
-    navController.navigate(current_page)
+    current_page = "welcome_pages_page"
+    navController.navigate(current_page) {
+        popUpTo("splash_screen_page") { inclusive = true }
+    }
 }
