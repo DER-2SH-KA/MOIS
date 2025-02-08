@@ -48,6 +48,9 @@ fun WelcomePagesPage(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                colorResource(R.color.background_color)
+            )
         ,
         contentAlignment = Alignment.Center
     ) {
