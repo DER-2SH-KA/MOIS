@@ -111,14 +111,15 @@ fun SplashScreenPage(
 
         Box(
             modifier = Modifier
-                .fillMaxSize(0.9f),
+                .fillMaxWidth(0.9f)
+                .fillMaxSize(0.8f),
             contentAlignment = Alignment.BottomCenter
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
                 text = stringResource(R.string.developer_pseudoname),
-                color = colorResource(R.color.main_text_dark_gray),
+                color = Color.White,
                 maxLines = 3,
                 textAlign = TextAlign.Center,
                 fontSize = font_size_main_text,
