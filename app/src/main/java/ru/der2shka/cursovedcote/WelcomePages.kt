@@ -38,6 +38,7 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import kotlin.coroutines.coroutineContext
 
 @SuppressLint("ResourceAsColor")
@@ -154,6 +155,7 @@ fun WelcomePagesPage(
                             color = colorResource(R.color.background_color),
                             textAlign = TextAlign.Center,
                             fontSize = font_size_main_text,
+                            lineHeight = line_height_main_text,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -199,6 +201,7 @@ fun WelcomePagesPage(
                             color = colorResource(R.color.background_color),
                             textAlign = TextAlign.Center,
                             fontSize = font_size_main_text,
+                            lineHeight = line_height_main_text,
                             fontWeight = FontWeight.Bold
                         )
                     }

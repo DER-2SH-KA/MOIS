@@ -94,10 +94,7 @@ fun ChooseLanguageFromStartAppPage(
                     textAlign = TextAlign.Center,
                     fontSize = font_size_main_text,
                     fontWeight = FontWeight.Bold,
-                    lineHeight = TextUnit(
-                        line_height_main_text,
-                        TextUnitType.Sp
-                    )
+                    lineHeight = line_height_main_text
                 )
                 Text(
                     modifier = Modifier,
@@ -106,10 +103,7 @@ fun ChooseLanguageFromStartAppPage(
                     maxLines = 3,
                     textAlign = TextAlign.Center,
                     fontSize = font_size_secondary_text,
-                    lineHeight = TextUnit(
-                        line_height_secondary_text,
-                        TextUnitType.Sp
-                    )
+                    lineHeight = line_height_secondary_text
                 )
             }
 
@@ -151,6 +145,7 @@ fun ChooseLanguageFromStartAppPage(
                         color = colorResource(R.color.background_color),
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
+                        lineHeight = line_height_main_text,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -171,7 +166,8 @@ fun ChooseLanguageFromStartAppPage(
                 maxLines = 1,
                 color = colorResource(R.color.primary_blue),
                 textAlign = TextAlign.Center,
-                fontSize = font_size_secondary_text
+                fontSize = font_size_secondary_text,
+                lineHeight = line_height_secondary_text
             )
         }
     }

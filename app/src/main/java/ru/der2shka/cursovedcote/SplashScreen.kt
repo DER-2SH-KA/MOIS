@@ -15,8 +15,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -30,9 +32,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
+import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 
 @SuppressLint("ResourceAsColor")
 @Composable
@@ -101,6 +107,23 @@ fun SplashScreenPage(
             delay(400)
 
             GoToWelcomePhrases(navController)
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize(0.9f),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = stringResource(R.string.developer_pseudoname),
+                color = colorResource(R.color.main_text_dark_gray),
+                maxLines = 3,
+                textAlign = TextAlign.Center,
+                fontSize = font_size_main_text,
+                lineHeight = line_height_main_text
+            )
         }
     }
 }

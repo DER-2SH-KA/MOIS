@@ -85,10 +85,8 @@ fun WelcomePhraseSecond() {
                     textAlign = TextAlign.Center,
                     fontSize = font_size_main_text,
                     fontWeight = FontWeight.Bold,
-                    lineHeight = TextUnit(
-                        line_height_main_text,
-                        TextUnitType.Sp
-                    )
+                    lineHeight = line_height_main_text,
+
                 )
                 Text(
                     modifier = Modifier,
@@ -97,10 +95,7 @@ fun WelcomePhraseSecond() {
                     maxLines = 3,
                     textAlign = TextAlign.Center,
                     fontSize = font_size_secondary_text,
-                    lineHeight = TextUnit(
-                        line_height_secondary_text,
-                        TextUnitType.Sp
-                    )
+                    lineHeight = line_height_secondary_text
                 )
             }
         }
