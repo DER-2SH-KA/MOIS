@@ -15,4 +15,5 @@
     <string name="welcome_phrase_3_secondary_text">See the charts and track your study progress!</string>
     <string name="skip">Skip</string>
     <string name="finish">Finish</string>
+    <string name="title_activity_general_app">GeneralAppActivity</string>
 </resources>

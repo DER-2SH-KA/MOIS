@@ -1,6 +1,9 @@
 package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +50,8 @@ import kotlin.coroutines.coroutineContext
 fun WelcomePagesPage(
     navController: NavHostController
 ) {
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -124,12 +130,21 @@ fun WelcomePagesPage(
                         .fillMaxWidth(0.8f)
                     ,
                     onClick = {
+
+                        /*
                         current_page = "colors_test_page"
                         navController.navigate(current_page) {
                             popUpTo("welcome_pages_page") {
                                 inclusive = true
                             }
                         }
+                        */
+
+                        val intent = Intent(context, GeneralAppActivity::class.java)
+                        val activity = (context as? Activity)
+
+                        context.startActivity(intent)
+                        activity?.finish()
                     },
                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                     shape = RoundedCornerShape(20.dp),
