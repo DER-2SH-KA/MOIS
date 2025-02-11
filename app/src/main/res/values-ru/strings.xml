@@ -15,4 +15,5 @@
     <string name="welcome_phrase_3_secondary_text">Смотрите графики и отслеживайте свой прогресс!</string>
     <string name="skip">Пропустить</string>
     <string name="finish">Завершить</string>
+    <string name="title_activity_general_app">GeneralAppActivity</string>
 </resources>
