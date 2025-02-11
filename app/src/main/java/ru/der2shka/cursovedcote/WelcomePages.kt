@@ -140,6 +140,8 @@ fun WelcomePagesPage(
                         }
                         */
 
+                        current_page = "general_page"
+
                         val intent = Intent(context, GeneralAppActivity::class.java)
                         val activity = (context as? Activity)
 
