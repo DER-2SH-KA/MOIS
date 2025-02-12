@@ -46,6 +46,9 @@ class GeneralAppActivity : ComponentActivity() {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(
+                            colorResource(R.color.background_color)
+                        )
                     ,
                     contentAlignment = Alignment.Center
                 ) {

@@ -40,9 +40,25 @@ fun DaysScrollItemDay(
     var dayOfWeek: String = GetDayOfWeekStringResourceByLocalDate(localDate, false)
     var coroutineScope = rememberCoroutineScope()
 
+    var isSelected = selectedDay.value.equals(localDate)
+
+    val backgroundColor: Color = if (isSelected)
+        colorResource(R.color.primary_blue)
+    else
+        colorResource(R.color.background_color)
+
+    val mainTextColor: Color = if (isSelected)
+        colorResource(R.color.background_color)
+    else
+        colorResource(R.color.main_text_dark_gray)
+
+    val secondaryTextColor: Color = if (isSelected)
+        colorResource(R.color.background_color)
+    else
+        colorResource(R.color.secondary_text_gray)
+
     Box(
         modifier = Modifier
-            .background(Color.Cyan)
             .clickable {
                 selectedDay.value = localDate
 
@@ -59,7 +75,7 @@ fun DaysScrollItemDay(
                 .aspectRatio(1f)
                 .padding(10.dp)
                 .background(
-                    Color.Green,
+                    backgroundColor,
                     shape = RoundedCornerShape(5.dp)
                 )
             ,
@@ -70,20 +86,20 @@ fun DaysScrollItemDay(
                     .fillMaxHeight()
                     .aspectRatio(1f)
                     .padding(10.dp)
-                    .background(Color.Blue),
+                ,
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = dayOfWeek,
-                    color = colorResource(R.color.secondary_text_gray),
+                    color = secondaryTextColor,
                     textAlign = TextAlign.Center,
                     fontSize = font_size_secondary_text
                 )
 
                 Text(
                     text = localDate.dayOfMonth.toString(),
-                    color = colorResource(R.color.main_text_dark_gray),
+                    color = mainTextColor,
                     textAlign = TextAlign.Center,
                     fontSize = font_size_main_text
                 )

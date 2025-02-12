@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,7 +69,7 @@ fun GeneralAppPage(
             modifier = Modifier
                 .fillMaxSize()
             ,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -196,16 +197,6 @@ fun GeneralAppPage(
                 }
             }
 
-            // Selected Date value.
-            Text(
-                text = "${selectedDate.value.year}-${selectedDate.value.month}-${selectedDate.value.dayOfMonth}",
-                color = colorResource(R.color.main_text_dark_gray),
-                textAlign = TextAlign.Center,
-                fontSize = font_size_main_text,
-                lineHeight = line_height_main_text,
-                fontWeight = FontWeight.Bold
-            )
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -221,26 +212,40 @@ fun GeneralAppPage(
                     horizontalArrangement = Arrangement.Start
                 ) {
 
-                    Box(
-                        modifier = Modifier.background(Color.Blue),
+                    /*Box(
+                        modifier = Modifier
+                            .size(200.dp)
+                            .background(Color.Blue),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = "Biba")
                     }
 
                     Box(
-                        modifier = Modifier.background(Color.Blue),
+                        modifier = Modifier
+                            .size(200.dp)
+                            .background(Color.Blue)
+                        ,
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = "Biba")
                     }
 
                     Box(
-                        modifier = Modifier.background(Color.Blue),
+                        modifier = Modifier
+                            .size(200.dp)
+                            .background(Color.Blue)
+                        ,
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = "Biba")
-                    }
+                    }*/
+
+                    AverageMarkCard("Математика")
+
+                    AverageMarkCard("ОАиП")
+
+                    AverageMarkCard("ТРиЗБД")
                 }
             }
         }
