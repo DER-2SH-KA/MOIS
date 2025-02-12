@@ -47,15 +47,26 @@ fun DaysScrollItemDay(
     else
         colorResource(R.color.background_color)
 
-    val mainTextColor: Color = if (isSelected)
+    var mainTextColor: Color = if (isSelected) {
         colorResource(R.color.background_color)
-    else
+    } else {
         colorResource(R.color.main_text_dark_gray)
+    }
 
-    val secondaryTextColor: Color = if (isSelected)
+    // If Today this date main text.
+    if (localDate.equals(LocalDate.now())) {
+        mainTextColor = colorResource(R.color.secondary_cyan)
+    }
+
+    var secondaryTextColor: Color = if (isSelected)
         colorResource(R.color.background_color)
     else
         colorResource(R.color.secondary_text_gray)
+
+    // If Today this date secondary text.
+    if (localDate.equals(LocalDate.now())) {
+        secondaryTextColor = colorResource(R.color.secondary_cyan)
+    }
 
     Box(
         modifier = Modifier
