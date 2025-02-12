@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -39,104 +41,67 @@ class GeneralAppActivity : ComponentActivity() {
 
         setContent {
             CursovedCotETheme {
-                val navController = rememberNavController()
-                val horizontalPager = rememberPagerState(pageCount = { 5 })
+                val horizontalPager = rememberPagerState(initialPage = 2, pageCount = { 5 })
 
-                NavHost(navController, startDestination = "general_page") {
-                    composable(route = "aboba_test_page_1") {
-                        AbobaTestPage()
-                    }
-
-                    composable(route = "aboba_test_page_2") {
-                        AbobaTestPage()
-                    }
-
-                    composable(route = "general_page") {
-                        GeneralAppPage(navController)
-                    }
-
-                    composable(route = "aboba_test_page_4") {
-                        AbobaTestPage()
-                    }
-
-                    composable(route = "aboba_test_page_5") {
-                        AbobaTestPage()
-                    }
-                }
-
-                Column(
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.9f)
+                        .fillMaxSize()
                     ,
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    contentAlignment = Alignment.Center
                 ) {
-
-                    HorizontalPager(
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.5f)
-                            .background(Color.Yellow)
+                            .fillMaxHeight(0.9f)
                         ,
-                        state = horizontalPager
-                    ) { page ->
-                        when(horizontalPager.currentPage) {
-                            1 -> {
-                                current_page = "aboba_test_page_1"
-                                navController.navigate(current_page)
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        HorizontalPager(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(9f)
+                                .background(Color.Yellow),
+                            state = horizontalPager
+                        ) { page ->
+                            when (page) {
+                                0 -> {
+                                    AbobaTestPage("0")
+                                }
+
+                                1 -> {
+                                    AbobaTestPage("1")
+                                }
+
+                                2 -> {
+                                    GeneralAppPage()
+                                }
+
+                                3 -> {
+                                    AbobaTestPage("3")
+                                }
+
+                                4 -> {
+                                    AbobaTestPage("4")
+                                }
                             }
-                            2 -> {
-                                current_page = "aboba_test_page_2"
-                                navController.navigate(current_page)
-                            }
-                            3 -> {
-                                current_page = "general_page"
-                                navController.navigate(current_page)
-                            }
-                            4 -> {
-                                current_page = "aboba_test_page_4"
-                                navController.navigate(current_page)
-                            }
-                            5 -> {
-                                current_page = "aboba_test_page_5"
-                                navController.navigate(current_page)
-                            }
+                        }
+
+                        // Bottom Menu.
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                                .background(Color.Red)
+                            ,
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
 
                         }
                     }
-                    Text(
-                        text = current_page
-                    )
-                    Text(
-                        text = navController.currentDestination?.route.toString()
-                    )
-                    Text(
-                        text = horizontalPager.currentPage.toString()
-                    )
                 }
             }
         }
-    }
-}
-
-@SuppressLint("ResourceAsColor")
-@Composable
-fun AbobaTestPage() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-        ,
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Aboba Test Page",
-            color = colorResource(R.color.main_text_dark_gray),
-            textAlign = TextAlign.Center,
-            fontSize = font_size_main_text,
-            lineHeight = line_height_main_text,
-            fontWeight = FontWeight.Medium
-        )
     }
 }
 
