@@ -211,36 +211,6 @@ fun GeneralAppPage(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
-
-                    /*Box(
-                        modifier = Modifier
-                            .size(200.dp)
-                            .background(Color.Blue),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "Biba")
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .size(200.dp)
-                            .background(Color.Blue)
-                        ,
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "Biba")
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .size(200.dp)
-                            .background(Color.Blue)
-                        ,
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "Biba")
-                    }*/
-
                     AverageMarkCard("Математика")
 
                     AverageMarkCard("ОАиП")
@@ -248,6 +218,13 @@ fun GeneralAppPage(
                     AverageMarkCard("ТРиЗБД")
                 }
             }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                ,
+                contentAlignment = Alignment.TopStart
+            ) {}
         }
     }
 }
