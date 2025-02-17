@@ -71,7 +71,7 @@ class GeneralAppActivity : ComponentActivity() {
                         ) { page ->
                             when (page) {
                                 0 -> {
-                                    AbobaTestPage("0")
+                                    AddNewMarkPage()
                                 }
 
                                 1 -> {
