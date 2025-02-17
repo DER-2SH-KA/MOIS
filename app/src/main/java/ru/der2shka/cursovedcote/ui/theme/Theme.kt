@@ -14,10 +14,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 
 val font_size_main_text = TextUnit(32f, TextUnitType.Sp)
+val font_size_middle_size_text = TextUnit(27f, TextUnitType.Sp)
 val font_size_secondary_text = TextUnit(22f, TextUnitType.Sp)
 
-val line_height_main_text = TextUnit(font_size_main_text.value * 1.2f, TextUnitType.Sp)
-val line_height_secondary_text = TextUnit(font_size_secondary_text.value * 1.2f, TextUnitType.Sp)
+val line_height_main_text = TextUnit(font_size_main_text.value * 1.15f, TextUnitType.Sp)
+val line_height_middle_size_text = TextUnit(font_size_middle_size_text.value * 1.15f, TextUnitType.Sp)
+val line_height_secondary_text = TextUnit(font_size_secondary_text.value * 1.15f, TextUnitType.Sp)
 
 private val DarkColorScheme = darkColorScheme(
     primary = VeryLightBlue,

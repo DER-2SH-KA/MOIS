@@ -1,4 +1,4 @@
-package ru.der2shka.cursovedcote
+package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text

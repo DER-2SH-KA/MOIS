@@ -206,9 +206,9 @@ fun WelcomePagesPage(
                             .fillMaxSize()
                             .background(
                                 brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        colorResource(R.color.primary_blue),
-                                        colorResource(R.color.secondary_cyan)
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
                                     )
                                 )
                             )

@@ -1,4 +1,4 @@
-package ru.der2shka.cursovedcote
+package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
@@ -14,20 +14,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetDayOfWeekStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import ru.der2shka.cursovedcote.ui.theme.font_size_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
 
 /**
@@ -108,14 +110,16 @@ fun DaysScrollItemDay(
                     text = dayOfWeek,
                     color = secondaryTextColor,
                     textAlign = TextAlign.Center,
-                    fontSize = font_size_secondary_text
+                    fontSize = font_size_secondary_text,
+                    lineHeight = line_height_secondary_text
                 )
 
                 Text(
                     text = localDate.dayOfMonth.toString(),
                     color = mainTextColor,
                     textAlign = TextAlign.Center,
-                    fontSize = font_size_main_text
+                    fontSize = font_size_middle_size_text,
+                    lineHeight = line_height_middle_size_text
                 )
             }
         }
