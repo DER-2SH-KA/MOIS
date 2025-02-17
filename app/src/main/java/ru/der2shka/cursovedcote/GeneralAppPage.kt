@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,6 +66,9 @@ fun GeneralAppPage(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(
+                    mainContentVScroll
+                )
             ,
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -95,7 +99,7 @@ fun GeneralAppPage(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .weight(0.9f)
                 ,
                 contentAlignment = Alignment.Center
             ) {
@@ -225,7 +229,7 @@ fun GeneralAppPage(
             Column (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(2f)
+                    //.weight(2f)
                 ,
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally

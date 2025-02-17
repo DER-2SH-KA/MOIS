@@ -80,144 +80,140 @@ fun HorizontalGeneralPageItem(
     // Main content.
     Box(
         modifier = Modifier
-            .height(
-                (config.screenHeightDp * 0.11f).dp
-            )
-            .fillMaxWidth(0.9f)
-            .background(
-                brush = Brush.verticalGradient(
-                    colorStops = arrayOf(
-                        0.6f to colorResource(R.color.primary_blue),
-                        1f to colorResource(R.color.secondary_cyan)
-                    )
-                ),
-                shape = RoundedCornerShape(20.0f)
-            )
-            .onSizeChanged {
-                // buttonSize.value = (it.height * 0.5f).dp
-                // cardSize.value = (it.height).dp
-            }
-            .clickable {
-                onItemClick()
-            }
-        ,
-        contentAlignment = Alignment.Center
+            .padding(10.dp)
     ) {
-        Row(
-            modifier =Modifier
-                .fillMaxSize(0.9f)
-            ,
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.SpaceBetween
+        Box(
+            modifier = Modifier
+                .height(
+                    (config.screenHeightDp * 0.11f).dp
+                )
+                .fillMaxWidth(0.9f)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0.6f to colorResource(R.color.primary_blue),
+                            1f to colorResource(R.color.secondary_cyan)
+                        )
+                    ),
+                    shape = RoundedCornerShape(20.0f)
+                )
+                .onSizeChanged {
+                    // buttonSize.value = (it.height * 0.5f).dp
+                    // cardSize.value = (it.height).dp
+                }
+                .clickable {
+                    onItemClick()
+                },
+            contentAlignment = Alignment.Center
         ) {
-            // Header Text.
-            Text(
-                text = headerText,
-                color = colorResource(R.color.background_color),
-                textAlign = TextAlign.Start,
-                fontSize = font_size_main_text,
-                lineHeight = line_height_main_text,
-                fontWeight = FontWeight.Bold
-            )
-
-            // Buttons.
             Row(
-                modifier =Modifier
-                    .fillMaxHeight()
-                    .padding(10.dp)
-                ,
+                modifier = Modifier
+                    .fillMaxSize(0.9f),
                 verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Button with plus.
-                Button(
+                // Header Text.
+                Text(
+                    text = headerText,
+                    color = colorResource(R.color.background_color),
+                    textAlign = TextAlign.Start,
+                    fontSize = font_size_main_text,
+                    lineHeight = line_height_main_text,
+                    fontWeight = FontWeight.Bold
+                )
+
+                // Buttons.
+                Row(
                     modifier = Modifier
-                        .height( buttonSize.value )
-                        .aspectRatio(1f)
-                    ,
-                    onClick = {
-                        onPlusClick
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        Color.Transparent,
-                        Color.Transparent,
-                        Color.Transparent,
-                        Color.Transparent
-                    ),
-                    contentPadding = PaddingValues(0.dp)
+                        .fillMaxHeight()
+                        .padding(10.dp),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Box(
+                    // Button with plus.
+                    Button(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                color = colorResource(R.color.secondary_cyan)
-                            )
-                        ,
-                        contentAlignment = Alignment.Center
+                            .height(buttonSize.value)
+                            .aspectRatio(1f),
+                        onClick = {
+                            onPlusClick
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Transparent
+                        ),
+                        contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text(
-                            text = "+",
-                            color = colorResource(R.color.background_color),
-                            textAlign = TextAlign.Center,
-                            fontSize = font_size_secondary_text,
-                            lineHeight = line_height_secondary_text,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    color = colorResource(R.color.secondary_cyan)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "+",
+                                color = colorResource(R.color.background_color),
+                                textAlign = TextAlign.Center,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+
+                    // Space between buttons.
+                    Spacer(Modifier.widthIn(10.dp))
+
+                    // Button with dots.
+                    Button(
+                        modifier = Modifier
+                            .height(buttonSize.value)
+                            .aspectRatio(1f),
+                        onClick = {
+                            onDotsClick()
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Transparent
+                        ),
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    color = colorResource(R.color.secondary_cyan)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = ". . .",
+                                color = colorResource(R.color.background_color),
+                                textAlign = TextAlign.Center,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
 
-                // Space between buttons.
-                Spacer(Modifier.widthIn(10.dp))
-
-                // Button with dots.
-                Button(
-                    modifier = Modifier
-                        .height( buttonSize.value )
-                        .aspectRatio(1f)
-                    ,
-                    onClick = {
-                        onDotsClick()
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        Color.Transparent,
-                        Color.Transparent,
-                        Color.Transparent,
-                        Color.Transparent
-                    ),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                color = colorResource(R.color.secondary_cyan)
-                            )
-                        ,
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = ". . .",
-                            color = colorResource(R.color.background_color),
-                            textAlign = TextAlign.Center,
-                            fontSize = font_size_secondary_text,
-                            lineHeight = line_height_secondary_text,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-            }
-
-            /*Text(
+                /*Text(
                 text = buttonSize.value.toString()
             )
 
             Text(
                 text = cardSize.value.toString()
             )*/
+            }
         }
     }
-
-
 }
