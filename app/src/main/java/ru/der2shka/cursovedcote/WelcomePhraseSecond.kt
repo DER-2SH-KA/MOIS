@@ -30,6 +30,10 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
+/**
+ *  Second page of welcome phrases page.
+ *  Text: "Write the your marks!"
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
 fun WelcomePhraseSecond() {

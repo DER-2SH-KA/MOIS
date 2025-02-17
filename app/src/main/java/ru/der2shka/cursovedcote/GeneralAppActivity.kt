@@ -34,6 +34,9 @@ import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 
+/**
+ * General Activity for App with actions.
+ * **/
 class GeneralAppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

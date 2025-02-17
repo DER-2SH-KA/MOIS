@@ -13,7 +13,10 @@ import java.util.Locale
  *  @param context current app's context.
  *  @param languageCode language code which to switch.
  * **/
-fun setLocaleForApp(context: Context, languageCode: String) {
+fun setLocaleForApp(
+    context: Context,
+    languageCode: String
+) {
     val locale = Locale(languageCode)
     Locale.setDefault(locale)
 

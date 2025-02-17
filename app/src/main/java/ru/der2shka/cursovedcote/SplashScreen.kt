@@ -40,6 +40,9 @@ import kotlinx.coroutines.delay
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 
+/**
+ *  Pseudo-Splash Screen method.
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
 fun SplashScreenPage(

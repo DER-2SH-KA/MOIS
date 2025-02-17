@@ -30,6 +30,11 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
+
+/**
+ *  The last page of welcome phrases pages
+ *  Text: "See the progress!"
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
 fun WelcomePhraseThird() {

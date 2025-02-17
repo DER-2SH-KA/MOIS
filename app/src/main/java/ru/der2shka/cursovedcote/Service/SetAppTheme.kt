@@ -9,7 +9,10 @@ import android.content.res.Configuration
  *  @param context current app's context.
  *  @param languageCode switch to night theme?
  * **/
-fun setAppTheme(context: Context, isNightTheme: Boolean) {
+fun setAppTheme(
+    context: Context,
+    isNightTheme: Boolean
+) {
 
     val nightModeFlags = if (isNightTheme) {
         Configuration.UI_MODE_NIGHT_YES

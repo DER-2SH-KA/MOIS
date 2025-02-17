@@ -8,6 +8,12 @@ import ru.der2shka.cursovedcote.R
 import java.time.LocalDate
 
 // TODO: finish month when block.
+/**
+ * Return month string value by LocalDate.
+ *  @param localDate localDate from which must get month name.
+ *  @param isFullName if  true return full month name
+ *  else return short month name;
+ * **/
 @SuppressLint("ResourceAsString")
 @Composable
 fun GetMonthStringResourceByLocalDate(

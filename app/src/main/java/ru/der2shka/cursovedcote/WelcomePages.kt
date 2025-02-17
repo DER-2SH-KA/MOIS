@@ -45,6 +45,9 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import kotlin.coroutines.coroutineContext
 
+/**
+ * Welcome phrases pages screen.
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
 fun WelcomePagesPage(
@@ -157,9 +160,9 @@ fun WelcomePagesPage(
                             .fillMaxSize()
                             .background(
                                 brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        colorResource(R.color.primary_blue),
-                                        colorResource(R.color.secondary_cyan)
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
                                     )
                                 )
                             )

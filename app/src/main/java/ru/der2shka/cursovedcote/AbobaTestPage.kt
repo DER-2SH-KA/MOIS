@@ -13,6 +13,10 @@ import androidx.compose.ui.text.style.TextAlign
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 
+/**
+ * Function as testing Page for General App Activity.
+ *  @param text join this value to text "Aboba Test Page"
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
 fun AbobaTestPage(text: String) {

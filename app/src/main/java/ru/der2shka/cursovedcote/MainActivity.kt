@@ -73,6 +73,7 @@ class MainActivity : ComponentActivity() {
 
 /**
  * Main procedure which manipulate MainActivity Content.
+ * Splash Screen, Welcome Settings and Welcome Phrases.
  * **/
 @SuppressLint("ResourceAsColor")
 @Composable

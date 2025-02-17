@@ -38,6 +38,9 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
+/**
+ * General app page main function.
+ * **/
 @Composable
 fun GeneralAppPage(
 ) {
@@ -52,6 +55,9 @@ fun GeneralAppPage(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                color = colorResource(R.color.background_color)
+            )
         ,
         contentAlignment = Alignment.Center
     ) {
@@ -77,7 +83,11 @@ fun GeneralAppPage(
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .background(Color.Magenta),
+                    .background(
+                        color = colorResource(R.color.background_color)
+                    )
+                    .weight(0.5f)
+                ,
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -94,6 +104,7 @@ fun GeneralAppPage(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(0.5f)
                 ,
                 contentAlignment = Alignment.Center
             ) {
@@ -200,6 +211,7 @@ fun GeneralAppPage(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1f)
                 ,
                 contentAlignment = Alignment.CenterStart
             ) {
@@ -219,12 +231,47 @@ fun GeneralAppPage(
                 }
             }
 
-            Box(
+            Column (
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
+                    .fillMaxWidth()
+                    .weight(2f)
                 ,
-                contentAlignment = Alignment.TopStart
-            ) {}
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                HorizontalGeneralPageItem(
+                    headerText = "HomeWorks",
+                    onItemClick = {  },
+                    onPlusClick = {
+                        Text(
+                            text = "Abobus1"
+                        )
+                    },
+                    onDotsClick = { }
+                )
+
+                HorizontalGeneralPageItem(
+                    headerText = "Notes",
+                    onItemClick = {  },
+                    onPlusClick = {
+                        Text(
+                            text = "Abobus2"
+                        )
+                    },
+                    onDotsClick = { }
+                )
+
+                HorizontalGeneralPageItem(
+                    headerText = "Marks",
+                    onItemClick = {  },
+                    onPlusClick = {
+                        Text(
+                            text = "Abobus3"
+                        )
+                    },
+                    onDotsClick = { }
+                )
+            }
         }
     }
 }

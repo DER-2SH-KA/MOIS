@@ -6,6 +6,13 @@ import androidx.compose.ui.res.stringResource
 import ru.der2shka.cursovedcote.R
 import java.time.LocalDate
 
+
+/**
+ * Return day of weekend string value by LocalDate.
+ *  @param localDate localDate from which must get day of weekend name.
+ *  @param isFullName if  true return full day of weekend name
+ *  else return short day of weekend name;
+ * **/
 @SuppressLint("ResourceAsString")
 @Composable
 fun GetDayOfWeekStringResourceByLocalDate(

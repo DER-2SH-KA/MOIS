@@ -30,6 +30,9 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import java.time.LocalDate
 
+/**
+ * Day Scroll Item with LocalDate and design.
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
 fun DaysScrollItemDay(

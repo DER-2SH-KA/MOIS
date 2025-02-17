@@ -42,6 +42,10 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
+/**
+ *  Welcome settings page for
+ *  choosing app's theme.
+ * **/
 @SuppressLint("ResourceAsColor")
 @Composable
 fun ChooseAppThemeFromStartAppPage(
@@ -130,9 +134,9 @@ fun ChooseAppThemeFromStartAppPage(
                         .fillMaxSize()
                         .background(
                             brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    colorResource(R.color.primary_blue),
-                                    colorResource(R.color.secondary_cyan)
+                                colorStops = arrayOf(
+                                    0.6f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan)
                                 )
                             )
                         )
@@ -174,9 +178,9 @@ fun ChooseAppThemeFromStartAppPage(
                         .fillMaxSize()
                         .background(
                             brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    colorResource(R.color.primary_blue),
-                                    colorResource(R.color.secondary_cyan)
+                                colorStops = arrayOf(
+                                    0.6f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan)
                                 )
                             )
                         )
