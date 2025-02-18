@@ -276,7 +276,7 @@ fun GeneralAppPage(
                 }
             }
 
-
+            /*
             // Average marks block.
             Box(
                 modifier = Modifier
@@ -342,6 +342,7 @@ fun GeneralAppPage(
                     )
                 }
             }
+            */
 
             Column (
                 modifier = Modifier

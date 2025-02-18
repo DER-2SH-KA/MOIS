@@ -111,7 +111,7 @@ fun HorizontalGeneralPageItem(
                 // Header Text.
                 Text(
                     text = headerText,
-                    color = colorResource(R.color.background_color),
+                    color = Color.White,
                     textAlign = TextAlign.Start,
                     fontSize = font_size_main_text,
                     lineHeight = line_height_main_text,
