@@ -172,7 +172,7 @@ fun WelcomePagesPage(
                         Text(
                             text = stringResource(R.string.finish),
                             maxLines = 1,
-                            color = colorResource(R.color.background_color),
+                            color = Color.White,
                             textAlign = TextAlign.Center,
                             fontSize = font_size_main_text,
                             lineHeight = line_height_main_text,
@@ -218,7 +218,7 @@ fun WelcomePagesPage(
                         Text(
                             text = stringResource(R.string.skip),
                             maxLines = 1,
-                            color = colorResource(R.color.background_color),
+                            color = Color.White,
                             textAlign = TextAlign.Center,
                             fontSize = font_size_main_text,
                             lineHeight = line_height_main_text,

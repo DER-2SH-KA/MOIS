@@ -3,7 +3,6 @@ package ru.der2shka.cursovedcote
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -31,12 +29,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Service.setAppTheme
-import ru.der2shka.cursovedcote.Service.setLocaleForApp
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -147,7 +142,7 @@ fun ChooseAppThemeFromStartAppPage(
                         text = stringResource(R.string.dark_theme),
                         maxLines = 2,
                         lineHeight = line_height_main_text,
-                        color = colorResource(R.color.background_color),
+                        color = Color.White,
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
                         fontWeight = FontWeight.Bold
@@ -190,7 +185,7 @@ fun ChooseAppThemeFromStartAppPage(
                     Text(
                         text = stringResource(R.string.light_theme),
                         maxLines = 2,
-                        color = colorResource(R.color.background_color),
+                        color = Color.White,
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
                         lineHeight = line_height_main_text,
