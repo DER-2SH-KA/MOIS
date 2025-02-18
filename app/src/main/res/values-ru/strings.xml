@@ -59,4 +59,8 @@
     <string name="october_short_name">Окт.</string>
     <string name="november_short_name">Нояб.</string>
     <string name="december_short_name">Дек.</string>
+
+    <string name="home_work">Домашние задания</string>
+    <string name="notes">Записи</string>
+    <string name="marks">Оценки</string>
 </resources>

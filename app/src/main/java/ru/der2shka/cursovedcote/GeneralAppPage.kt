@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -376,7 +377,7 @@ fun GeneralAppPage(
                 */
 
                 HorizontalGeneralPageItem(
-                    headerText = "HomeWorks324123414324231432414343243243434123",
+                    headerText = stringResource(R.string.home_work),
                     maxLines = 1,
                     onItemClick = {  },
                     onPlusClick = {
@@ -401,7 +402,7 @@ fun GeneralAppPage(
                 )
 
                 HorizontalGeneralPageItem(
-                    headerText = "Notes",
+                    headerText = stringResource(R.string.notes),
                     maxLines = 1,
                     onItemClick = {  },
                     onPlusClick = {
@@ -426,7 +427,7 @@ fun GeneralAppPage(
                 )
 
                 HorizontalGeneralPageItem(
-                    headerText = "Marks",
+                    headerText = stringResource(R.string.marks),
                     maxLines = 1,
                     onItemClick = {  },
                     onPlusClick = {

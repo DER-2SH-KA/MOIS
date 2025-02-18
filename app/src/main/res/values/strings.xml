@@ -59,4 +59,8 @@
     <string name="october_short_name">Oct</string>
     <string name="november_short_name">Nov</string>
     <string name="december_short_name">Dec</string>
+
+    <string name="home_work">Homework</string>
+    <string name="notes">Notes</string>
+    <string name="marks">Marks</string>
 </resources>
