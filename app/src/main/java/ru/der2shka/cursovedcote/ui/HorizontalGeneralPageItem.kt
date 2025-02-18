@@ -132,6 +132,8 @@ fun HorizontalGeneralPageItem(
                         fontSize = font_size_main_text,
                         lineHeight = line_height_main_text,
                         fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Visible,
+                        softWrap = false,
                         containterModifier = Modifier
                             .fillMaxWidth()
                     )

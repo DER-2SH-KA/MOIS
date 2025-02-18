@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,9 +30,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
@@ -39,23 +44,31 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import org.w3c.dom.Text
 import kotlin.math.max
+import kotlin.math.min
 
 @SuppressLint("ResourceAsColor")
 @Composable
 fun ScrollableAnimatedText(
     text: String?,
+    textModifier: Modifier = Modifier,
     textColor: Color,
-    textAlign: TextAlign = TextAlign.Start,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
     maxLines: Int = Int.MAX_VALUE,
-    fontSize: TextUnit,
-    lineHeight: TextUnit,
-    fontWeight: FontWeight = FontWeight.Normal,
-    overflow: TextOverflow = TextOverflow.Visible,
-    softWrap: Boolean = false,
+    minLines: Int = 1,
+    onTextLayout: ( (TextLayoutResult) -> Unit )? = null,
+    style: TextStyle = LocalTextStyle.current,
     duration: Int = 0,
     delay: Int = 500,
     containterModifier: Modifier = Modifier,
-    textModifier: Modifier = Modifier
 ) {
     val isOverflow = remember { mutableStateOf(false) }
     val fullTextWidth = remember { mutableStateOf( 0 ) }
@@ -74,16 +87,25 @@ fun ScrollableAnimatedText(
     SubcomposeLayout(
         modifier = containterModifier
     ) { constraints ->
+        // Not cliped text.
         val subcomposedFullText = subcompose("text_full_length") {
             Text(
                 text = StringBuilder().append(text).toString(),
                 color = textColor,
-                textAlign = textAlign,
                 fontSize = fontSize,
-                lineHeight = lineHeight,
+                fontStyle = fontStyle,
                 fontWeight = fontWeight,
+                fontFamily = fontFamily,
+                letterSpacing = letterSpacing,
+                textDecoration = textDecoration,
+                textAlign = textAlign,
+                lineHeight = lineHeight,
                 overflow = overflow,
-                softWrap = softWrap
+                softWrap = softWrap,
+                maxLines = maxLines,
+                minLines = minLines,
+                onTextLayout = onTextLayout,
+                style = style
             )
         }[0].measure(Constraints())
 
@@ -92,13 +114,20 @@ fun ScrollableAnimatedText(
             Text(
                 text = StringBuilder().append(text).toString(),
                 color = textColor,
-                textAlign = textAlign,
                 fontSize = fontSize,
-                lineHeight = lineHeight,
+                fontStyle = fontStyle,
                 fontWeight = fontWeight,
-                modifier = textModifier,
+                fontFamily = fontFamily,
+                letterSpacing = letterSpacing,
+                textDecoration = textDecoration,
+                textAlign = textAlign,
+                lineHeight = lineHeight,
                 overflow = TextOverflow.Clip,
-                softWrap = softWrap
+                softWrap = softWrap,
+                maxLines = maxLines,
+                minLines = minLines,
+                onTextLayout = onTextLayout,
+                style = style
             )
         }[0].measure(constraints)
 
@@ -123,13 +152,20 @@ fun ScrollableAnimatedText(
             Text(
                 text = StringBuilder().append(text).toString(),
                 color = textColor,
-                textAlign = textAlign,
-                maxLines = maxLines,
                 fontSize = fontSize,
-                lineHeight = lineHeight,
+                fontStyle = fontStyle,
                 fontWeight = fontWeight,
+                fontFamily = fontFamily,
+                letterSpacing = letterSpacing,
+                textDecoration = textDecoration,
+                textAlign = textAlign,
+                lineHeight = lineHeight,
                 overflow = overflow,
-                softWrap = softWrap
+                softWrap = softWrap,
+                maxLines = maxLines,
+                minLines = minLines,
+                onTextLayout = onTextLayout,
+                style = style
             )
         }
     }
@@ -163,13 +199,20 @@ fun ScrollableAnimatedText(
             Text(
                 text = StringBuilder().append(text).toString(),
                 color = textColor,
-                textAlign = textAlign,
-                maxLines = maxLines,
                 fontSize = fontSize,
-                lineHeight = lineHeight,
+                fontStyle = fontStyle,
                 fontWeight = fontWeight,
+                fontFamily = fontFamily,
+                letterSpacing = letterSpacing,
+                textDecoration = textDecoration,
+                textAlign = textAlign,
+                lineHeight = lineHeight,
                 overflow = overflow,
                 softWrap = softWrap,
+                maxLines = maxLines,
+                minLines = minLines,
+                onTextLayout = onTextLayout,
+                style = style,
                 modifier = Modifier
                     .offset {
                         IntOffset( (offsetXvalue.value * offsetMultiplier).toInt(), 0 )
