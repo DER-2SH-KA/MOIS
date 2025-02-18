@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Service.setAppTheme
+import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -138,11 +139,11 @@ fun ChooseAppThemeFromStartAppPage(
                     ,
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
+                    ScrollableAnimatedText(
                         text = stringResource(R.string.dark_theme),
-                        maxLines = 2,
+                        maxLines = 1,
                         lineHeight = line_height_main_text,
-                        color = Color.White,
+                        textColor = Color.White,
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
                         fontWeight = FontWeight.Bold
@@ -182,10 +183,10 @@ fun ChooseAppThemeFromStartAppPage(
                     ,
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
+                    ScrollableAnimatedText(
                         text = stringResource(R.string.light_theme),
-                        maxLines = 2,
-                        color = Color.White,
+                        maxLines = 1,
+                        textColor = Color.White,
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
                         lineHeight = line_height_main_text,

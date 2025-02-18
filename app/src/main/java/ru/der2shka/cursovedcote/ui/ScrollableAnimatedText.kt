@@ -165,7 +165,8 @@ fun ScrollableAnimatedText(
                 maxLines = maxLines,
                 minLines = minLines,
                 onTextLayout = onTextLayout,
-                style = style
+                style = style,
+                modifier = textModifier
             )
         }
     }
@@ -213,7 +214,7 @@ fun ScrollableAnimatedText(
                 minLines = minLines,
                 onTextLayout = onTextLayout,
                 style = style,
-                modifier = Modifier
+                modifier = textModifier
                     .offset {
                         IntOffset( (offsetXvalue.value * offsetMultiplier).toInt(), 0 )
                     }

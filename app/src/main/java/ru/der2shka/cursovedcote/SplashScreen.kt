@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
+import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 
@@ -118,15 +119,15 @@ fun SplashScreenPage(
                 .fillMaxSize(0.8f),
             contentAlignment = Alignment.BottomCenter
         ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
+            ScrollableAnimatedText(
                 text = stringResource(R.string.developer_pseudoname),
-                color = Color.White,
-                maxLines = 3,
-                textAlign = TextAlign.Center,
+                textColor = Color.White,
                 fontSize = font_size_main_text,
-                lineHeight = line_height_main_text
+                lineHeight = line_height_main_text,
+                textAlign = TextAlign.Center,
+                maxLines = 3,
+                textModifier = Modifier
+                    .fillMaxWidth()
             )
         }
     }

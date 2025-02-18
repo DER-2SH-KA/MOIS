@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import kotlin.coroutines.coroutineContext
@@ -169,10 +170,10 @@ fun WelcomePagesPage(
                         ,
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
+                        ScrollableAnimatedText(
                             text = stringResource(R.string.finish),
                             maxLines = 1,
-                            color = Color.White,
+                            textColor = Color.White,
                             textAlign = TextAlign.Center,
                             fontSize = font_size_main_text,
                             lineHeight = line_height_main_text,
@@ -215,10 +216,10 @@ fun WelcomePagesPage(
                         ,
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
+                        ScrollableAnimatedText(
                             text = stringResource(R.string.skip),
                             maxLines = 1,
-                            color = Color.White,
+                            textColor = Color.White,
                             textAlign = TextAlign.Center,
                             fontSize = font_size_main_text,
                             lineHeight = line_height_main_text,

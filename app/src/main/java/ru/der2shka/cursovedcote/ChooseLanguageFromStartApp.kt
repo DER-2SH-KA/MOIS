@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Service.setLocaleForApp
+import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -87,16 +88,16 @@ fun ChooseLanguageFromStartAppPage(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    modifier = Modifier,
+                ScrollableAnimatedText(
                     text = stringResource(R.string.app_name),
-                    color = colorResource(R.color.main_text_dark_gray),
+                    textColor = colorResource(R.color.main_text_dark_gray),
                     maxLines = 1,
                     textAlign = TextAlign.Center,
                     fontSize = font_size_main_text,
                     fontWeight = FontWeight.Bold,
                     lineHeight = line_height_main_text
                 )
+
                 Text(
                     modifier = Modifier,
                     text= stringResource(R.string.select_locale_from_start_page),
@@ -140,10 +141,10 @@ fun ChooseLanguageFromStartAppPage(
                     ,
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
+                    ScrollableAnimatedText(
                         text = stringResource(R.string.continue_with_english),
-                        maxLines = 2,
-                        color = Color.White,
+                        maxLines = 1,
+                        textColor = Color.White,
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
                         lineHeight = line_height_main_text,
@@ -152,9 +153,8 @@ fun ChooseLanguageFromStartAppPage(
                 }
             }
 
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
+            ScrollableAnimatedText(
+                containterModifier = Modifier
                     .clickable {
                         /* TODO: Обязательно добавить выбранный
                         *   язык в SharedPreferences!
@@ -163,9 +163,12 @@ fun ChooseLanguageFromStartAppPage(
                         GoToWelcomePhrasesPage(navHostController)
                     }
                 ,
+                textModifier = Modifier
+                    .fillMaxWidth(0.9f)
+                ,
                 text = stringResource(R.string.continue_with_russian),
                 maxLines = 1,
-                color = colorResource(R.color.primary_blue),
+                textColor = colorResource(R.color.primary_blue),
                 textAlign = TextAlign.Center,
                 fontSize = font_size_secondary_text,
                 lineHeight = line_height_secondary_text

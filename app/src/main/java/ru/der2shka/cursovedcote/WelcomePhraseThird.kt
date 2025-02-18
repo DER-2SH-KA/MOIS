@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -83,23 +84,22 @@ fun WelcomePhraseThird() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    modifier = Modifier,
-                    text = stringResource(R.string.welcome_phrase_3_main_text),
+                    text =  stringResource(R.string.welcome_phrase_3_main_text),
                     color = colorResource(R.color.main_text_dark_gray),
-                    maxLines = 2,
-                    textAlign = TextAlign.Center,
                     fontSize = font_size_main_text,
                     fontWeight = FontWeight.Bold,
-                    lineHeight = line_height_main_text
-                )
-                Text(
-                    modifier = Modifier,
-                    text= stringResource(R.string.welcome_phrase_3_secondary_text),
-                    color = colorResource(R.color.secondary_text_gray),
-                    maxLines = 3,
+                    lineHeight = line_height_main_text,
                     textAlign = TextAlign.Center,
+                    maxLines = 2
+                )
+
+                Text(
+                    text = stringResource(R.string.welcome_phrase_3_secondary_text),
+                    color = colorResource(R.color.secondary_text_gray),
                     fontSize = font_size_secondary_text,
-                    lineHeight = line_height_secondary_text
+                    lineHeight = line_height_secondary_text,
+                    textAlign = TextAlign.Center,
+                    maxLines = 3
                 )
             }
         }

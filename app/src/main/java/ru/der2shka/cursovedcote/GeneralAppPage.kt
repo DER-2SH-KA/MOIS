@@ -113,18 +113,20 @@ fun GeneralAppPage(
                             shape = RoundedCornerShape(20.dp)
                         )
                 ) {
-                    Text(
+                    ScrollableAnimatedText(
                         text = selectedDateString,
-                        color = VeryLightGrayMostlyWhite,
+                        textColor = VeryLightGrayMostlyWhite,
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
                         lineHeight = line_height_main_text,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier
+                        containterModifier = Modifier
+                            .fillMaxWidth()
+                        ,
+                        textModifier = Modifier
                             .fillMaxWidth()
                     )
                 }
-
             }
 
             // Days Horizontal Scroller.
