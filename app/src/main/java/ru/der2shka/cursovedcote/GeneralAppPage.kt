@@ -353,7 +353,7 @@ fun GeneralAppPage(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 HorizontalGeneralPageItem(
-                    headerText = "HomeWorks",
+                    headerText = "HomeWorks324123414324231432414343243243434123",
                     onItemClick = {  },
                     onPlusClick = {
                         Text(

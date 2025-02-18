@@ -109,13 +109,23 @@ fun HorizontalGeneralPageItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 // Header Text.
-                Text(
+                /*Text(
                     text = headerText,
                     color = Color.White,
                     textAlign = TextAlign.Start,
                     fontSize = font_size_main_text,
                     lineHeight = line_height_main_text,
                     fontWeight = FontWeight.Bold
+                )*/
+
+                ScrollableAnimatedText(
+                    text = headerText,
+                    textColor = Color.White,
+                    textAlign = TextAlign.Start,
+                    fontSize = font_size_main_text,
+                    lineHeight = line_height_main_text,
+                    fontWeight = FontWeight.Bold,
+                    containterModifier = Modifier
                 )
 
                 // Buttons.
