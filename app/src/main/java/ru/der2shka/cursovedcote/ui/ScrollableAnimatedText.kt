@@ -10,8 +10,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
@@ -25,9 +28,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import org.w3c.dom.Text
@@ -39,11 +46,13 @@ fun ScrollableAnimatedText(
     text: String?,
     textColor: Color,
     textAlign: TextAlign = TextAlign.Start,
-    maxLines: Int = 1,
+    maxLines: Int = Int.MAX_VALUE,
     fontSize: TextUnit,
     lineHeight: TextUnit,
     fontWeight: FontWeight = FontWeight.Normal,
-    duration: Int = 2500,
+    overflow: TextOverflow = TextOverflow.Visible,
+    softWrap: Boolean = false,
+    duration: Int = 0,
     delay: Int = 500,
     containterModifier: Modifier = Modifier,
     textModifier: Modifier = Modifier
@@ -52,7 +61,15 @@ fun ScrollableAnimatedText(
     val fullTextWidth = remember { mutableStateOf( 0 ) }
     val containerWidth = remember { mutableStateOf( 0 ) }
 
-    val offsetMultiplier = (fullTextWidth.value / 2f - containerWidth.value).coerceAtLeast(0f)
+    val offsetMultiplier = (fullTextWidth.value - containerWidth.value).coerceAtLeast(0)
+
+    /*val textMeasurer = rememberTextMeasurer()
+    val measuredText = textMeasurer.measure(
+        text = StringBuilder().append(text).toString(),
+        maxLines = maxLines,
+        overflow = overflow,
+        softWrap = softWrap
+    )*/
 
     SubcomposeLayout(
         modifier = containterModifier
@@ -64,10 +81,13 @@ fun ScrollableAnimatedText(
                 textAlign = textAlign,
                 fontSize = fontSize,
                 lineHeight = lineHeight,
-                fontWeight = fontWeight
+                fontWeight = fontWeight,
+                overflow = overflow,
+                softWrap = softWrap
             )
         }[0].measure(Constraints())
 
+        // Cliped text.
         val subcomposedTextInContainter = subcompose("") {
             Text(
                 text = StringBuilder().append(text).toString(),
@@ -76,7 +96,9 @@ fun ScrollableAnimatedText(
                 fontSize = fontSize,
                 lineHeight = lineHeight,
                 fontWeight = fontWeight,
-                modifier = textModifier
+                modifier = textModifier,
+                overflow = TextOverflow.Clip,
+                softWrap = softWrap
             )
         }[0].measure(constraints)
 
@@ -86,55 +108,17 @@ fun ScrollableAnimatedText(
         layout(0, 0) {}
     }
 
-    val infiniteTransition = rememberInfiniteTransition()
-    val offsetXvalue = infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = -1f,
-        animationSpec = infiniteRepeatable<Float>(
-            animation = tween(
-                durationMillis = duration,
-                delayMillis = delay,
-                easing = LinearEasing
-            ),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-
-    Box(
-        modifier = containterModifier
-            .clipToBounds()
-            .background(Color.Magenta)
-            .onSizeChanged {
-                containerWidth.value = it.width
-            },
-        contentAlignment = Alignment.TopStart
-    ) {
-        Text(
-            text = StringBuilder().append(text).toString(),
-            color = textColor,
-            textAlign = textAlign,
-            maxLines = maxLines,
-            fontSize = fontSize,
-            lineHeight = lineHeight,
-            fontWeight = fontWeight,
-            modifier = Modifier
-                .width(fullTextWidth.value.dp)
-                .graphicsLayer {
-                    translationX = offsetXvalue.value * offsetMultiplier
-                }
-        )
-    }
-
-    /*
     // If text is short.
     if (!isOverflow.value) {
         Box(
             modifier = containterModifier
                 .clipToBounds()
-                .background(Color.Magenta)
+                //.background(Color.Magenta)
                 .onSizeChanged {
                     containerWidth.value = it.width
-                }
+                    isOverflow.value = fullTextWidth.value > it.width
+                },
+            contentAlignment = Alignment.TopStart
         ) {
             Text(
                 text = StringBuilder().append(text).toString(),
@@ -144,7 +128,8 @@ fun ScrollableAnimatedText(
                 fontSize = fontSize,
                 lineHeight = lineHeight,
                 fontWeight = fontWeight,
-                modifier = textModifier
+                overflow = overflow,
+                softWrap = softWrap
             )
         }
     }
@@ -156,7 +141,7 @@ fun ScrollableAnimatedText(
             targetValue = -1f,
             animationSpec = infiniteRepeatable<Float>(
                 animation = tween(
-                    durationMillis = duration,
+                    durationMillis = if (duration < 1) text!!.length * 150 else duration,
                     delayMillis = delay,
                     easing = LinearEasing
                 ),
@@ -164,27 +149,88 @@ fun ScrollableAnimatedText(
             )
         )
 
+        // Scrollable Text.
+        Box(
+            modifier = containterModifier
+                .clipToBounds()
+                // .background(Color.Magenta)
+                .onSizeChanged {
+                    containerWidth.value = it.width
+                    isOverflow.value = fullTextWidth.value > it.width
+                },
+            contentAlignment = Alignment.TopStart
+        ) {
+            Text(
+                text = StringBuilder().append(text).toString(),
+                color = textColor,
+                textAlign = textAlign,
+                maxLines = maxLines,
+                fontSize = fontSize,
+                lineHeight = lineHeight,
+                fontWeight = fontWeight,
+                overflow = overflow,
+                softWrap = softWrap,
+                modifier = Modifier
+                    .offset {
+                        IntOffset( (offsetXvalue.value * offsetMultiplier).toInt(), 0 )
+                    }
+            )
+        }
+    }
+
+    /*val infiniteTransition = rememberInfiniteTransition()
+    val offsetXvalue = infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = -1f,
+        animationSpec = infiniteRepeatable<Float>(
+            animation = tween(
+                durationMillis = text!!.length * 150,
+                delayMillis = delay,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )*/
+
+    /*
+    Column() {
         Box(
             modifier = containterModifier
                 .clipToBounds()
                 .background(Color.Magenta)
                 .onSizeChanged {
                     containerWidth.value = it.width
-                }
+                    isOverflow.value = fullTextWidth.value > it.width
+                },
+            contentAlignment = Alignment.TopStart
         ) {
-            BasicText(
+            Text(
                 text = StringBuilder().append(text).toString(),
-                //color = textColor,
-                //textAlign = textAlign,
+                color = textColor,
+                textAlign = textAlign,
                 maxLines = maxLines,
-                //fontSize = fontSize,
-                //lineHeight = lineHeight,
-                //fontWeight = fontWeight,
+                fontSize = fontSize,
+                lineHeight = lineHeight,
+                fontWeight = fontWeight,
+                overflow = overflow,
+                softWrap = softWrap,
                 modifier = Modifier
-                    .graphicsLayer {
-                        translationX = offsetXvalue.value * (fullTextWidth.value / 4)
+                    /*.graphicsLayer {
+                        translationX = offsetXvalue.value * offsetMultiplier
+                    }*/
+                    .offset {
+                        IntOffset( (offsetXvalue.value * offsetMultiplier).toInt(), 0 )
                     }
             )
         }
+        Text(
+            text = fullTextWidth.value.toString()
+        )
+        /*Text(
+            text = measuredText.size.width.toString()
+        )*/
+        Text(
+            text = containerWidth.value.toString()
+        )
     }*/
 }

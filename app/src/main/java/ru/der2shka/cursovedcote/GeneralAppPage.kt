@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,11 +31,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.AverageMarkCard
 import ru.der2shka.cursovedcote.ui.DaysScrollItemDay
 import ru.der2shka.cursovedcote.ui.HorizontalGeneralPageItem
+import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -352,8 +355,29 @@ fun GeneralAppPage(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                // Only for testing ScrollableAnimatedText.
+                /*Box(
+                    contentAlignment = Alignment.CenterStart,
+                    modifier = Modifier.fillMaxWidth(0.3f)
+                ) {
+                    ScrollableAnimatedText(
+                        text = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+                        textColor = Color.Black,
+                        maxLines = 1,
+                        fontSize = font_size_main_text,
+                        lineHeight = line_height_main_text,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Visible,
+                        softWrap = false,
+                        // duration = 10000
+                    )
+                }
+                */
+
                 HorizontalGeneralPageItem(
                     headerText = "HomeWorks324123414324231432414343243243434123",
+                    maxLines = 1,
                     onItemClick = {  },
                     onPlusClick = {
                         Text(
@@ -378,6 +402,7 @@ fun GeneralAppPage(
 
                 HorizontalGeneralPageItem(
                     headerText = "Notes",
+                    maxLines = 1,
                     onItemClick = {  },
                     onPlusClick = {
                         Text(
@@ -402,6 +427,7 @@ fun GeneralAppPage(
 
                 HorizontalGeneralPageItem(
                     headerText = "Marks",
+                    maxLines = 1,
                     onItemClick = {  },
                     onPlusClick = {
                         Text(

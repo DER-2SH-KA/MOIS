@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -32,6 +33,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
@@ -48,6 +50,7 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 @Composable
 fun HorizontalGeneralPageItem(
     headerText: String,
+    maxLines: Int = Int.MAX_VALUE,
     onItemClick: () -> Unit,
     onPlusClick: @Composable () -> Unit,
     onDotsClick: () -> Unit,
@@ -64,11 +67,10 @@ fun HorizontalGeneralPageItem(
         val boxHeight = subcompose("aboba") {
             Box(
                 modifier = modifier
-
             )
         }[0].measure(constraints)
 
-        buttonSize.value = (boxHeight.height.toDp() * 0.4f)
+        buttonSize.value = (boxHeight.height.toDp() * 0.3f)
         cardSize.value = boxHeight.height.toDp()
 
         layout(0, 0) {  }
@@ -118,20 +120,27 @@ fun HorizontalGeneralPageItem(
                     fontWeight = FontWeight.Bold
                 )*/
 
-                ScrollableAnimatedText(
-                    text = headerText,
-                    textColor = Color.White,
-                    textAlign = TextAlign.Start,
-                    fontSize = font_size_main_text,
-                    lineHeight = line_height_main_text,
-                    fontWeight = FontWeight.Bold,
-                    containterModifier = Modifier
-                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                ) {
+                    ScrollableAnimatedText(
+                        text = headerText,
+                        textColor = Color.White,
+                        textAlign = TextAlign.Start,
+                        maxLines = maxLines,
+                        fontSize = font_size_main_text,
+                        lineHeight = line_height_main_text,
+                        fontWeight = FontWeight.Bold,
+                        containterModifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
 
                 // Buttons.
                 Row(
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .fillMaxSize()
                         .padding(10.dp),
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.End
