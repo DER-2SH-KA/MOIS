@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +41,8 @@ import java.time.LocalDate
 fun DaysScrollItemDay(
     localDate: LocalDate,
     selectedDay: MutableState<LocalDate>,
-    daysScrollerHScroll: ScrollState
+    daysScrollerHScroll: ScrollState,
+    modifier: Modifier = Modifier
 ) {
     var dayOfWeek: String = GetDayOfWeekStringResourceByLocalDate(localDate, false)
     var coroutineScope = rememberCoroutineScope()
@@ -86,10 +88,11 @@ fun DaysScrollItemDay(
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
+            /*Modifier
                 .height(110.dp)
                 .aspectRatio(1f)
-                .padding(10.dp)
+                .padding(10.dp)*/
                 .background(
                     backgroundColor,
                     shape = RoundedCornerShape(5.dp)
@@ -99,9 +102,7 @@ fun DaysScrollItemDay(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .aspectRatio(1f)
-                    .padding(10.dp)
+                    .fillMaxSize()
                 ,
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

@@ -41,7 +41,8 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 @SuppressLint("ResourceAsColor")
 @Composable
 fun AverageMarkCard(
-    subjectName: String
+    subjectName: String,
+    modifier: Modifier = Modifier
 ) {
     val config = LocalConfiguration.current
 
@@ -51,9 +52,10 @@ fun AverageMarkCard(
     val isOverflowed = remember { mutableStateOf(false) }
 
     SubcomposeLayout(
-        modifier = Modifier
+        modifier = modifier
+        /*Modifier
             .widthIn(20.dp, (config.screenWidthDp * 0.4f).dp)
-            .padding(10.dp)
+            .padding(10.dp)*/
     ) { constraints ->
         val textPlaceableUnconstrained = subcompose("text_unconstrained") {
             Text(
@@ -88,7 +90,8 @@ fun AverageMarkCard(
     }
 
     Card(
-        modifier = Modifier
+        modifier = modifier
+        /*Modifier
             .widthIn(20.dp, (config.screenWidthDp * 0.4f).dp)
             .padding(10.dp)
             .background(
@@ -99,7 +102,7 @@ fun AverageMarkCard(
                     )
                 ),
                 shape = RoundedCornerShape(20.dp)
-            )
+            )*/
             .onSizeChanged {
                 sizeCard.value = it
             }

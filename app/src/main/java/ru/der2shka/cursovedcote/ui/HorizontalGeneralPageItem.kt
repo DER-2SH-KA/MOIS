@@ -50,7 +50,8 @@ fun HorizontalGeneralPageItem(
     headerText: String,
     onItemClick: () -> Unit,
     onPlusClick: @Composable () -> Unit,
-    onDotsClick: () -> Unit
+    onDotsClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val config = LocalConfiguration.current
 
@@ -62,11 +63,7 @@ fun HorizontalGeneralPageItem(
     ) { constraints ->
         val boxHeight = subcompose("aboba") {
             Box(
-                modifier = Modifier
-                    .height(
-                        (config.screenHeightDp * 0.1f).dp
-                    )
-                    .fillMaxWidth(0.9f)
+                modifier = modifier
 
             )
         }[0].measure(constraints)
@@ -83,7 +80,8 @@ fun HorizontalGeneralPageItem(
             .padding(10.dp)
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
+            /*Modifier
                 .height(
                     (config.screenHeightDp * 0.11f).dp
                 )
@@ -94,16 +92,14 @@ fun HorizontalGeneralPageItem(
                             0.6f to colorResource(R.color.primary_blue),
                             1f to colorResource(R.color.secondary_cyan)
                         )
-                    ),
+                    )
+                    ,
                     shape = RoundedCornerShape(20.0f)
-                )
-                .onSizeChanged {
-                    // buttonSize.value = (it.height * 0.5f).dp
-                    // cardSize.value = (it.height).dp
-                }
+                )*/
                 .clickable {
                     onItemClick()
-                },
+                }
+                ,
             contentAlignment = Alignment.Center
         ) {
             Row(
