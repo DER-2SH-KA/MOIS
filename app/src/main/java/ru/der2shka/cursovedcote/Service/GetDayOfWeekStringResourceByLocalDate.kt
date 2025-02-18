@@ -27,13 +27,13 @@ fun GetDayOfWeekStringResourceByLocalDate(
                 dayOfWeekString = stringResource(R.string.monday_full_name)
 
             2 ->
-                dayOfWeekString = stringResource(R.string.thusday_full_name)
+                dayOfWeekString = stringResource(R.string.tuesday_full_name)
 
             3 ->
                 dayOfWeekString = stringResource(R.string.wednesday_full_name)
 
             4 ->
-                dayOfWeekString = stringResource(R.string.tuesday_full_name)
+                dayOfWeekString = stringResource(R.string.thursday_full_name)
 
             5 ->
                 dayOfWeekString = stringResource(R.string.friday_full_name)
@@ -51,13 +51,13 @@ fun GetDayOfWeekStringResourceByLocalDate(
                 dayOfWeekString = stringResource(R.string.monday_short_name)
 
             2 ->
-                dayOfWeekString = stringResource(R.string.thusday_short_name)
+                dayOfWeekString = stringResource(R.string.tuesday_short_name)
 
             3 ->
                 dayOfWeekString = stringResource(R.string.wednesday_short_name)
 
             4 ->
-                dayOfWeekString = stringResource(R.string.tuesday_short_name)
+                dayOfWeekString = stringResource(R.string.thursday_short_name)
 
             5 ->
                 dayOfWeekString = stringResource(R.string.friday_short_name)

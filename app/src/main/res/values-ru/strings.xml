@@ -21,7 +21,7 @@
     <string name="monday_full_name">Понедельник</string>
     <string name="tuesday_full_name">Вторник</string>
     <string name="wednesday_full_name">Среда</string>
-    <string name="thusday_full_name">Четверг</string>
+    <string name="thursday_full_name">Четверг</string>
     <string name="friday_full_name">Пятница</string>
     <string name="saturday_full_name">Суббота</string>
     <string name="sunday_full_name">Воскресенье</string>
@@ -29,7 +29,7 @@
     <string name="monday_short_name">Пн</string>
     <string name="tuesday_short_name">Вт</string>
     <string name="wednesday_short_name">Ср</string>
-    <string name="thusday_short_name">Чт</string>
+    <string name="thursday_short_name">Чт</string>
     <string name="friday_short_name">Пт</string>
     <string name="saturday_short_name">Сб</string>
     <string name="sunday_short_name">Вск</string>

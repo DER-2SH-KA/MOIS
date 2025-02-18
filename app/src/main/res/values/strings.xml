@@ -21,7 +21,7 @@
     <string name="monday_full_name">Monday</string>
     <string name="tuesday_full_name">Tuesday</string>
     <string name="wednesday_full_name">Wednesday</string>
-    <string name="thusday_full_name">Thursday</string>
+    <string name="thursday_full_name">Thursday</string>
     <string name="friday_full_name">Friday</string>
     <string name="saturday_full_name">Saturday</string>
     <string name="sunday_full_name">Sunday</string>
@@ -29,7 +29,7 @@
     <string name="monday_short_name">Mon</string>
     <string name="tuesday_short_name">Tue</string>
     <string name="wednesday_short_name">Wed</string>
-    <string name="thusday_short_name">Thu</string>
+    <string name="thursday_short_name">Thu</string>
     <string name="friday_short_name">Fri</string>
     <string name="saturday_short_name">Sat</string>
     <string name="sunday_short_name">Sun</string>
