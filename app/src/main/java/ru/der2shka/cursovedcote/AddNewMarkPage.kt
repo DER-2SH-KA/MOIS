@@ -76,7 +76,7 @@ fun AddNewMarkPage() {
 
             // Header Text.
             ScrollableAnimatedText(
-                text = "Adduo Neuw Markuo",
+                text = "Adduo Neuw Markuo Adduo Neuw Markuo",
                 textColor = colorResource(R.color.main_text_dark_gray),
                 textAlign = TextAlign.Center,
                 maxLines = 1,

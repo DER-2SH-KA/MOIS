@@ -223,6 +223,6 @@ public class AddNewMarkHelper {
             );
         }
 
-        return markValueList;
+        return studySubjectList;
     }
 }
