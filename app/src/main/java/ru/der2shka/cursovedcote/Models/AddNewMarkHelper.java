@@ -18,7 +18,7 @@ public class AddNewMarkHelper {
     private static Optional<String> currentStudySubject = Optional.ofNullable(null);
 
     // Current local date.
-    private static Optional<LocalDate> currentLocalDate = Optional.ofNullable(LocalDate.MIN);
+    private static Optional<LocalDate> currentLocalDate = Optional.ofNullable(LocalDate.now());
 
     // Private constructor.
     private AddNewMarkHelper() {}

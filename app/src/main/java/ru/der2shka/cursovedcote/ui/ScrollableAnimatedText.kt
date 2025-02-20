@@ -11,6 +11,7 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -189,6 +190,7 @@ fun ScrollableAnimatedText(
         // Scrollable Text.
         Box(
             modifier = containterModifier
+                .fillMaxWidth()
                 .clipToBounds()
                 // .background(Color.Magenta)
                 .onSizeChanged {

@@ -113,7 +113,7 @@ fun AddNewMarkPage() {
 
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
+                        .fillMaxWidth(0.4f)
                 ) {
                     ScrollableAnimatedText(
                         text = "Markuo Value Markuo Value Markuo Value ",
@@ -122,22 +122,25 @@ fun AddNewMarkPage() {
                         maxLines = 1,
                         fontSize = font_size_secondary_text,
                         lineHeight = line_height_secondary_text,
-                        containterModifier = Modifier
-                            .fillMaxWidth()
                     )
                 }
 
-                ComboBoxPseudo(
-                    items = markValueList,
-                    selectedItem = selectedMarkValue,
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(16.dp),
-                    onSelect = { value ->
-                        addNewMarkHelper.setCurrentMarkValue( Optional.ofNullable(value) )
-                        selectedMarkValue.value = addNewMarkHelper.currentMarkValue
-                    }
-                )
+                        .fillMaxWidth()
+                ) {
+                    ComboBoxPseudo(
+                        items = markValueList,
+                        selectedItem = selectedMarkValue,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        onSelect = { value ->
+                            addNewMarkHelper.setCurrentMarkValue(Optional.ofNullable(value))
+                            selectedMarkValue.value = addNewMarkHelper.currentMarkValue
+                        }
+                    )
+                }
             }
 
             // Choice of mark type.
@@ -150,28 +153,36 @@ fun AddNewMarkPage() {
             ) {
                 // Text(text = "Markuo Type")
 
-                ScrollableAnimatedText(
-                    text = "Markuo Type Markuo Type Markuo Type Markuo Type",
-                    textColor = colorResource(R.color.secondary_text_gray),
-                    textAlign = TextAlign.Start,
-                    maxLines = 1,
-                    fontSize = font_size_secondary_text,
-                    lineHeight = line_height_secondary_text,
-                    containterModifier = Modifier
-                        .fillMaxWidth(0.5f)
-                )
-
-                ComboBoxPseudo(
-                    items = markTypeList,
-                    selectedItem = selectedMarkType,
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(16.dp),
-                    onSelect = { value ->
-                        addNewMarkHelper.setCurrentMarkType( Optional.ofNullable(value) )
-                        selectedMarkType.value = addNewMarkHelper.currentMarkType
-                    }
-                )
+                        .fillMaxWidth(0.4f)
+                ) {
+                    ScrollableAnimatedText(
+                        text = "Markuo Type Markuo Type Markuo Type Markuo Type",
+                        textColor = colorResource(R.color.secondary_text_gray),
+                        textAlign = TextAlign.Start,
+                        maxLines = 1,
+                        fontSize = font_size_secondary_text,
+                        lineHeight = line_height_secondary_text,
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    ComboBoxPseudo(
+                        items = markTypeList,
+                        selectedItem = selectedMarkType,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        onSelect = { value ->
+                            addNewMarkHelper.setCurrentMarkType(Optional.ofNullable(value))
+                            selectedMarkType.value = addNewMarkHelper.currentMarkType
+                        }
+                    )
+                }
             }
 
             // Choice of study subject.
@@ -184,28 +195,36 @@ fun AddNewMarkPage() {
             ) {
                 // Text(text = "Subjecto")
 
-                ScrollableAnimatedText(
-                    text = "Subjecto Subjecto Subjecto Subjecto Subjecto",
-                    textColor = colorResource(R.color.secondary_text_gray),
-                    textAlign = TextAlign.Start,
-                    maxLines = 1,
-                    fontSize = font_size_secondary_text,
-                    lineHeight = line_height_secondary_text,
-                    containterModifier = Modifier
-                        .fillMaxWidth(0.5f)
-                )
-
-                ComboBoxPseudo(
-                    items = subjectValueList,
-                    selectedItem = selectedSubjectValue,
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding(16.dp),
-                    onSelect = { value ->
-                        addNewMarkHelper.setCurrentStudySubject( Optional.ofNullable(value) )
-                        selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
-                    }
-                )
+                        .fillMaxWidth(0.4f)
+                ) {
+                    ScrollableAnimatedText(
+                        text = "Subjecto Subjecto Subjecto Subjecto Subjecto",
+                        textColor = colorResource(R.color.secondary_text_gray),
+                        textAlign = TextAlign.Start,
+                        maxLines = 1,
+                        fontSize = font_size_secondary_text,
+                        lineHeight = line_height_secondary_text,
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    ComboBoxPseudo(
+                        items = subjectValueList,
+                        selectedItem = selectedSubjectValue,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        onSelect = { value ->
+                            addNewMarkHelper.setCurrentStudySubject(Optional.ofNullable(value))
+                            selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
+                        }
+                    )
+                }
             }
 
             // Choice of study subject.
@@ -220,7 +239,7 @@ fun AddNewMarkPage() {
 
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
+                        .fillMaxWidth(0.4f)
                 ) {
                     ScrollableAnimatedText(
                         text = "Dateo Dateo Dateo Dateo",
@@ -229,21 +248,24 @@ fun AddNewMarkPage() {
                         maxLines = 1,
                         fontSize = font_size_secondary_text,
                         lineHeight = line_height_secondary_text,
-                        containterModifier = Modifier
-                            .fillMaxWidth()
                     )
                 }
 
-                DatePickerBox(
-                    selectedLocalDate = selectedLocalDate,
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .padding( 16.dp ),
-                    onSelect = { localDate ->
-                        addNewMarkHelper.setCurrentLocalDate( Optional.ofNullable(localDate) )
-                        selectedLocalDate.value = addNewMarkHelper.currentLocalDate
-                    }
-                )
+                        .fillMaxWidth()
+                ) {
+                    DatePickerBox(
+                        selectedLocalDate = selectedLocalDate,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        onSelect = { localDate ->
+                            addNewMarkHelper.setCurrentLocalDate(Optional.ofNullable(localDate))
+                            selectedLocalDate.value = addNewMarkHelper.currentLocalDate
+                        }
+                    )
+                }
             }
 
             Text(text = "Mark value: ${selectedMarkValue.value}")

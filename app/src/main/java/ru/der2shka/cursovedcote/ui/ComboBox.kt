@@ -63,6 +63,7 @@ fun ComboBoxPseudo(
                 value = selectedItem.value,
                 onValueChange = {},
                 readOnly = true,
+                maxLines = 1,
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
