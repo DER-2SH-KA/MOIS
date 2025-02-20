@@ -1,6 +1,7 @@
 package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +32,12 @@ import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextAlign
+import ru.der2shka.cursovedcote.R
+import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
 // TODO: Подобрать цвета и оформить!
 /**
@@ -39,6 +46,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
  *  @param selectedItem Mutable state of variable for selected item
  * **/
 @OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("ResourcesAsColor")
 @Composable
 fun ComboBoxPseudo(
     items: List<String>,
@@ -68,7 +76,8 @@ fun ComboBoxPseudo(
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = "dropdown icon",
-                        modifier = Modifier.clickable { expanded.value = true }
+                        tint = colorResource(R.color.primary_blue),
+                        modifier = Modifier.clickable { expanded.value = !expanded.value }
                     )
                 },
                 modifier = Modifier.menuAnchor()
@@ -80,14 +89,23 @@ fun ComboBoxPseudo(
                     expanded.value = false
                 },
                 modifier = Modifier
+                    .background(
+                        color =  colorResource(R.color.primary_blue) //Color.White
+                    )
                     .verticalScroll( verticalScrollState )
             ) {
                 items.forEach { item ->
                     DropdownMenuItem(
                         text = {
-                                    Text(
-                                        text = item.toString()
-                                    )
+                            Text(
+                                text = item,
+                                color = Color.White,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                            )
                                },
                         onClick = {
                             onSelect(item)
