@@ -9,8 +9,8 @@
     <string name="light_theme">Light theme</string>
     <string name="welcome_phrase_1_main_text">Write your home task</string>
     <string name="welcome_phrase_1_secondary_text">Use notes to always keep your home tasks in mind!</string>
-    <string name="welcome_phrase_2_main_text">Write your marks</string>
-    <string name="welcome_phrase_2_secondary_text">Write down your marks in your diary every day!</string>
+    <string name="welcome_phrase_2_main_text">Write your grades</string>
+    <string name="welcome_phrase_2_secondary_text">Write down your grades in your diary every day!</string>
     <string name="welcome_phrase_3_main_text">See your progress</string>
     <string name="welcome_phrase_3_secondary_text">See the charts and track your study progress!</string>
     <string name="skip">Skip</string>
@@ -62,5 +62,12 @@
 
     <string name="home_work">Homework</string>
     <string name="notes">Notes</string>
-    <string name="marks">Marks</string>
+    <string name="marks">Grades</string>
+
+    <!-- Add New Mark Page -->
+    <string name="add_grade">Add grade</string>
+    <string name="grade">Grade</string>
+    <string name="grade_type">Grade type</string>
+    <string name="subject">Subject</string>
+    <string name="date">Date</string>
 </resources>

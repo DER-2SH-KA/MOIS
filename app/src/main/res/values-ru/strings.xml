@@ -63,4 +63,12 @@
     <string name="home_work">Домашние задания</string>
     <string name="notes">Записи</string>
     <string name="marks">Оценки</string>
+
+
+    <!-- Add New Mark Page -->
+    <string name="add_grade">Добавить оценку</string>
+    <string name="grade">Оценка</string>
+    <string name="grade_type">Тип оценки</string>
+    <string name="subject">Предмет</string>
+    <string name="date">Дата</string>
 </resources>
