@@ -130,7 +130,7 @@ fun GeneralAppPage(
                         lineHeight = line_height_main_text,
                         fontWeight = FontWeight.Bold,
                         containterModifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.9f)
                         ,
                         textModifier = Modifier
                             .fillMaxWidth()
