@@ -139,10 +139,12 @@ public class AddNewMarkHelper {
     // Collections.
     /**
      * Set collection of mark values
-     * @param newMarkValues List of mark string values.
+     * @param newMarkValues Optional list of mark string values.
      * **/
-    public void setMarkValueList(List<String> newMarkValues) {
-        markValueList = newMarkValues;
+    public void setMarkValueList( Optional<List<String>> newMarkValues) {
+        if (newMarkValues.isPresent()) {
+            markValueList = newMarkValues.get();
+        }
     }
 
     /**
@@ -152,11 +154,14 @@ public class AddNewMarkHelper {
     public List<String> getMarkValueList() {
         if (markValueList.isEmpty()) {
             setMarkValueList(
-                    // TODO: Change it to Service which get it collection from DB.
-                    new ArrayList(
-                            Arrays.asList("5", "4", "3", "2", "1")
+                    Optional.ofNullable(
+                            new ArrayList(
+                                // TODO: Change it to Service which get it collection from DB.
+                                Arrays.asList("5", "4", "3", "2", "1")
+                        )
                     )
             );
+            setCurrentMarkValue( Optional.ofNullable(getMarkValueList().get(0)) );
         }
 
         return markValueList;
@@ -164,10 +169,12 @@ public class AddNewMarkHelper {
 
     /**
      * Set collection of mark values
-     * @param newMarkTypes List of mark string values.
+     * @param newMarkTypes Optional list of mark string values.
      * **/
-    public void setMarkTypeList(List<String> newMarkTypes) {
-        markTypeList = newMarkTypes;
+    public void setMarkTypeList( Optional<List<String>> newMarkTypes) {
+        if (newMarkTypes.isPresent()) {
+            markTypeList = newMarkTypes.get();
+        }
     }
 
     /**
@@ -177,19 +184,22 @@ public class AddNewMarkHelper {
     public List<String> getMarkTypeList() {
         if (markTypeList.isEmpty()) {
             setMarkTypeList(
-                    // TODO: Change it to Service which get it collection from DB.
-                    new ArrayList(
-                            Arrays.asList(
-                                    "Работа на уроке",
-                                    "ДЗ",
-                                    "ПР",
-                                    "СМ",
-                                    "КР",
-                                    "ИР",
-                                    "Экзамен"
-                            )
+                    Optional.ofNullable(
+                        // TODO: Change it to Service which get it collection from DB.
+                        new ArrayList(
+                                Arrays.asList(
+                                        "Работа на уроке",
+                                        "ДЗ",
+                                        "ПР",
+                                        "СМ",
+                                        "КР",
+                                        "ИР",
+                                        "Экзамен"
+                                )
+                        )
                     )
             );
+            setCurrentMarkType( Optional.ofNullable(getMarkTypeList().get(0)) );
         }
 
         return markTypeList;
@@ -197,10 +207,12 @@ public class AddNewMarkHelper {
 
     /**
      * Set collection of study subject values
-     * @param newStudySubjects List of study subject string values.
+     * @param newStudySubjects Optional list of study subject string values.
      * **/
-    public void setStudySubjectList(List<String> newStudySubjects) {
-        studySubjectList = newStudySubjects;
+    public void setStudySubjectList(Optional<List<String>> newStudySubjects) {
+        if (newStudySubjects.isPresent()) {
+            studySubjectList = newStudySubjects.get();
+        }
     }
 
     /**
@@ -210,17 +222,20 @@ public class AddNewMarkHelper {
     public List<String> getStudySubjectList() {
         if (studySubjectList.isEmpty()) {
             setStudySubjectList(
-                    // TODO: Change it to Service which get it collection from DB.
-                    new ArrayList(
-                            Arrays.asList(
-                                    "Математика",
-                                    "ОАиП",
-                                    "ТРиЗБД",
-                                    "ЭВМ",
-                                    "РМП"
-                            )
+                    Optional.ofNullable(
+                        // TODO: Change it to Service which get it collection from DB.
+                        new ArrayList(
+                                Arrays.asList(
+                                        "Математика",
+                                        "ОАиП",
+                                        "ТРиЗБД",
+                                        "ЭВМ",
+                                        "РМП"
+                                )
+                        )
                     )
             );
+            setCurrentStudySubject( Optional.ofNullable(getStudySubjectList().get(0)) );
         }
 
         return studySubjectList;
