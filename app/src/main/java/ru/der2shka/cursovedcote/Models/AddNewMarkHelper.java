@@ -1,6 +1,10 @@
 package ru.der2shka.cursovedcote.Models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class AddNewMarkHelper {
@@ -19,6 +23,15 @@ public class AddNewMarkHelper {
 
     // Current local date.
     private static Optional<LocalDate> currentLocalDate = Optional.ofNullable(LocalDate.now());
+
+    // List Of Mark Values.
+    private static List<String> markValueList = new ArrayList<String>();
+
+    // List Of Mark Types.
+    private static List<String> markTypeList = new ArrayList<String>();
+
+    // List Of  Study Subjects.
+    private static List<String> studySubjectList = new ArrayList<String>();
 
     // Private constructor.
     private AddNewMarkHelper() {}
@@ -121,5 +134,95 @@ public class AddNewMarkHelper {
      * **/
     public LocalDate getCurrentLocalDate() {
         return currentLocalDate.orElse( LocalDate.MIN );
+    }
+
+    // Collections.
+    /**
+     * Set collection of mark values
+     * @param newMarkValues List of mark string values.
+     * **/
+    public void setMarkValueList(List<String> newMarkValues) {
+        markValueList = newMarkValues;
+    }
+
+    /**
+     * Return list of mark string values.
+     * @return List of String mark values
+     * **/
+    public List<String> getMarkValueList() {
+        if (markValueList.isEmpty()) {
+            setMarkValueList(
+                    // TODO: Change it to Service which get it collection from DB.
+                    new ArrayList(
+                            Arrays.asList("5", "4", "3", "2", "1")
+                    )
+            );
+        }
+
+        return markValueList;
+    }
+
+    /**
+     * Set collection of mark values
+     * @param newMarkTypes List of mark string values.
+     * **/
+    public void setMarkTypeList(List<String> newMarkTypes) {
+        markTypeList = newMarkTypes;
+    }
+
+    /**
+     * Return list of mark type string values.
+     * @return List of String mark type values
+     * **/
+    public List<String> getMarkTypeList() {
+        if (markTypeList.isEmpty()) {
+            setMarkTypeList(
+                    // TODO: Change it to Service which get it collection from DB.
+                    new ArrayList(
+                            Arrays.asList(
+                                    "Работа на уроке",
+                                    "ДЗ",
+                                    "ПР",
+                                    "СМ",
+                                    "КР",
+                                    "ИР",
+                                    "Экзамен"
+                            )
+                    )
+            );
+        }
+
+        return markTypeList;
+    }
+
+    /**
+     * Set collection of study subject values
+     * @param newStudySubjects List of study subject string values.
+     * **/
+    public void setStudySubjectList(List<String> newStudySubjects) {
+        studySubjectList = newStudySubjects;
+    }
+
+    /**
+     * Return list of study subject values.
+     * @return List of String study subjects.
+     * **/
+    public List<String> getStudySubjectList() {
+        if (studySubjectList.isEmpty()) {
+            setStudySubjectList(
+                    // TODO: Change it to Service which get it collection from DB.
+                    new ArrayList(
+                            Arrays.asList(
+                                    "Математика",
+                                    "ОАиП",
+                                    "ТРиЗБД",
+                                    "ЭВМ",
+                                    "РМП"
+                            )
+                    )
+            );
+        }
+
+        return markValueList;
     }
 }

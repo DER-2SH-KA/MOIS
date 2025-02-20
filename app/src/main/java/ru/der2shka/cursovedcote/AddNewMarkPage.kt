@@ -42,23 +42,9 @@ import java.util.Optional
 fun AddNewMarkPage() {
     val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
-    val markValueList = listOf("5", "4", "3", "2", "1")
-    val markTypeList = listOf(
-        "Работа на уроке",
-        "ДЗ",
-        "ПР",
-        "СМ",
-        "КР",
-        "ИР",
-        "Экзамен"
-    )
-    val subjectValueList = listOf(
-        "Математика",
-        "ОАиП",
-        "ТРиЗБД",
-        "ЭВМ",
-        "РМП"
-    )
+    val markValueList = addNewMarkHelper.markValueList
+    val markTypeList = addNewMarkHelper.markTypeList
+    val subjectValueList = addNewMarkHelper.studySubjectList
 
     val selectedMarkValue = remember {
         mutableStateOf( addNewMarkHelper.currentMarkValue )
