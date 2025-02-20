@@ -6,14 +6,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
@@ -22,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -32,12 +38,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGray
+import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -58,6 +72,8 @@ fun DatePickerBox(
     modifier: Modifier = Modifier,
     onSelect: (LocalDate) -> Unit = {  }
 ) {
+    val config = LocalConfiguration.current
+
     val expanded = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
 
@@ -126,7 +142,7 @@ fun DatePickerBox(
                 ) {
                     DatePicker(
                         state = datePickerState,
-                        showModeToggle = false,
+                        showModeToggle = true,
                         colors = DatePickerDefaults.colors(
                             containerColor = colorResource(R.color.primary_blue),
                             titleContentColor = VeryLightGray,
@@ -147,6 +163,18 @@ fun DatePickerBox(
                             yearContentColor = Color.White,
                             currentYearContentColor = colorResource(R.color.tertiary_orange),
 
+                            dateTextFieldColors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.White,
+                                focusedIndicatorColor = Color.White,
+                                focusedTextColor = Color.White,
+                                focusedLabelColor = Color.White,
+                                focusedPrefixColor = Color.White,
+                                focusedSuffixColor = Color.White,
+                                focusedPlaceholderColor = Color.LightGray,
+                                focusedTrailingIconColor = Color.Magenta,
+                                focusedLeadingIconColor = Color.Red,
+                                focusedSupportingTextColor = Color.Yellow
+                            )
                         )
                         ,
                         modifier = Modifier
@@ -157,10 +185,40 @@ fun DatePickerBox(
                         onClick = {
                             expanded.value = false
                         }
+                        ,
+                        colors = ButtonDefaults.buttonColors(
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Transparent
+                        ),
+                        shape = RoundedCornerShape(20.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f)
+                            .height(
+                                (config.screenHeightDp * 0.1f).dp
+                            )
                     ) {
-                        Text(
-                            text = "Выбрать"
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    color = colorResource(R.color.secondary_cyan)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ScrollableAnimatedText(
+                                text = stringResource(R.string.choose),
+                                textColor = Color.White,
+                                textAlign = TextAlign.Center,
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                maxLines = 1,
+                                textModifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }
