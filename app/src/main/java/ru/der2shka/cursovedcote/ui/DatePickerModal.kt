@@ -13,9 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGray
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
+import ru.der2shka.cursovedcote.ui.theme.font_size_middle_size_text
+import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,14 +42,28 @@ fun DatePickerModal(
                     onDismiss()
                 }
             ) {
-                Text("OK")
+                Text(
+                    text = stringResource(R.string.ok),
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    fontSize = font_size_secondary_text,
+                    lineHeight = line_height_secondary_text,
+                    overflow = TextOverflow.Visible
+                )
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("Cancel")
+                Text(
+                    text = stringResource(R.string.cancel),
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    fontSize = font_size_secondary_text,
+                    lineHeight = line_height_secondary_text,
+                    overflow = TextOverflow.Visible
+                )
             }
         },
         colors = DatePickerDefaults.colors(
