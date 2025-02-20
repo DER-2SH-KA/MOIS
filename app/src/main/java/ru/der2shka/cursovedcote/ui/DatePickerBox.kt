@@ -49,6 +49,7 @@ import kotlin.math.exp
 fun DatePickerBox(
     selectedLocalDate: MutableState<LocalDate>,
     outlinedTextFieldModifier: Modifier = Modifier,
+    fullMonthName: Boolean = false,
     modifier: Modifier = Modifier,
     onSelect: (LocalDate) -> Unit = {  }
 ) {
@@ -70,7 +71,7 @@ fun DatePickerBox(
 
     // Building string value by LocalDate for OutputTextField.
     var selectedLocalDateString = "${selectedLocalDate.value.dayOfMonth} " +
-                    "${GetMonthStringResourceByLocalDate(selectedLocalDate, true)} " +
+                    "${GetMonthStringResourceByLocalDate(selectedLocalDate, fullMonthName)} " +
                     "${selectedLocalDate.value.year}"
 
     Box(
