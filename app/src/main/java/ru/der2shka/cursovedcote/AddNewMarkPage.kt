@@ -1,6 +1,7 @@
 package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -16,7 +19,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,6 +46,9 @@ import java.util.Optional
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
 fun AddNewMarkPage() {
+    val config = LocalConfiguration.current
+    val oneBlockHeight = (config.screenHeightDp * 0.2).dp
+
     val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
     val markValueList = addNewMarkHelper.markValueList
@@ -62,6 +71,9 @@ fun AddNewMarkPage() {
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                color = colorResource(R.color.background_color)
+            )
         ,
         contentAlignment = Alignment.Center
     ) {
@@ -73,19 +85,29 @@ fun AddNewMarkPage() {
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            // Header Text.
-            ScrollableAnimatedText(
-                text = "Adduo Neuw Markuo Adduo Neuw Markuo",
-                textColor = colorResource(R.color.main_text_dark_gray),
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                fontSize = font_size_main_text,
-                lineHeight = line_height_main_text,
-                fontWeight = FontWeight.Bold,
-                containterModifier = Modifier
-                    .fillMaxWidth(0.9f)
-            )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height( oneBlockHeight.value.dp )
+                        .padding(10.dp)
+                        .background(
+                            color = colorResource(R.color.primary_blue),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                ) {
+                    // Header Text.
+                    ScrollableAnimatedText(
+                        text = stringResource(R.string.add_grade),
+                        textColor = Color.White,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        fontSize = font_size_main_text,
+                        lineHeight = line_height_main_text,
+                        fontWeight = FontWeight.Bold,
+                        textModifier = Modifier.fillMaxWidth()
+                    )
+                }
 
             // Choice of mark value.
             Row(
@@ -102,7 +124,7 @@ fun AddNewMarkPage() {
                         .fillMaxWidth(0.4f)
                 ) {
                     ScrollableAnimatedText(
-                        text = "Markuo Value Markuo Value Markuo Value ",
+                        text = "${stringResource(R.string.grade)}:",
                         textColor = colorResource(R.color.secondary_text_gray),
                         textAlign = TextAlign.Start,
                         maxLines = 1,
@@ -144,7 +166,7 @@ fun AddNewMarkPage() {
                         .fillMaxWidth(0.4f)
                 ) {
                     ScrollableAnimatedText(
-                        text = "Markuo Type Markuo Type Markuo Type Markuo Type",
+                        text = "${stringResource(R.string.grade_type)}:",
                         textColor = colorResource(R.color.secondary_text_gray),
                         textAlign = TextAlign.Start,
                         maxLines = 1,
@@ -186,7 +208,7 @@ fun AddNewMarkPage() {
                         .fillMaxWidth(0.4f)
                 ) {
                     ScrollableAnimatedText(
-                        text = "Subjecto Subjecto Subjecto Subjecto Subjecto",
+                        text = "${stringResource(R.string.subject)}:",
                         textColor = colorResource(R.color.secondary_text_gray),
                         textAlign = TextAlign.Start,
                         maxLines = 1,
@@ -228,7 +250,7 @@ fun AddNewMarkPage() {
                         .fillMaxWidth(0.4f)
                 ) {
                     ScrollableAnimatedText(
-                        text = "Dateo Dateo Dateo Dateo",
+                        text = "${stringResource(R.string.date)}:",
                         textColor = colorResource(R.color.secondary_text_gray),
                         textAlign = TextAlign.Start,
                         maxLines = 1,
