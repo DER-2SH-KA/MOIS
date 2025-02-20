@@ -79,15 +79,11 @@ fun DatePickerBox(
 
     // Here date value updates by DatePickerState,
     // but can be null.
-    val selectedDate: LocalDate? = datePickerState.selectedDateMillis?.let {
-          Instant.ofEpochMilli(it)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
-    }
+    val selectedDate= remember { mutableStateOf(LocalDate.now()) }
 
     // Update selectedLocalDate by new date.
     if (selectedDate != null) {
-        onSelect( selectedDate )
+        onSelect( selectedDate.value )
     }
 
     // Building string value by LocalDate for OutputTextField.
@@ -121,6 +117,17 @@ fun DatePickerBox(
         )
 
         if (expanded.value) {
+            DatePickerModal(
+                datePickerState = datePickerState,
+                onDateSelected = {dateInMills ->
+                    selectedDate.value = dateInMills?.let { dateMills ->
+                    Instant.ofEpochMilli(dateMills)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                } },
+                onDismiss = { expanded.value = !expanded.value }
+            )
+            /*
             // Expanded window with datepicker.
             Popup(
                 onDismissRequest = { expanded.value = false },
@@ -222,6 +229,7 @@ fun DatePickerBox(
                     }
                 }
             }
+            */
         }
     }
 }

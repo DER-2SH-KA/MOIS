@@ -235,7 +235,7 @@ fun AddNewMarkPage() {
                 }
             }
 
-            // Choice of study subject.
+            // Choice of date.
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
