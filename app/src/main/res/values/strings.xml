@@ -17,6 +17,9 @@
     <string name="finish">Finish</string>
     <string name="title_activity_general_app">GeneralAppActivity</string>
 
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
     <!-- GeneralAppActivity -->
     <string name="monday_full_name">Monday</string>
     <string name="tuesday_full_name">Tuesday</string>
