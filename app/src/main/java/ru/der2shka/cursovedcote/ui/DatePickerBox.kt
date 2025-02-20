@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,10 +30,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.ui.theme.VeryLightGray
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -87,8 +92,8 @@ fun DatePickerBox(
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.DateRange,
-                    contentDescription = "datepicker icon"
-                    ,
+                    contentDescription = "datepicker icon",
+                    tint = colorResource(R.color.primary_blue),
                     // Unfortunately, we can tap only on Icon
                     // to open the datepicker popup
                     modifier = Modifier.clickable {
@@ -103,7 +108,7 @@ fun DatePickerBox(
             // Expanded window with datepicker.
             Popup(
                 onDismissRequest = { expanded.value = false },
-                alignment = Alignment.TopStart
+                alignment = Alignment.TopStart,
             ) {
                 // Datepicker and button
                 // to close the expanded window.
@@ -112,7 +117,7 @@ fun DatePickerBox(
                         .fillMaxWidth()
                         .shadow(elevation = 4.dp)
                         .background(
-                            MaterialTheme.colorScheme.surface
+                            color = colorResource(R.color.primary_blue)
                         )
                         .padding(16.dp)
                     ,
@@ -121,7 +126,30 @@ fun DatePickerBox(
                 ) {
                     DatePicker(
                         state = datePickerState,
-                        showModeToggle = false
+                        showModeToggle = false,
+                        colors = DatePickerDefaults.colors(
+                            containerColor = colorResource(R.color.primary_blue),
+                            titleContentColor = VeryLightGray,
+                            subheadContentColor = Color.Red,
+                            navigationContentColor = Color.White,
+                            headlineContentColor = Color.White,
+                            dividerColor = Color.White,
+                            dayContentColor = Color.White,
+                            dayInSelectionRangeContainerColor = colorResource(R.color.tertiary_orange),
+                            dayInSelectionRangeContentColor = colorResource(R.color.tertiary_orange),
+                            todayDateBorderColor = colorResource(R.color.tertiary_orange),
+                            todayContentColor = colorResource(R.color.tertiary_orange),
+                            selectedDayContentColor = Color.White,
+                            selectedDayContainerColor = colorResource(R.color.secondary_cyan),
+                            selectedYearContentColor = Color.White,
+                            selectedYearContainerColor = colorResource(R.color.secondary_cyan),
+                            weekdayContentColor = VeryLightGray,
+                            yearContentColor = Color.White,
+                            currentYearContentColor = colorResource(R.color.tertiary_orange),
+
+                        )
+                        ,
+                        modifier = Modifier
                     )
 
                     // Choose and close date picker.
