@@ -1,5 +1,6 @@
 package ru.der2shka.cursovedcote
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import ru.der2shka.cursovedcote.Models.GeneralPageContentHelper
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.AverageMarkCard
 import ru.der2shka.cursovedcote.ui.DaysScrollItemDay
@@ -43,22 +45,29 @@ import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import java.time.LocalDate
+import java.util.Optional
 
 /**
  * General app page main function.
  * **/
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun GeneralAppPage(
 ) {
+    val genPageContentHelper: GeneralPageContentHelper = GeneralPageContentHelper.getInstance()
+
     val context = LocalContext.current
     val config = LocalConfiguration.current
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val dayItemHeightPercent = 0.6f
 
-    val selectedDate = remember { mutableStateOf(LocalDate.now()) }
-    val selectedDateString = "${selectedDate.value.dayOfMonth} " +
-            "${GetMonthStringResourceByLocalDate(selectedDate, false)} " +
-            "${selectedDate.value.year}"
+    val selectedDate = remember { mutableStateOf(genPageContentHelper.currentLocalDate) }
+
+    genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(selectedDate.value) )
+
+    val selectedDateString = "${genPageContentHelper.currentLocalDate.dayOfMonth} " +
+            "${GetMonthStringResourceByLocalDate(mutableStateOf( genPageContentHelper.currentLocalDate ), false)} " +
+            "${genPageContentHelper.currentLocalDate.year}"
 
     Box(
         modifier = Modifier
@@ -151,7 +160,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -160,7 +173,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -169,7 +186,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -178,7 +199,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -187,7 +212,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -196,7 +225,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -205,7 +238,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -214,7 +251,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -223,7 +264,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -232,7 +277,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -241,7 +290,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -250,7 +303,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -259,7 +316,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -268,7 +329,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
 
                     DaysScrollItemDay(
@@ -277,7 +342,11 @@ fun GeneralAppPage(
                         daysScrollerHScroll,
                         modifier = Modifier
                             .fillMaxHeight( dayItemHeightPercent )
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        onSelect = { localDate ->
+                            genPageContentHelper.setNewCurrentLocalDate( Optional.ofNullable(localDate) )
+                            selectedDate.value = genPageContentHelper.currentLocalDate
+                        }
                     )
                 }
             }
@@ -389,7 +458,7 @@ fun GeneralAppPage(
                     },
                     onDotsClick = { },
                     modifier = Modifier
-                        .height( oneBlockHeight )
+                        .height( oneBlockHeight * 0.75f )
                         .fillMaxWidth(0.9f)
                         .background(
                             brush = Brush.verticalGradient(
@@ -414,7 +483,7 @@ fun GeneralAppPage(
                     },
                     onDotsClick = { },
                     modifier = Modifier
-                        .height( oneBlockHeight )
+                        .height( oneBlockHeight * 0.75f )
                         .fillMaxWidth(0.9f)
                         .background(
                             brush = Brush.verticalGradient(
@@ -439,7 +508,7 @@ fun GeneralAppPage(
                     },
                     onDotsClick = { },
                     modifier = Modifier
-                        .height( oneBlockHeight )
+                        .height( oneBlockHeight * 0.75f )
                         .fillMaxWidth(0.9f)
                         .background(
                             brush = Brush.verticalGradient(

@@ -48,7 +48,9 @@ import kotlin.math.exp
 @Composable
 fun DatePickerBox(
     selectedLocalDate: MutableState<LocalDate>,
-    modifier: Modifier = Modifier
+    outlinedTextFieldModifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
+    onSelect: (LocalDate) -> Unit = {  }
 ) {
     val expanded = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
@@ -63,7 +65,7 @@ fun DatePickerBox(
 
     // Update selectedLocalDate by new date.
     if (selectedDate != null) {
-        selectedLocalDate.value = selectedDate
+        onSelect( selectedDate )
     }
 
     // Building string value by LocalDate for OutputTextField.
@@ -73,6 +75,9 @@ fun DatePickerBox(
 
     Box(
         modifier = modifier
+            .clickable {
+                expanded.value = !expanded.value
+            }
     ) {
         OutlinedTextField(
             value = selectedLocalDateString,
@@ -89,7 +94,8 @@ fun DatePickerBox(
                         expanded.value = !expanded.value
                     }
                 )
-            }
+            },
+            modifier = outlinedTextFieldModifier
         )
 
         if (expanded.value) {

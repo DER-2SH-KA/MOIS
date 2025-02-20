@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -30,52 +32,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ExposedDropdownMenuBox
 
-
-/*@SuppressLint("ResourceAsColor")
-@Composable
-fun ComboBoxPseudoOld(
-    items: List<String>,
-    selectedItem: MutableState<String>,
-    onItemSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val expanded = remember { mutableStateOf(false) }
-
-    Box(
-        modifier = modifier
-    ) {
-        OutlinedTextField(
-            value = selectedItem.value,
-            onValueChange = { },
-            readOnly = true,
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "Open dropdown",
-                    modifier = Modifier.clickable { expanded.value = true }
-                )
-            }
-        )
-
-        DropdownMenu(
-            expanded = expanded.value,
-            onDismissRequest = { expanded.value = false },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items.forEach { item ->
-                DropdownMenuItem(
-                    onClick = {
-                        onItemSelected(item)
-                        expanded.value = false
-                    },
-                    text = { Text(text = item) }
-                )
-            }
-        }
-    }
-}*/
-
-
 // TODO: Подобрать цвета и оформить!
 /**
  *  Analog of ComboBox from HTML or WindowsForms.
@@ -87,9 +43,12 @@ fun ComboBoxPseudoOld(
 fun ComboBoxPseudo(
     items: List<String>,
     selectedItem: MutableState<String>,
+    onSelect: (String) -> Unit = {  },
+    outlinedTextFieldModifier: Modifier = Modifier,
     modifier: Modifier = Modifier
 ) {
     val expanded = remember { mutableStateOf(false) }
+    val verticalScrollState = rememberScrollState(0)
 
     Box(
         modifier = modifier
@@ -118,7 +77,9 @@ fun ComboBoxPseudo(
                 expanded = expanded.value,
                 onDismissRequest = {
                     expanded.value = false
-                }
+                },
+                modifier = Modifier
+                    .verticalScroll( verticalScrollState )
             ) {
                 items.forEach { item ->
                     DropdownMenuItem(
@@ -128,7 +89,7 @@ fun ComboBoxPseudo(
                                     )
                                },
                         onClick = {
-                            selectedItem.value = item
+                            onSelect(item)
                             expanded.value = false
                         }
                     )

@@ -42,6 +42,7 @@ fun DaysScrollItemDay(
     localDate: LocalDate,
     selectedDay: MutableState<LocalDate>,
     daysScrollerHScroll: ScrollState,
+    onSelect: (LocalDate) -> Unit = {  },
     modifier: Modifier = Modifier
 ) {
     var dayOfWeek: String = GetDayOfWeekStringResourceByLocalDate(localDate, false)
@@ -78,7 +79,7 @@ fun DaysScrollItemDay(
     Box(
         modifier = Modifier
             .clickable {
-                selectedDay.value = localDate
+                onSelect(localDate)
 
                 coroutineScope.launch {
                     daysScrollerHScroll.scrollTo(daysScrollerHScroll.maxValue / 2)
