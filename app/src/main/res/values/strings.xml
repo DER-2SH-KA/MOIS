@@ -70,4 +70,6 @@
     <string name="grade_type">Grade type</string>
     <string name="subject">Subject</string>
     <string name="date">Date</string>
+
+    <string name="choose">Choose</string>
 </resources>
