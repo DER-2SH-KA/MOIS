@@ -81,11 +81,11 @@ fun AddNewMarkPage() {
                 color = colorResource(R.color.background_color)
             )
         ,
-        contentAlignment = Alignment.TopCenter
+        contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
-                .fillMaxHeight(0.95f)
+                .fillMaxHeight(0.85f)
                 .fillMaxWidth(0.9f)
                 .verticalScroll( verticalMainScroll )
             ,

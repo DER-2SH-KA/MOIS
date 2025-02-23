@@ -55,7 +55,7 @@ class GeneralAppActivity : ComponentActivity() {
                 val navHostController = rememberNavController()
 
                 NavHost(navController = navHostController, "general_app_page") {
-                    composable(route = "add_new_grade") { AbobaNavHostTest(navHostController, "grade") }
+                    composable(route = "add_new_grade") { AddNewMarkPage() }
                     composable(route = "add_new_homework") { AbobaNavHostTest(navHostController, "homework") }
                     composable(route = "general_app_page") { GeneralAppActivityMainPage(navHostController) }
                     composable(route = "add_new_note") { AbobaNavHostTest(navHostController, "note") }
@@ -98,7 +98,7 @@ fun GeneralAppActivityMainPage(
             ) { page ->
                 when (page) {
                     0 -> {
-                        AddNewMarkPage()
+                        AbobaTestPage("0")
                     }
 
                     1 -> {
