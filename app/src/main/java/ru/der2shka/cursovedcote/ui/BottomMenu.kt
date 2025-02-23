@@ -71,7 +71,7 @@ fun BottomMenu(
                         )
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.add_plus_square),
+                    painter = painterResource(R.drawable.calendar_plus),
                     contentDescription = null,
                     tint = if (pager.currentPage == 0) colorResource(R.color.secondary_cyan) else Color.White,
                     modifier = Modifier
@@ -80,7 +80,7 @@ fun BottomMenu(
                             color = Color.Green,
                             shape = RectangleShape
                         )*/
-                        .padding( if (pager.currentPage == 0) 5.dp else 7.dp )
+                        .padding( if (pager.currentPage == 0) 7.dp else 10.dp )
                 )
             }
 

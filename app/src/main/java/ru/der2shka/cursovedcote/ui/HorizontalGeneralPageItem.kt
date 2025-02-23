@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
@@ -55,11 +58,13 @@ fun HorizontalGeneralPageItem(
     headerText: String,
     maxLines: Int = Int.MAX_VALUE,
     onItemClick: () -> Unit,
-    onPlusClick: @Composable () -> Unit,
+    onPlusClick: () -> Unit,
     onDotsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val config = LocalConfiguration.current
+
+    val coroutineScope = rememberCoroutineScope()
 
     val buttonSize = remember { mutableStateOf(0.dp) }
     val cardSize = remember { mutableStateOf(0.dp) }
@@ -156,7 +161,7 @@ fun HorizontalGeneralPageItem(
                             .height(buttonSize.value)
                             .aspectRatio(1f),
                         onClick = {
-                            onPlusClick
+                            onPlusClick()
                         },
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(

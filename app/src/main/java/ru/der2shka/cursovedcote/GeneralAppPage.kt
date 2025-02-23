@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -35,6 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.GeneralPageContentHelper
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.AverageMarkCard
@@ -53,13 +57,18 @@ import java.util.Optional
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun GeneralAppPage(
+    navHostController: NavHostController,
+    pager: PagerState
 ) {
     val genPageContentHelper: GeneralPageContentHelper = GeneralPageContentHelper.getInstance()
 
     val context = LocalContext.current
     val config = LocalConfiguration.current
+
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val dayItemHeightPercent = 0.6f
+
+    val coroutineScope = rememberCoroutineScope()
 
     val selectedDate = remember { mutableStateOf(genPageContentHelper.currentLocalDate) }
 
@@ -450,11 +459,14 @@ fun GeneralAppPage(
                 HorizontalGeneralPageItem(
                     headerText = stringResource(R.string.home_work),
                     maxLines = 1,
-                    onItemClick = {  },
+                    onItemClick = {
+                        coroutineScope.launch {
+                            pager.scrollToPage(1)
+                        }
+                    },
                     onPlusClick = {
-                        Text(
-                            text = "Abobus1"
-                        )
+                        current_page = "add_new_homework"
+                        navHostController.navigate(current_page)
                     },
                     onDotsClick = { },
                     modifier = Modifier
@@ -475,11 +487,14 @@ fun GeneralAppPage(
                 HorizontalGeneralPageItem(
                     headerText = stringResource(R.string.notes),
                     maxLines = 1,
-                    onItemClick = {  },
+                    onItemClick = {
+                        coroutineScope.launch {
+                            pager.scrollToPage(3)
+                        }
+                    },
                     onPlusClick = {
-                        Text(
-                            text = "Abobus2"
-                        )
+                        current_page = "add_new_note"
+                        navHostController.navigate(current_page)
                     },
                     onDotsClick = { },
                     modifier = Modifier
@@ -500,11 +515,14 @@ fun GeneralAppPage(
                 HorizontalGeneralPageItem(
                     headerText = stringResource(R.string.marks),
                     maxLines = 1,
-                    onItemClick = {  },
+                    onItemClick = {
+                        coroutineScope.launch {
+                            pager.scrollToPage(0)
+                        }
+                    },
                     onPlusClick = {
-                        Text(
-                            text = "Abobus3"
-                        )
+                        current_page = "add_new_grade"
+                        navHostController.navigate(current_page)
                     },
                     onDotsClick = { },
                     modifier = Modifier

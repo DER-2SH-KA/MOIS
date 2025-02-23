@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -44,83 +45,115 @@ class GeneralAppActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        current_page = "general_app_page"
+
         // Fix portait orientation for activity.
         this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
             CursovedCotETheme {
-                val horizontalPager = rememberPagerState(initialPage = 2, pageCount = { 5 })
+                val navHostController = rememberNavController()
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            colorResource(R.color.background_color)
-                        )
-                    ,
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight(0.9f)
-                        ,
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        HorizontalPager(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(9f)
-                                .background(Color.Yellow),
-                            state = horizontalPager
-                        ) { page ->
-                            when (page) {
-                                0 -> {
-                                    AddNewMarkPage()
-                                }
+                NavHost(navController = navHostController, "general_app_page") {
+                    composable(route = "add_new_grade") { AbobaNavHostTest(navHostController, "grade") }
+                    composable(route = "add_new_homework") { AbobaNavHostTest(navHostController, "homework") }
+                    composable(route = "general_app_page") { GeneralAppActivityMainPage(navHostController) }
+                    composable(route = "add_new_note") { AbobaNavHostTest(navHostController, "note") }
+                    composable(route = "add_new_study_subject") { AbobaNavHostTest(navHostController, "study_subject") }
+                }
 
-                                1 -> {
-                                    AbobaTestPage("1")
-                                }
+            }
+        }
+    }
+}
 
-                                2 -> {
-                                    GeneralAppPage()
-                                }
+@Composable
+fun GeneralAppActivityMainPage(
+    navHostController: NavHostController
+) {
+    val horizontalPager = rememberPagerState(initialPage = 2, pageCount = { 5 })
 
-                                3 -> {
-                                    AbobaTestPage("3")
-                                }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                colorResource(R.color.background_color)
+            )
+        ,
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight(0.9f)
+            ,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(9f)
+                    .background(Color.Yellow),
+                state = horizontalPager
+            ) { page ->
+                when (page) {
+                    0 -> {
+                        AddNewMarkPage()
+                    }
 
-                                4 -> {
-                                    AbobaTestPage("4")
-                                }
-                            }
-                        }
+                    1 -> {
+                        AbobaTestPage("1")
+                    }
 
-                        // Bottom Menu.
-                        /*Row(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth()
-                                .background(Color.Red)
-                            ,
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                        }*/
-                        BottomMenu(
-                            containerModifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth()
-                                .background(
-                                    color = colorResource(R.color.primary_blue)
-                                ),
-                            pager = horizontalPager
-                        )
+                    2 -> {
+                        GeneralAppPage(navHostController, horizontalPager)
+                    }
+
+                    3 -> {
+                        AbobaTestPage("3")
+                    }
+
+                    4 -> {
+                        AbobaTestPage("4")
                     }
                 }
             }
+
+            // Bottom Menu.
+            /*Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(Color.Red)
+                ,
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+            }*/
+            BottomMenu(
+                containerModifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(
+                        color = colorResource(R.color.primary_blue)
+                    ),
+                pager = horizontalPager
+            )
         }
+    }
+}
+
+@Composable
+fun AbobaNavHostTest(
+    navHostController: NavHostController,
+    text: String = ""
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Text(text = "Nav Host Aboba Test $text")
     }
 }
 
