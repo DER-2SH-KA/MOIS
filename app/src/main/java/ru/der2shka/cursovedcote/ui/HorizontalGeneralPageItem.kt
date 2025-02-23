@@ -1,6 +1,7 @@
 package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -122,7 +125,7 @@ fun HorizontalGeneralPageItem(
 
                 Box(
                     contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxWidth(0.5f)
+                    modifier = Modifier.fillMaxWidth(0.8f)
                 ) {
                     ScrollableAnimatedText(
                         text = headerText,
@@ -174,7 +177,7 @@ fun HorizontalGeneralPageItem(
                         ) {
                             Text(
                                 text = "+",
-                                color = colorResource(R.color.background_color),
+                                color = Color.White,
                                 textAlign = TextAlign.Center,
                                 fontSize = font_size_secondary_text,
                                 lineHeight = line_height_secondary_text,
@@ -183,6 +186,7 @@ fun HorizontalGeneralPageItem(
                         }
                     }
 
+                    /*
                     // Space between buttons.
                     Spacer(Modifier.widthIn(10.dp))
 
@@ -211,16 +215,15 @@ fun HorizontalGeneralPageItem(
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = ". . .",
-                                color = colorResource(R.color.background_color),
-                                textAlign = TextAlign.Center,
-                                fontSize = font_size_secondary_text,
-                                lineHeight = line_height_secondary_text,
-                                fontWeight = FontWeight.Bold
+                            Image(
+                                painter = painterResource(R.drawable.arrow_right_lg),
+                                contentDescription = null,
+                                contentScale = ContentScale.FillBounds,
+                                modifier = Modifier
+                                    .fillMaxSize(0.6f)
                             )
                         }
-                    }
+                    }*/
                 }
 
                 /*Text(
