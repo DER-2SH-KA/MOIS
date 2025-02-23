@@ -149,7 +149,7 @@ fun AddNewStudySubject(
                                 },
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.White,
-                                    focusedIndicatorColor = Color.White,
+                                    focusedIndicatorColor = Color.Transparent,
                                     focusedTextColor = colorResource(R.color.primary_blue),
                                     focusedLabelColor = Color.White,
                                     focusedPrefixColor = Color.White,
@@ -159,7 +159,7 @@ fun AddNewStudySubject(
                                     focusedLeadingIconColor = Color.Black,
                                     focusedSupportingTextColor = Color.Black,
 
-                                    unfocusedContainerColor = VeryLightGrayMostlyWhite,
+                                    unfocusedContainerColor = colorResource(R.color.background_color),
                                     unfocusedIndicatorColor = Color.Transparent,
                                     unfocusedTextColor = Color.Black,
                                     unfocusedLabelColor = Color.Black,

@@ -82,9 +82,6 @@ fun AddNewMarkPage(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll( verticalMainScroll )
-            .background(
-                color = colorResource(R.color.background_color)
-            )
         ,
         contentAlignment = Alignment.Center
     ) {
@@ -95,6 +92,7 @@ fun AddNewMarkPage(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Column {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -304,6 +302,7 @@ fun AddNewMarkPage(
                 )
                  */
             }
+        }
 
             Column(
                 verticalArrangement = Arrangement.Bottom,
