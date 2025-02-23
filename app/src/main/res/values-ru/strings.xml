@@ -21,6 +21,10 @@
     <string name="cancel">Отмена</string>
     <string name="add">Добавить</string>
     <string name="back">Назад</string>
+    <string name="choose">Выбрать</string>
+
+    <string name="name">Название</string>
+    <string name="description">Описание</string>
 
     <!-- GeneralAppActivity -->
     <string name="monday_full_name">Понедельник</string>
@@ -77,5 +81,6 @@
     <string name="subject">Предмет</string>
     <string name="date">Дата</string>
 
-    <string name="choose">Выбрать</string>
+    <!-- Add New Study Subject -->
+    <string name="add_subject">Добавить предмет</string>
 </resources>

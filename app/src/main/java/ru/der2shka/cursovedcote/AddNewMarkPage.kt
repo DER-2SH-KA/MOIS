@@ -78,12 +78,10 @@ fun AddNewMarkPage(
         mutableStateOf( addNewMarkHelper.currentLocalDate )
     }
 
-    val verticalScrollState = rememberScrollState(0)
-
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll( verticalScrollState )
+            .verticalScroll( verticalMainScroll )
             .background(
                 color = colorResource(R.color.background_color)
             )
@@ -92,7 +90,7 @@ fun AddNewMarkPage(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxSize(0.9f)
             ,
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally

@@ -2,6 +2,7 @@ package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +33,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -38,6 +42,7 @@ import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -59,238 +64,137 @@ fun AddNewStudySubject(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
-    val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
+    // TODO: Create Singleton for it.
+    // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
-    val markValueList = addNewMarkHelper.markValueList
-    val markTypeList = addNewMarkHelper.markTypeList
-    val subjectValueList = addNewMarkHelper.studySubjectList
-
-    val selectedMarkValue = remember {
-        mutableStateOf( addNewMarkHelper.currentMarkValue )
-    }
-    val selectedMarkType = remember {
-        mutableStateOf( addNewMarkHelper.currentMarkType )
-    }
-    val selectedSubjectValue = remember {
-        mutableStateOf( addNewMarkHelper.currentStudySubject )
-    }
-    val selectedLocalDate = remember {
-        mutableStateOf( addNewMarkHelper.currentLocalDate )
-    }
-
-    val verticalScrollState = rememberScrollState(0)
+    val textFieldName = remember { mutableStateOf(TextFieldValue("")) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll( verticalScrollState )
-            .background(
-                color = colorResource(R.color.background_color)
-            )
+            //.verticalScroll( verticalMainScroll )
         ,
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
+                .fillMaxHeight(0.85f)
                 .fillMaxWidth(0.9f)
             ,
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(oneBlockHeight.value.dp)
-                    .padding(10.dp)
-                    .background(
-                        color = colorResource(R.color.primary_blue),
-                        shape = RoundedCornerShape(20.dp)
+            Column() {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(oneBlockHeight.value.dp)
+                        .padding(10.dp)
+                        .background(
+                            color = colorResource(R.color.primary_blue),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                ) {
+                    // Header Text.
+                    ScrollableAnimatedText(
+                        text = stringResource(R.string.add_subject),
+                        textColor = Color.White,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        fontSize = font_size_main_text,
+                        lineHeight = line_height_main_text,
+                        fontWeight = FontWeight.Bold,
+                        textModifier = Modifier.fillMaxWidth()
                     )
-            ) {
-                // Header Text.
-                ScrollableAnimatedText(
-                    text = stringResource(R.string.add_grade),
-                    textColor = Color.White,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    fontSize = font_size_main_text,
-                    lineHeight = line_height_main_text,
-                    fontWeight = FontWeight.Bold,
-                    textModifier = Modifier.fillMaxWidth()
-                )
-            }
-
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                // Choice of mark value.
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    // Text(text = "Markuo Value")
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.4f)
-                    ) {
-                        ScrollableAnimatedText(
-                            text = "${stringResource(R.string.grade)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
-                            textAlign = TextAlign.Start,
-                            maxLines = 1,
-                            fontSize = font_size_secondary_text,
-                            lineHeight = line_height_secondary_text,
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        ComboBoxPseudo(
-                            items = markValueList,
-                            selectedItem = selectedMarkValue,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            onSelect = { value ->
-                                addNewMarkHelper.setCurrentMarkValue(Optional.ofNullable(value))
-                                selectedMarkValue.value = addNewMarkHelper.currentMarkValue
-                            }
-                        )
-                    }
                 }
 
-                // Choice of mark type.
-                Row(
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .fillMaxWidth()
                 ) {
-                    // Text(text = "Markuo Type")
-
-                    Box(
+                    // Choice of mark value.
+                    Row(
                         modifier = Modifier
-                            .fillMaxWidth(0.4f)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        ScrollableAnimatedText(
-                            text = "${stringResource(R.string.grade_type)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
-                            textAlign = TextAlign.Start,
-                            maxLines = 1,
-                            fontSize = font_size_secondary_text,
-                            lineHeight = line_height_secondary_text,
-                        )
-                    }
+                        // Text(text = "Markuo Value")
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        ComboBoxPseudo(
-                            items = markTypeList,
-                            selectedItem = selectedMarkType,
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.4f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.name)}:",
+                                textColor = colorResource(R.color.secondary_text_gray),
+                                textAlign = TextAlign.Start,
+                                maxLines = 1,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                            )
+                        }
+
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            onSelect = { value ->
-                                addNewMarkHelper.setCurrentMarkType(Optional.ofNullable(value))
-                                selectedMarkType.value = addNewMarkHelper.currentMarkType
-                            }
-                        )
-                    }
-                }
+                        ) {
+                            TextField(
+                                value = textFieldName.value.text,
+                                onValueChange = {
+                                    textFieldName.value = TextFieldValue(it)
+                                },
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.White,
+                                    focusedIndicatorColor = Color.White,
+                                    focusedTextColor = colorResource(R.color.primary_blue),
+                                    focusedLabelColor = Color.White,
+                                    focusedPrefixColor = Color.White,
+                                    focusedSuffixColor = Color.White,
+                                    focusedPlaceholderColor = colorResource(R.color.primary_blue),
+                                    focusedTrailingIconColor = Color.Black,
+                                    focusedLeadingIconColor = Color.Black,
+                                    focusedSupportingTextColor = Color.Black,
 
-                // Choice of study subject.
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    // Text(text = "Subjecto")
+                                    unfocusedContainerColor = VeryLightGrayMostlyWhite,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    unfocusedTextColor = Color.Black,
+                                    unfocusedLabelColor = Color.Black,
+                                    unfocusedPrefixColor = Color.White,
+                                    unfocusedSuffixColor = Color.White,
+                                    unfocusedPlaceholderColor = Color.Black,
+                                    unfocusedTrailingIconColor = Color.LightGray,
+                                    unfocusedLeadingIconColor = Color.LightGray,
+                                    unfocusedSupportingTextColor = Color.LightGray,
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.4f)
-                    ) {
-                        ScrollableAnimatedText(
-                            text = "${stringResource(R.string.subject)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
-                            textAlign = TextAlign.Start,
-                            maxLines = 1,
-                            fontSize = font_size_secondary_text,
-                            lineHeight = line_height_secondary_text,
-                        )
-                    }
+                                    errorContainerColor = Color.White,
+                                    errorIndicatorColor = Color.Red,
+                                    errorTextColor = colorResource(R.color.error_red),
+                                    errorLabelColor = Color.White,
+                                    errorPrefixColor = Color.White,
+                                    errorSuffixColor = Color.White,
+                                    errorPlaceholderColor = colorResource(R.color.error_red),
+                                    errorTrailingIconColor = colorResource(R.color.error_red),
+                                    errorLeadingIconColor = colorResource(R.color.error_red),
+                                    errorSupportingTextColor = colorResource(R.color.error_red)
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        ComboBoxPseudo(
-                            items = subjectValueList,
-                            selectedItem = selectedSubjectValue,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            onSelect = { value ->
-                                addNewMarkHelper.setCurrentStudySubject(Optional.ofNullable(value))
-                                selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
-                            }
-                        )
-                    }
-                }
-
-                // Choice of date.
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    // Text(text = "Dateo")
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.4f)
-                    ) {
-                        ScrollableAnimatedText(
-                            text = "${stringResource(R.string.date)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
-                            textAlign = TextAlign.Start,
-                            maxLines = 1,
-                            fontSize = font_size_secondary_text,
-                            lineHeight = line_height_secondary_text,
-                        )
+                                ),
+                                shape = RoundedCornerShape(20.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(20.dp)
+                                    )
+                            )
+                        }
                     }
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        DatePickerBox(
-                            selectedLocalDate = selectedLocalDate,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            onSelect = { localDate ->
-                                addNewMarkHelper.setCurrentLocalDate(Optional.ofNullable(localDate))
-                                selectedLocalDate.value = addNewMarkHelper.currentLocalDate
-                            }
-                        )
-                    }
-                }
-
-                /*
+                    /*
                 // Only for testing.
                 Text(text = "Mark value: ${selectedMarkValue.value}")
                 Text(text = "Mark type: ${selectedMarkType.value}")
@@ -305,6 +209,7 @@ fun AddNewStudySubject(
                             "${selectedLocalDate.value.year}"
                 )
                  */
+                }
             }
 
             Column(

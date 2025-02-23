@@ -456,6 +456,7 @@ fun GeneralAppPage(
                 }
                 */
 
+                // Homework.
                 HorizontalGeneralPageItem(
                     headerText = stringResource(R.string.home_work),
                     maxLines = 1,
@@ -484,6 +485,7 @@ fun GeneralAppPage(
                         )
                 )
 
+                // Notes.
                 HorizontalGeneralPageItem(
                     headerText = stringResource(R.string.notes),
                     maxLines = 1,
@@ -512,6 +514,7 @@ fun GeneralAppPage(
                         )
                 )
 
+                // Grades.
                 HorizontalGeneralPageItem(
                     headerText = stringResource(R.string.marks),
                     maxLines = 1,
@@ -522,6 +525,35 @@ fun GeneralAppPage(
                     },
                     onPlusClick = {
                         current_page = "add_new_grade"
+                        navHostController.navigate(current_page)
+                    },
+                    onDotsClick = { },
+                    modifier = Modifier
+                        .height( oneBlockHeight * 0.75f )
+                        .fillMaxWidth(0.9f)
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colorStops = arrayOf(
+                                    0.6f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan)
+                                )
+                            )
+                            ,
+                            shape = RoundedCornerShape(20.0f)
+                        )
+                )
+
+                // Study Subjects.
+                HorizontalGeneralPageItem(
+                    headerText = stringResource(R.string.marks),
+                    maxLines = 1,
+                    onItemClick = {
+                        coroutineScope.launch {
+                            pager.scrollToPage(0)
+                        }
+                    },
+                    onPlusClick = {
+                        current_page = "add_new_study_subject"
                         navHostController.navigate(current_page)
                     },
                     onDotsClick = { },

@@ -54,12 +54,20 @@ class GeneralAppActivity : ComponentActivity() {
             CursovedCotETheme {
                 val navHostController = rememberNavController()
 
-                NavHost(navController = navHostController, "general_app") {
+                NavHost(
+                    navController = navHostController,
+                    startDestination = "general_app",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            colorResource(R.color.background_color)
+                        )
+                ) {
                     composable(route = "add_new_grade") { AddNewMarkPage(navHostController) }
                     composable(route = "add_new_homework") { AbobaNavHostTest(navHostController, "homework") }
                     composable(route = "general_app") { GeneralAppActivityMainPage(navHostController) }
                     composable(route = "add_new_note") { AbobaNavHostTest(navHostController, "note") }
-                    composable(route = "add_new_study_subject") { AbobaNavHostTest(navHostController, "study_subject") }
+                    composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController) }
                 }
 
             }
