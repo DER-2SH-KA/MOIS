@@ -45,7 +45,7 @@ class GeneralAppActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        current_page = "general_app_page"
+        current_page = "general_app"
 
         // Fix portait orientation for activity.
         this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -54,10 +54,10 @@ class GeneralAppActivity : ComponentActivity() {
             CursovedCotETheme {
                 val navHostController = rememberNavController()
 
-                NavHost(navController = navHostController, "general_app_page") {
-                    composable(route = "add_new_grade") { AddNewMarkPage() }
+                NavHost(navController = navHostController, "general_app") {
+                    composable(route = "add_new_grade") { AddNewMarkPage(navHostController) }
                     composable(route = "add_new_homework") { AbobaNavHostTest(navHostController, "homework") }
-                    composable(route = "general_app_page") { GeneralAppActivityMainPage(navHostController) }
+                    composable(route = "general_app") { GeneralAppActivityMainPage(navHostController) }
                     composable(route = "add_new_note") { AbobaNavHostTest(navHostController, "note") }
                     composable(route = "add_new_study_subject") { AbobaNavHostTest(navHostController, "study_subject") }
                 }

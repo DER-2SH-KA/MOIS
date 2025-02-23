@@ -20,6 +20,7 @@
     <string name="ok">ОК</string>
     <string name="cancel">Отмена</string>
     <string name="add">Добавить</string>
+    <string name="back">Назад</string>
 
     <!-- GeneralAppActivity -->
     <string name="monday_full_name">Понедельник</string>

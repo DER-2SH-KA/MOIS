@@ -20,6 +20,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
+    <string name="back">Back</string>
 
     <!-- GeneralAppActivity -->
     <string name="monday_full_name">Monday</string>

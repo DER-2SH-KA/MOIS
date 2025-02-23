@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
@@ -50,7 +52,9 @@ import java.util.Optional
  * **/
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
-fun AddNewMarkPage() {
+fun AddNewMarkPage(
+    navHostController: NavHostController
+) {
     val config = LocalConfiguration.current
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
@@ -74,9 +78,12 @@ fun AddNewMarkPage() {
         mutableStateOf( addNewMarkHelper.currentLocalDate )
     }
 
+    val verticalScrollState = rememberScrollState(0)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll( verticalScrollState )
             .background(
                 color = colorResource(R.color.background_color)
             )
@@ -85,41 +92,41 @@ fun AddNewMarkPage() {
     ) {
         Column(
             modifier = Modifier
-                .fillMaxHeight(0.85f)
                 .fillMaxWidth(0.9f)
-                .verticalScroll( verticalMainScroll )
             ,
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(oneBlockHeight.value.dp)
+                    .padding(10.dp)
+                    .background(
+                        color = colorResource(R.color.primary_blue),
+                        shape = RoundedCornerShape(20.dp)
+                    )
+            ) {
+                // Header Text.
+                ScrollableAnimatedText(
+                    text = stringResource(R.string.add_grade),
+                    textColor = Color.White,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    fontSize = font_size_main_text,
+                    lineHeight = line_height_main_text,
+                    fontWeight = FontWeight.Bold,
+                    textModifier = Modifier.fillMaxWidth()
+                )
+            }
+
             Column(
                 verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(oneBlockHeight.value.dp)
-                        .padding(10.dp)
-                        .background(
-                            color = colorResource(R.color.primary_blue),
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                ) {
-                    // Header Text.
-                    ScrollableAnimatedText(
-                        text = stringResource(R.string.add_grade),
-                        textColor = Color.White,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        fontSize = font_size_main_text,
-                        lineHeight = line_height_main_text,
-                        fontWeight = FontWeight.Bold,
-                        textModifier = Modifier.fillMaxWidth()
-                    )
-                }
-
                 // Choice of mark value.
                 Row(
                     modifier = Modifier
@@ -300,46 +307,99 @@ fun AddNewMarkPage() {
                  */
             }
 
-            Button(
-                onClick = { },
-
-                shape = RoundedCornerShape(20.dp),
-                contentPadding = PaddingValues(0.dp),
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(
-                        (oneBlockHeight * 0.5f)
-                    )
             ) {
-                Box(
+                // Button to Add.
+                Button(
+                    onClick = { },
+
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colorStops = arrayOf(
-                                    0.6f to colorResource(R.color.primary_blue),
-                                    1f to colorResource(R.color.secondary_cyan)
-                                )
-                            )
+                        .fillMaxWidth()
+                        .height(
+                            (oneBlockHeight * 0.5f)
                         )
-                    ,
-                    contentAlignment = Alignment.Center
                 ) {
-                    ScrollableAnimatedText(
-                        text = stringResource(R.string.add),
-                        textColor = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = font_size_main_text,
-                        fontWeight = FontWeight.Bold,
-                        lineHeight = line_height_main_text,
-                        containterModifier = Modifier
-                            .fillMaxWidth(0.9f),
-                        textModifier = Modifier
-                            .fillMaxWidth()
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ScrollableAnimatedText(
+                            text = stringResource(R.string.add),
+                            textColor = Color.White,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = line_height_main_text,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+
+                Spacer(
+                    modifier = Modifier.height(10.dp)
+                )
+
+                // Button to Back.
+                Button(
+                    onClick = {
+                        current_page = "general_app"
+                        navHostController.navigate(current_page)
+                    },
+
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(
+                            (oneBlockHeight * 0.5f)
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ScrollableAnimatedText(
+                            text = stringResource(R.string.back),
+                            textColor = Color.White,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = line_height_main_text,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
                 }
             }
-
         }
     }
 }
