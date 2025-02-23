@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.der2shka.cursovedcote.ui.BottomMenu
 import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -97,7 +98,7 @@ class GeneralAppActivity : ComponentActivity() {
                         }
 
                         // Bottom Menu.
-                        Row(
+                        /*Row(
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxWidth()
@@ -106,8 +107,16 @@ class GeneralAppActivity : ComponentActivity() {
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-
-                        }
+                        }*/
+                        BottomMenu(
+                            containerModifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                                .background(
+                                    color = colorResource(R.color.primary_blue)
+                                ),
+                            pager = horizontalPager
+                        )
                     }
                 }
             }

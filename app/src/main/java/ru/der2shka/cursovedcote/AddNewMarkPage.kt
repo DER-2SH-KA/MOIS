@@ -332,7 +332,10 @@ fun AddNewMarkPage() {
                         fontSize = font_size_main_text,
                         fontWeight = FontWeight.Bold,
                         lineHeight = line_height_main_text,
-                        containterModifier = Modifier.fillMaxWidth(0.9f)
+                        containterModifier = Modifier
+                            .fillMaxWidth(0.9f),
+                        textModifier = Modifier
+                            .fillMaxWidth()
                     )
                 }
             }
