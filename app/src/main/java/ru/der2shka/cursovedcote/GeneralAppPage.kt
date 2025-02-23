@@ -545,7 +545,7 @@ fun GeneralAppPage(
 
                 // Study Subjects.
                 HorizontalGeneralPageItem(
-                    headerText = stringResource(R.string.marks),
+                    headerText = stringResource(R.string.study_subjects),
                     maxLines = 1,
                     onItemClick = {
                         coroutineScope.launch {

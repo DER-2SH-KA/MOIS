@@ -72,6 +72,7 @@
     <string name="home_work">Homework</string>
     <string name="notes">Notes</string>
     <string name="marks">Grades</string>
+    <string name="study_subjects">Study subjects</string>
 
     <!-- Add New Mark Page -->
     <string name="add_grade">Add grade</string>
