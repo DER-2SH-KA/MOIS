@@ -42,6 +42,7 @@ import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.TextFieldCustom
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
@@ -115,15 +116,13 @@ fun AddNewStudySubject(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    // Choice of mark value.
+                    // Name.
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Text(text = "Markuo Value")
-
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth(0.4f)
@@ -142,6 +141,23 @@ fun AddNewStudySubject(
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {
+                            TextFieldCustom(
+                                value = textFieldName.value.text,
+                                onValueChange = {
+                                    textFieldName.value = TextFieldValue(it)
+                                },
+                                singleLine = true,
+                                shape = RoundedCornerShape(20.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(20.dp)
+                                    )
+                            )
+
+                            /*
                             TextField(
                                 value = textFieldName.value.text,
                                 onValueChange = {
@@ -190,7 +206,7 @@ fun AddNewStudySubject(
                                         color = colorResource(R.color.primary_blue),
                                         shape = RoundedCornerShape(20.dp)
                                     )
-                            )
+                            )*/
                         }
                     }
 
@@ -266,7 +282,9 @@ fun AddNewStudySubject(
                 Button(
                     onClick = {
                         current_page = "general_app"
-                        navHostController.navigate(current_page)
+                        navHostController.navigate(current_page) {
+                            popUpTo("add_new_study_subject") { inclusive = true }
+                        }
                     },
 
                     shape = RoundedCornerShape(20.dp),

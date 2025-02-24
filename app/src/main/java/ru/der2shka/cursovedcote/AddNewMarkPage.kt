@@ -361,7 +361,9 @@ fun AddNewMarkPage(
                 Button(
                     onClick = {
                         current_page = "general_app"
-                        navHostController.navigate(current_page)
+                        navHostController.navigate(current_page) {
+                            popUpTo("add_new_grade") { inclusive = true }
+                        }
                     },
 
                     shape = RoundedCornerShape(20.dp),

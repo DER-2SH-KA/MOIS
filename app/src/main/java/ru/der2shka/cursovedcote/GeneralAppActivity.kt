@@ -66,7 +66,7 @@ class GeneralAppActivity : ComponentActivity() {
                     composable(route = "add_new_grade") { AddNewMarkPage(navHostController) }
                     composable(route = "add_new_homework") { AbobaNavHostTest(navHostController, "homework") }
                     composable(route = "general_app") { GeneralAppActivityMainPage(navHostController) }
-                    composable(route = "add_new_note") { AbobaNavHostTest(navHostController, "note") }
+                    composable(route = "add_new_note") { AddNewNote(navHostController) }
                     composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController) }
                 }
 

@@ -26,6 +26,19 @@
     <string name="name">Название</string>
     <string name="description">Описание</string>
 
+    <string name="grade">Оценка</string>
+    <string name="grade_type">Тип оценки</string>
+    <string name="subject">Предмет</string>
+
+    <string name="date">Дата</string>
+    <string name="date_begin">Дата начала</string>
+    <string name="date_end">Дата окончания</string>
+
+    <string name="in_processing">В процессе</string>
+    <string name="finished">Выполнено</string>
+    <string name="waiting_of_verification">Ожидание проверки</string>
+    <string name="canceled">Отменено</string>
+
     <!-- GeneralAppActivity -->
     <string name="monday_full_name">Понедельник</string>
     <string name="tuesday_full_name">Вторник</string>
@@ -69,19 +82,33 @@
     <string name="november_short_name">Нояб.</string>
     <string name="december_short_name">Дек.</string>
 
-    <string name="home_work">Домашние задания</string>
+    <string name="homeworks">Домашние задания</string>
     <string name="notes">Записи</string>
-    <string name="marks">Оценки</string>
+    <string name="grades">Оценки</string>
     <string name="study_subjects">Учебные предметы</string>
 
 
     <!-- Add New Mark Page -->
     <string name="add_grade">Добавить оценку</string>
-    <string name="grade">Оценка</string>
-    <string name="grade_type">Тип оценки</string>
-    <string name="subject">Предмет</string>
-    <string name="date">Дата</string>
 
     <!-- Add New Study Subject -->
     <string name="add_subject">Добавить предмет</string>
+
+    <!-- Add New Note -->
+    <string name="add_note">Добавить запись</string>
+
+    <!-- Add New Homework -->
+    <string name="add_homework">Добавить домашнее задание</string>
+
+    <!-- Edit Mark Page -->
+    <string name="edit_grade">Редактировать оценку</string>
+
+    <!-- Edit Study Subject -->
+    <string name="edit_subject">Редактировать предмет</string>
+
+    <!-- Edit Note -->
+    <string name="edit_note">Редактировать запись</string>
+
+    <!-- Edit Homework -->
+    <string name="edit_homework">Редактировать домашнее задание</string>
 </resources>

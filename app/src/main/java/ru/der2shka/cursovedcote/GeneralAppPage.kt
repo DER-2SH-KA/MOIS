@@ -458,7 +458,7 @@ fun GeneralAppPage(
 
                 // Homework.
                 HorizontalGeneralPageItem(
-                    headerText = stringResource(R.string.home_work),
+                    headerText = stringResource(R.string.homeworks),
                     maxLines = 1,
                     onItemClick = {
                         coroutineScope.launch {
@@ -516,7 +516,7 @@ fun GeneralAppPage(
 
                 // Grades.
                 HorizontalGeneralPageItem(
-                    headerText = stringResource(R.string.marks),
+                    headerText = stringResource(R.string.grades),
                     maxLines = 1,
                     onItemClick = {
                         coroutineScope.launch {

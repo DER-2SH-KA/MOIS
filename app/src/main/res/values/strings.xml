@@ -26,6 +26,19 @@
     <string name="name">Name</string>
     <string name="description">Description</string>
 
+    <string name="grade">Grade</string>
+    <string name="grade_type">Grade type</string>
+    <string name="subject">Subject</string>
+
+    <string name="date">Date</string>
+    <string name="date_begin">Date begin</string>
+    <string name="date_end">Date end</string>
+
+    <string name="in_processing">In processing</string>
+    <string name="finished">Finished</string>
+    <string name="waiting_of_verification">Waiting of verification</string>
+    <string name="canceled">Canceled</string>
+
     <!-- GeneralAppActivity -->
     <string name="monday_full_name">Monday</string>
     <string name="tuesday_full_name">Tuesday</string>
@@ -69,18 +82,35 @@
     <string name="november_short_name">Nov</string>
     <string name="december_short_name">Dec</string>
 
-    <string name="home_work">Homework</string>
+    <string name="homeworks">Homeworks</string>
     <string name="notes">Notes</string>
-    <string name="marks">Grades</string>
+    <string name="grades">Grades</string>
     <string name="study_subjects">Study subjects</string>
 
     <!-- Add New Mark Page -->
     <string name="add_grade">Add grade</string>
-    <string name="grade">Grade</string>
-    <string name="grade_type">Grade type</string>
-    <string name="subject">Subject</string>
-    <string name="date">Date</string>
 
     <!-- Add New Study Subject -->
     <string name="add_subject">Add subject</string>
+
+    <!-- Add New Note -->
+    <string name="add_note">Add note</string>
+
+    <!-- Add New Homework -->
+    <string name="add_homework">Add homework</string>
+
+
+    <!-- Edit Mark Page -->
+    <string name="edit_grade">Edit grade</string>
+
+    <!-- Edit Study Subject -->
+    <string name="edit_subject">Edit subject</string>
+
+    <!-- Edit Note -->
+    <string name="edit_note">Edit note</string>
+
+    <!-- Edit Homework -->
+    <string name="edit_homework">Edit homework</string>
+
+
 </resources>
