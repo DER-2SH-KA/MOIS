@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
+import ru.der2shka.cursovedcote.Models.AddNewStudySubjectHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
@@ -70,10 +71,18 @@ fun AddNewStudySubject(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
+    val addNewStudySubjectHelper = AddNewStudySubjectHelper.getInstance()
+
     // TODO: Create Singleton for it.
     // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
-    val textFieldName = remember { mutableStateOf(TextFieldValue("")) }
+    val textFieldName = remember {
+        mutableStateOf(
+            TextFieldValue(
+                addNewStudySubjectHelper.nameValue
+            )
+        )
+    }
 
     Box(
         modifier = Modifier
@@ -197,7 +206,10 @@ fun AddNewStudySubject(
                 // Button to Add.
                 Button(
                     onClick = {
-
+                        addNewStudySubjectHelper
+                            .setNameValue(
+                                Optional.ofNullable(textFieldName.value.text)
+                            )
                     },
 
                     shape = RoundedCornerShape(20.dp),
