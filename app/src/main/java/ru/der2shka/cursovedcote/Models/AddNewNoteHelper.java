@@ -13,7 +13,7 @@ public class AddNewNoteHelper {
     private Optional<String> description = Optional.ofNullable("");
 
     // Date of write.
-    private Optional<LocalDate> dateOfWrite = Optional.ofNullable(LocalDate.now());
+    private Optional<LocalDate> dateOfWrite = Optional.ofNullable(LocalDate.MIN);
 
     // Status code.
     private Optional<Integer> statusCode = Optional.ofNullable(0);

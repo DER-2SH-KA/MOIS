@@ -311,8 +311,8 @@ fun AddNewNote(
                                     )
                                 ,
                                 onSelect = { localDate ->
-                                    addNewNoteHelper.setDateOfWrite( Optional.ofNullable(localDate) )
-                                    selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
+                                    // addNewNoteHelper.setDateOfWrite( Optional.ofNullable(localDate) )
+                                    selectedDateOfWrite.value = localDate
                                 }
                             )
                         }
@@ -325,7 +325,6 @@ fun AddNewNote(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Text(text = "Subjecto")
 
                         Box(
                             modifier = Modifier
@@ -408,6 +407,15 @@ fun AddNewNote(
                                 "${selectedDateOfWrite.value.year}"
                     )
                     Text(text = "Status: ${selectedStatusItem.value.text}")
+                    Text(
+                        text = "Date: ${addNewNoteHelper.dateOfWrite.dayOfMonth} " +
+                                "${
+                                    GetMonthStringResourceByLocalDate(
+                                        mutableStateOf(addNewNoteHelper.dateOfWrite), true
+                                    )
+                                } " +
+                                "${selectedDateOfWrite.value.year}"
+                    )
                 }
             }
 
