@@ -63,19 +63,19 @@ fun TextFieldCustom(
         focusedLeadingIconColor = Color.Black,
         focusedSupportingTextColor = Color.Black,
 
-        unfocusedContainerColor = colorResource(R.color.background_color),
+        unfocusedContainerColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         unfocusedTextColor = colorResource(R.color.main_text_dark_gray),
         unfocusedLabelColor = Color.Black,
         unfocusedPrefixColor = Color.White,
         unfocusedSuffixColor = Color.White,
         unfocusedPlaceholderColor = Color.Black,
-        unfocusedTrailingIconColor = Color.LightGray,
-        unfocusedLeadingIconColor = Color.LightGray,
-        unfocusedSupportingTextColor = Color.LightGray,
+        unfocusedTrailingIconColor = Color.White,
+        unfocusedLeadingIconColor = Color.White,
+        unfocusedSupportingTextColor = Color.White,
 
         errorContainerColor = Color.White,
-        errorIndicatorColor = Color.Red,
+        errorIndicatorColor = Color.Transparent,
         errorTextColor = colorResource(R.color.error_red),
         errorLabelColor = Color.White,
         errorPrefixColor = Color.White,
@@ -83,8 +83,18 @@ fun TextFieldCustom(
         errorPlaceholderColor = colorResource(R.color.error_red),
         errorTrailingIconColor = colorResource(R.color.error_red),
         errorLeadingIconColor = colorResource(R.color.error_red),
-        errorSupportingTextColor = colorResource(R.color.error_red)
+        errorSupportingTextColor = colorResource(R.color.error_red),
 
+        disabledContainerColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        disabledTextColor = colorResource(R.color.main_text_dark_gray),
+        disabledLabelColor = Color.Black,
+        disabledPrefixColor = Color.White,
+        disabledSuffixColor = Color.White,
+        disabledPlaceholderColor = Color.Black,
+        disabledTrailingIconColor = Color.White,
+        disabledLeadingIconColor = Color.White,
+        disabledSupportingTextColor = Color.White
     )
     ) {
     TextField(

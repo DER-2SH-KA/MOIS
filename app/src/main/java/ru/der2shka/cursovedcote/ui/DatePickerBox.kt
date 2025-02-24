@@ -101,6 +101,7 @@ fun DatePickerBox(
             value = selectedLocalDateString,
             onValueChange = { },
             readOnly = true,
+            enabled = false,
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.DateRange,
@@ -113,28 +114,9 @@ fun DatePickerBox(
                     }
                 )
             },
+            shape = RoundedCornerShape(5.dp),
             modifier = outlinedTextFieldModifier
         )
-
-        /*
-        OutlinedTextField(
-            value = selectedLocalDateString,
-            onValueChange = { },
-            readOnly = true,
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.DateRange,
-                    contentDescription = "datepicker icon",
-                    tint = colorResource(R.color.primary_blue),
-                    // Unfortunately, we can tap only on Icon
-                    // to open the datepicker popup
-                    modifier = Modifier.clickable {
-                        expanded.value = !expanded.value
-                    }
-                )
-            },
-            modifier = outlinedTextFieldModifier
-        )*/
 
         if (expanded.value) {
             DatePickerModal(
@@ -147,109 +129,7 @@ fun DatePickerBox(
                 } },
                 onDismiss = { expanded.value = !expanded.value }
             )
-            /*
-            // Expanded window with datepicker.
-            Popup(
-                onDismissRequest = { expanded.value = false },
-                alignment = Alignment.TopStart,
-            ) {
-                // Datepicker and button
-                // to close the expanded window.
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(elevation = 4.dp)
-                        .background(
-                            color = colorResource(R.color.primary_blue)
-                        )
-                        .padding(16.dp)
-                    ,
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    DatePicker(
-                        state = datePickerState,
-                        showModeToggle = true,
-                        colors = DatePickerDefaults.colors(
-                            containerColor = colorResource(R.color.primary_blue),
-                            titleContentColor = VeryLightGray,
-                            subheadContentColor = Color.Red,
-                            navigationContentColor = Color.White,
-                            headlineContentColor = Color.White,
-                            dividerColor = Color.White,
-                            dayContentColor = Color.White,
-                            dayInSelectionRangeContainerColor = colorResource(R.color.tertiary_orange),
-                            dayInSelectionRangeContentColor = colorResource(R.color.tertiary_orange),
-                            todayDateBorderColor = colorResource(R.color.tertiary_orange),
-                            todayContentColor = colorResource(R.color.tertiary_orange),
-                            selectedDayContentColor = Color.White,
-                            selectedDayContainerColor = colorResource(R.color.secondary_cyan),
-                            selectedYearContentColor = Color.White,
-                            selectedYearContainerColor = colorResource(R.color.secondary_cyan),
-                            weekdayContentColor = VeryLightGray,
-                            yearContentColor = Color.White,
-                            currentYearContentColor = colorResource(R.color.tertiary_orange),
 
-                            dateTextFieldColors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.White,
-                                focusedIndicatorColor = Color.White,
-                                focusedTextColor = Color.White,
-                                focusedLabelColor = Color.White,
-                                focusedPrefixColor = Color.White,
-                                focusedSuffixColor = Color.White,
-                                focusedPlaceholderColor = Color.LightGray,
-                                focusedTrailingIconColor = Color.Magenta,
-                                focusedLeadingIconColor = Color.Red,
-                                focusedSupportingTextColor = Color.Yellow
-                            )
-                        )
-                        ,
-                        modifier = Modifier
-                    )
-
-                    // Choose and close date picker.
-                    Button(
-                        onClick = {
-                            expanded.value = false
-                        }
-                        ,
-                        colors = ButtonDefaults.buttonColors(
-                            Color.Transparent,
-                            Color.Transparent,
-                            Color.Transparent,
-                            Color.Transparent
-                        ),
-                        shape = RoundedCornerShape(20.dp),
-                        contentPadding = PaddingValues(0.dp),
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .height(
-                                (config.screenHeightDp * 0.1f).dp
-                            )
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    color = colorResource(R.color.secondary_cyan)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            ScrollableAnimatedText(
-                                text = stringResource(R.string.choose),
-                                textColor = Color.White,
-                                textAlign = TextAlign.Center,
-                                fontSize = font_size_main_text,
-                                fontWeight = FontWeight.Bold,
-                                lineHeight = line_height_main_text,
-                                maxLines = 1,
-                                textModifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                    }
-                }
-            }
-            */
         }
     }
 }

@@ -82,6 +82,7 @@ fun ComboBoxPseudo(
                         modifier = Modifier.clickable { expanded.value = !expanded.value }
                     )
                 },
+                shape = RoundedCornerShape(5.dp),
                 modifier = Modifier
                     .border(
                         width = 2.dp,
