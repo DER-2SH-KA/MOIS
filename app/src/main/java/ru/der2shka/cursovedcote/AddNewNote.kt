@@ -3,6 +3,7 @@ package ru.der2shka.cursovedcote
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +14,15 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -38,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
+import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -83,7 +89,7 @@ fun AddNewNote(
     // Description TextField.
     val descriptionTextFieldValue = remember {
         mutableStateOf(
-            TextFieldValue( addNewNoteHelper.nameValue )
+            TextFieldValue( addNewNoteHelper.descriptionValue )
         )
     }
 
@@ -123,6 +129,7 @@ fun AddNewNote(
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxHeight(0.7f)
                     .verticalScroll( verticalMainScroll )
             ){
                 Box(
@@ -168,7 +175,7 @@ fun AddNewNote(
                         ) {
                             ScrollableAnimatedText(
                                 text = "${stringResource(R.string.name)}:",
-                                textColor = colorResource(R.color.secondary_text_gray),
+                                textColor = colorResource(R.color.main_text_dark_gray),
                                 textAlign = TextAlign.Start,
                                 maxLines = 1,
                                 fontSize = font_size_secondary_text,
@@ -187,6 +194,18 @@ fun AddNewNote(
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = null,
+                                        tint = colorResource(R.color.primary_blue),
+                                        modifier = Modifier
+                                            .clickable {
+                                                ClearTextField(nameTextFieldValue)
+                                            }
+                                    )
+                                },
+
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -212,7 +231,7 @@ fun AddNewNote(
                         ) {
                             ScrollableAnimatedText(
                                 text = "${stringResource(R.string.description)}:",
-                                textColor = colorResource(R.color.secondary_text_gray),
+                                textColor = colorResource(R.color.main_text_dark_gray),
                                 textAlign = TextAlign.Start,
                                 maxLines = 1,
                                 fontSize = font_size_secondary_text,
@@ -230,6 +249,17 @@ fun AddNewNote(
                                     descriptionTextFieldValue.value = TextFieldValue(it)
                                 },
                                 shape = RoundedCornerShape(5.dp),
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = null,
+                                        tint = colorResource(R.color.primary_blue),
+                                        modifier = Modifier
+                                            .clickable {
+                                                ClearTextField(descriptionTextFieldValue)
+                                            }
+                                    )
+                                               },
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -257,7 +287,7 @@ fun AddNewNote(
                         ) {
                             ScrollableAnimatedText(
                                 text = "${stringResource(R.string.date)}:",
-                                textColor = colorResource(R.color.secondary_text_gray),
+                                textColor = colorResource(R.color.main_text_dark_gray),
                                 textAlign = TextAlign.Start,
                                 maxLines = 1,
                                 fontSize = font_size_secondary_text,
@@ -302,8 +332,8 @@ fun AddNewNote(
                                 .fillMaxWidth(0.4f)
                         ) {
                             ScrollableAnimatedText(
-                                text = "${stringResource(R.string.subject)}:",
-                                textColor = colorResource(R.color.secondary_text_gray),
+                                text = "${stringResource(R.string.status)}:",
+                                textColor = colorResource(R.color.main_text_dark_gray),
                                 textAlign = TextAlign.Start,
                                 maxLines = 1,
                                 fontSize = font_size_secondary_text,
@@ -389,7 +419,17 @@ fun AddNewNote(
             ) {
                 // Button to Add.
                 Button(
-                    onClick = { },
+                    onClick = {
+                        addNewNoteHelper.setNameValue(
+                            Optional.ofNullable( nameTextFieldValue.value.text )
+                        )
+                        addNewNoteHelper.setDescriptionValue(
+                            Optional.ofNullable( descriptionTextFieldValue.value.text )
+                        )
+                        addNewNoteHelper.setDateOfWrite(
+                            Optional.ofNullable( selectedDateOfWrite.value )
+                        )
+                    },
 
                     shape = RoundedCornerShape(20.dp),
                     contentPadding = PaddingValues(0.dp),

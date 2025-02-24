@@ -95,6 +95,7 @@ fun AddNewMarkPage(
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxHeight(0.7f)
                     .verticalScroll( verticalMainScroll )
             ){
             Box(
@@ -142,7 +143,7 @@ fun AddNewMarkPage(
                     ) {
                         ScrollableAnimatedText(
                             text = "${stringResource(R.string.grade)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
+                            textColor = colorResource(R.color.main_text_dark_gray),
                             textAlign = TextAlign.Start,
                             maxLines = 1,
                             fontSize = font_size_secondary_text,
@@ -183,7 +184,7 @@ fun AddNewMarkPage(
                     ) {
                         ScrollableAnimatedText(
                             text = "${stringResource(R.string.grade_type)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
+                            textColor = colorResource(R.color.main_text_dark_gray),
                             textAlign = TextAlign.Start,
                             maxLines = 1,
                             fontSize = font_size_secondary_text,
@@ -225,7 +226,7 @@ fun AddNewMarkPage(
                     ) {
                         ScrollableAnimatedText(
                             text = "${stringResource(R.string.subject)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
+                            textColor = colorResource(R.color.main_text_dark_gray),
                             textAlign = TextAlign.Start,
                             maxLines = 1,
                             fontSize = font_size_secondary_text,
@@ -267,7 +268,7 @@ fun AddNewMarkPage(
                     ) {
                         ScrollableAnimatedText(
                             text = "${stringResource(R.string.date)}:",
-                            textColor = colorResource(R.color.secondary_text_gray),
+                            textColor = colorResource(R.color.main_text_dark_gray),
                             textAlign = TextAlign.Start,
                             maxLines = 1,
                             fontSize = font_size_secondary_text,

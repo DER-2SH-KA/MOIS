@@ -25,6 +25,7 @@
 
     <string name="name">Название</string>
     <string name="description">Описание</string>
+    <string name="status">Статус</string>
 
     <string name="grade">Оценка</string>
     <string name="grade_type">Тип оценки</string>

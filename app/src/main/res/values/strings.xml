@@ -25,6 +25,7 @@
 
     <string name="name">Name</string>
     <string name="description">Description</string>
+    <string name="status">Status</string>
 
     <string name="grade">Grade</string>
     <string name="grade_type">Grade type</string>
