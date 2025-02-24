@@ -81,18 +81,21 @@ fun AddNewMarkPage(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll( verticalMainScroll )
         ,
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize(0.9f)
+                .fillMaxWidth(0.9f)
+                .fillMaxHeight(0.85f)
             ,
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .verticalScroll( verticalMainScroll )
+            ){
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier

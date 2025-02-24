@@ -91,7 +91,11 @@ fun MyAppMainWindow() {
         ) {
             NavHost(
                 navController = navController,
-                startDestination = "splash_screen_page"
+                startDestination = "splash_screen_page",
+                modifier = Modifier
+                    .background(
+                        color = colorResource(R.color.background_color)
+                    )
             ) {
                 composable(route = "splash_screen_page") {
                     SplashScreenPage(navController)
