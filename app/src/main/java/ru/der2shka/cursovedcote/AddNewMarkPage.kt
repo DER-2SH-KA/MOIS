@@ -2,6 +2,7 @@ package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -157,8 +158,8 @@ fun AddNewMarkPage(
                             items = markValueList,
                             selectedItem = selectedMarkValue,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(5.dp)
+                                .fillMaxWidth(),
                             onSelect = { value ->
                                 addNewMarkHelper.setCurrentMarkValue(Optional.ofNullable(value))
                                 selectedMarkValue.value = addNewMarkHelper.currentMarkValue
@@ -198,8 +199,9 @@ fun AddNewMarkPage(
                             items = markTypeList,
                             selectedItem = selectedMarkType,
                             modifier = Modifier
+                                .padding(5.dp)
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                            ,
                             onSelect = { value ->
                                 addNewMarkHelper.setCurrentMarkType(Optional.ofNullable(value))
                                 selectedMarkType.value = addNewMarkHelper.currentMarkType
@@ -239,8 +241,9 @@ fun AddNewMarkPage(
                             items = subjectValueList,
                             selectedItem = selectedSubjectValue,
                             modifier = Modifier
+                                .padding(5.dp)
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                            ,
                             onSelect = { value ->
                                 addNewMarkHelper.setCurrentStudySubject(Optional.ofNullable(value))
                                 selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
@@ -279,8 +282,14 @@ fun AddNewMarkPage(
                         DatePickerBox(
                             selectedLocalDate = selectedLocalDate,
                             modifier = Modifier
+                                .padding(5.dp)
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .border(
+                                    width = 2.dp,
+                                    color = colorResource(R.color.primary_blue),
+                                    shape = RoundedCornerShape(5.dp)
+                                )
+                            ,
                             onSelect = { localDate ->
                                 addNewMarkHelper.setCurrentLocalDate(Optional.ofNullable(localDate))
                                 selectedLocalDate.value = addNewMarkHelper.currentLocalDate

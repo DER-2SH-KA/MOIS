@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -91,15 +92,19 @@ fun AddNewNote(
         mutableStateOf( addNewNoteHelper.dateOfWrite )
     }
 
-    // Status TextField.
-    val statusTextFieldValue = remember {
-        mutableStateOf(
-            TextFieldValue( addNewNoteHelper.nameValue )
-        )
+    val statusCodeMutable = remember {
+        mutableStateOf(addNewNoteHelper.statusCodeValue)
     }
 
+    // Status TextField.
     val selectedStatusItem = remember {
-        mutableStateOf("")
+        when (statusCodeMutable.value) {
+            0 -> mutableStateOf( TextFieldValue(statusList.get(0)) )
+            1 -> mutableStateOf( TextFieldValue(statusList.get(1)) )
+            2 -> mutableStateOf( TextFieldValue(statusList.get(2)) )
+            3 -> mutableStateOf( TextFieldValue(statusList.get(3)) )
+            else -> { mutableStateOf(TextFieldValue("None Value")) }
+        }
     }
 
     Box(
@@ -180,27 +185,27 @@ fun AddNewNote(
                                 onValueChange = {
                                     nameTextFieldValue.value = TextFieldValue(it)
                                 },
-                                shape = RoundedCornerShape(20.dp),
+                                singleLine = true,
+                                shape = RoundedCornerShape(5.dp),
                                 modifier = Modifier
+                                    .padding(5.dp)
                                     .fillMaxWidth()
                                     .border(
                                         width = 2.dp,
                                         color = colorResource(R.color.primary_blue),
-                                        shape = RoundedCornerShape(20.dp)
+                                        shape = RoundedCornerShape(5.dp)
                                     ),
                             )
                         }
                     }
 
-                    // Set og description.
+                    // Set of description.
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Text(text = "Markuo Type")
-
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth(0.4f)
@@ -224,14 +229,14 @@ fun AddNewNote(
                                 onValueChange = {
                                     descriptionTextFieldValue.value = TextFieldValue(it)
                                 },
-                                singleLine = true,
-                                shape = RoundedCornerShape(20.dp),
+                                shape = RoundedCornerShape(5.dp),
                                 modifier = Modifier
+                                    .padding(5.dp)
                                     .fillMaxWidth()
                                     .border(
                                         width = 2.dp,
                                         color = colorResource(R.color.primary_blue),
-                                        shape = RoundedCornerShape(20.dp)
+                                        shape = RoundedCornerShape(5.dp)
                                     ),
                             )
                         }
@@ -267,8 +272,14 @@ fun AddNewNote(
                             DatePickerBox(
                                 selectedLocalDate = selectedDateOfWrite,
                                 modifier = Modifier
+                                    .padding(5.dp)
                                     .fillMaxWidth()
-                                    .padding(16.dp),
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(5.dp)
+                                    )
+                                ,
                                 onSelect = { localDate ->
                                     addNewNoteHelper.setDateOfWrite( Optional.ofNullable(localDate) )
                                     selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
@@ -306,7 +317,9 @@ fun AddNewNote(
                         ) {
                             ComboBoxPseudo(
                                 items = statusList,
-                                selectedItem = selectedStatusItem,
+                                selectedItem = mutableStateOf(
+                                    selectedStatusItem.value.text
+                                ),
                                 onSelect = { value ->
                                     when (value) {
                                         // In processed.
@@ -333,14 +346,19 @@ fun AddNewNote(
                                                 Optional.ofNullable(3)
                                             )
                                         }
+                                        else -> {
+                                            addNewNoteHelper.setStatusCodeValue(
+                                                Optional.ofNullable(-1)
+                                            )
+                                        }
                                     }
 
-                                    selectedStatusItem.value = value
+                                    selectedStatusItem.value = TextFieldValue(value)
                                 },
 
                                 modifier = Modifier
+                                    .padding(5.dp)
                                     .fillMaxWidth()
-                                    .padding(16.dp),
                             )
                         }
 
@@ -359,7 +377,7 @@ fun AddNewNote(
                                 } " +
                                 "${selectedDateOfWrite.value.year}"
                     )
-                    Text(text = "Status: ${selectedStatusItem.value}")
+                    Text(text = "Status: ${selectedStatusItem.value.text}")
                 }
             }
 

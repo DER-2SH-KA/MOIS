@@ -147,84 +147,23 @@ fun AddNewStudySubject(
                                     textFieldName.value = TextFieldValue(it)
                                 },
                                 singleLine = true,
-                                shape = RoundedCornerShape(20.dp),
+                                shape = RoundedCornerShape(5.dp),
                                 modifier = Modifier
+                                    .padding(5.dp)
                                     .fillMaxWidth()
                                     .border(
                                         width = 2.dp,
                                         color = colorResource(R.color.primary_blue),
-                                        shape = RoundedCornerShape(20.dp)
+                                        shape = RoundedCornerShape(5.dp)
                                     )
                             )
 
-                            /*
-                            TextField(
-                                value = textFieldName.value.text,
-                                onValueChange = {
-                                    textFieldName.value = TextFieldValue(it)
-                                },
-                                colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = Color.White,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    focusedTextColor = colorResource(R.color.primary_blue),
-                                    focusedLabelColor = Color.White,
-                                    focusedPrefixColor = Color.White,
-                                    focusedSuffixColor = Color.White,
-                                    focusedPlaceholderColor = colorResource(R.color.primary_blue),
-                                    focusedTrailingIconColor = Color.Black,
-                                    focusedLeadingIconColor = Color.Black,
-                                    focusedSupportingTextColor = Color.Black,
-
-                                    unfocusedContainerColor = colorResource(R.color.background_color),
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                    unfocusedTextColor = Color.Black,
-                                    unfocusedLabelColor = Color.Black,
-                                    unfocusedPrefixColor = Color.White,
-                                    unfocusedSuffixColor = Color.White,
-                                    unfocusedPlaceholderColor = Color.Black,
-                                    unfocusedTrailingIconColor = Color.LightGray,
-                                    unfocusedLeadingIconColor = Color.LightGray,
-                                    unfocusedSupportingTextColor = Color.LightGray,
-
-                                    errorContainerColor = Color.White,
-                                    errorIndicatorColor = Color.Red,
-                                    errorTextColor = colorResource(R.color.error_red),
-                                    errorLabelColor = Color.White,
-                                    errorPrefixColor = Color.White,
-                                    errorSuffixColor = Color.White,
-                                    errorPlaceholderColor = colorResource(R.color.error_red),
-                                    errorTrailingIconColor = colorResource(R.color.error_red),
-                                    errorLeadingIconColor = colorResource(R.color.error_red),
-                                    errorSupportingTextColor = colorResource(R.color.error_red)
-
-                                ),
-                                shape = RoundedCornerShape(20.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .border(
-                                        width = 2.dp,
-                                        color = colorResource(R.color.primary_blue),
-                                        shape = RoundedCornerShape(20.dp)
-                                    )
-                            )*/
                         }
                     }
 
-                    /*
                 // Only for testing.
-                Text(text = "Mark value: ${selectedMarkValue.value}")
-                Text(text = "Mark type: ${selectedMarkType.value}")
-                Text(text = "Subject Value: ${selectedSubjectValue.value}")
-                Text(
-                    text = "Date: ${selectedLocalDate.value.dayOfMonth} " +
-                            "${
-                                GetMonthStringResourceByLocalDate(
-                                    selectedLocalDate, true
-                                )
-                            } " +
-                            "${selectedLocalDate.value.year}"
-                )
-                 */
+                Text(text = "Name: ${textFieldName.value.text}")
+
                 }
             }
 

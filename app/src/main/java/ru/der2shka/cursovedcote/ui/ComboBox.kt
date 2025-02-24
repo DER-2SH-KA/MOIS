@@ -2,11 +2,13 @@ package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 
 import androidx.compose.material.icons.Icons
@@ -67,6 +69,28 @@ fun ComboBoxPseudo(
                 expanded.value = !expanded.value
             }
         ) {
+            TextFieldCustom(
+                value = selectedItem.value,
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "dropdown icon",
+                        tint = colorResource(R.color.primary_blue),
+                        modifier = Modifier.clickable { expanded.value = !expanded.value }
+                    )
+                },
+                modifier = Modifier
+                    .border(
+                        width = 2.dp,
+                        color = colorResource(R.color.primary_blue),
+                        shape = RoundedCornerShape(5.dp)
+                    )
+                    .menuAnchor()
+            )
+            /*
             OutlinedTextField(
                 value = selectedItem.value,
                 onValueChange = {},
@@ -81,7 +105,7 @@ fun ComboBoxPseudo(
                     )
                 },
                 modifier = Modifier.menuAnchor()
-            )
+            )*/
 
             ExposedDropdownMenu(
                 expanded = expanded.value,

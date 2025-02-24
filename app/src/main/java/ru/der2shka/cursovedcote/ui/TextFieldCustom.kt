@@ -65,7 +65,7 @@ fun TextFieldCustom(
 
         unfocusedContainerColor = colorResource(R.color.background_color),
         unfocusedIndicatorColor = Color.Transparent,
-        unfocusedTextColor = Color.Black,
+        unfocusedTextColor = colorResource(R.color.main_text_dark_gray),
         unfocusedLabelColor = Color.Black,
         unfocusedPrefixColor = Color.White,
         unfocusedSuffixColor = Color.White,

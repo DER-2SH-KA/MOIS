@@ -97,7 +97,7 @@ fun DatePickerBox(
                 expanded.value = !expanded.value
             }
     ) {
-        OutlinedTextField(
+        TextFieldCustom(
             value = selectedLocalDateString,
             onValueChange = { },
             readOnly = true,
@@ -115,6 +115,26 @@ fun DatePickerBox(
             },
             modifier = outlinedTextFieldModifier
         )
+
+        /*
+        OutlinedTextField(
+            value = selectedLocalDateString,
+            onValueChange = { },
+            readOnly = true,
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "datepicker icon",
+                    tint = colorResource(R.color.primary_blue),
+                    // Unfortunately, we can tap only on Icon
+                    // to open the datepicker popup
+                    modifier = Modifier.clickable {
+                        expanded.value = !expanded.value
+                    }
+                )
+            },
+            modifier = outlinedTextFieldModifier
+        )*/
 
         if (expanded.value) {
             DatePickerModal(
