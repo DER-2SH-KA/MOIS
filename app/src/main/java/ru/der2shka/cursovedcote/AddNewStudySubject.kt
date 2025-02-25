@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -36,12 +38,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
+import ru.der2shka.cursovedcote.Models.AddNewMarkTypeHelper
 import ru.der2shka.cursovedcote.Models.AddNewStudySubjectHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
@@ -71,15 +76,23 @@ fun AddNewStudySubject(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
-    val addNewStudySubjectHelper = AddNewStudySubjectHelper.getInstance()
+    val addNewMarkTypeHelper = AddNewMarkTypeHelper.getInstance()
 
     // TODO: Create Singleton for it.
     // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
-    val textFieldName = remember {
+    val nameTextField = remember {
         mutableStateOf(
             TextFieldValue(
-                addNewStudySubjectHelper.nameValue
+                addNewMarkTypeHelper.nameValue
+            )
+        )
+    }
+
+    val multiplierTextField = remember {
+        mutableStateOf(
+            TextFieldValue(
+                addNewMarkTypeHelper.multiplierValue.toString()
             )
         )
     }
@@ -118,7 +131,7 @@ fun AddNewStudySubject(
                 ) {
                     // Header Text.
                     ScrollableAnimatedText(
-                        text = stringResource(R.string.add_subject),
+                        text = stringResource(R.string.add_grade_type),
                         textColor = Color.White,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
@@ -161,9 +174,9 @@ fun AddNewStudySubject(
                                 .fillMaxWidth()
                         ) {
                             TextFieldCustom(
-                                value = textFieldName.value.text,
+                                value = nameTextField.value.text,
                                 onValueChange = {
-                                    textFieldName.value = TextFieldValue(it)
+                                    nameTextField.value = TextFieldValue(it)
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -174,7 +187,7 @@ fun AddNewStudySubject(
                                         tint = colorResource(R.color.primary_blue),
                                         modifier = Modifier
                                             .clickable {
-                                                ClearTextField(textFieldName)
+                                                ClearTextField(nameTextField)
                                             }
                                     )
                                 },
@@ -191,8 +204,81 @@ fun AddNewStudySubject(
                         }
                     }
 
-                // Only for testing.
-                Text(text = "Name: ${textFieldName.value.text}")
+                    // Multiplier.
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.4f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.multiplier)}:",
+                                textColor = colorResource(R.color.main_text_dark_gray),
+                                textAlign = TextAlign.Start,
+                                maxLines = 1,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            TextFieldCustom(
+                                value = multiplierTextField.value.text,
+                                onValueChange = {
+                                    multiplierTextField.value = TextFieldValue(it)
+                                },
+                                shape = RoundedCornerShape(5.dp),
+                                placeholder = {
+                                    Text(
+                                        text = "1",
+                                        color = colorResource(R.color.secondary_text_gray),
+                                        textAlign = TextAlign.Start,
+                                        fontSize = font_size_secondary_text,
+                                        fontStyle = FontStyle.Italic,
+                                        lineHeight = line_height_secondary_text
+                                    )
+                                },
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = null,
+                                        tint = colorResource(R.color.primary_blue),
+                                        modifier = Modifier
+                                            .clickable {
+                                                ClearTextField(multiplierTextField)
+                                            }
+                                    )
+                                },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number
+                                ),
+                                singleLine = true,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(5.dp)
+                                    )
+                            )
+
+                        }
+                    }
+
+
+                    // Only for testing.
+                    Text(text = "Name: ${nameTextField.value.text}")
+                    Text(text = "NameH: ${addNewMarkTypeHelper.nameValue}")
+                    Text(text = "Multiplier: ${multiplierTextField.value.text}")
+                    Text(text = "MultiplierH: ${addNewMarkTypeHelper.multiplierValue}")
 
                 }
             }
@@ -206,9 +292,13 @@ fun AddNewStudySubject(
                 // Button to Add.
                 Button(
                     onClick = {
-                        addNewStudySubjectHelper
+                        addNewMarkTypeHelper
                             .setNameValue(
-                                Optional.ofNullable(textFieldName.value.text)
+                                Optional.ofNullable( nameTextField.value.text )
+                            )
+                        addNewMarkTypeHelper
+                            .setMultiplierValue(
+                                Optional.ofNullable( multiplierTextField.value.text.toInt() )
                             )
                     },
 

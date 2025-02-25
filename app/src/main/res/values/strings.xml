@@ -30,6 +30,7 @@
     <string name="grade">Grade</string>
     <string name="grade_type">Grade type</string>
     <string name="subject">Subject</string>
+    <string name="multiplier">Multiplier</string>
 
     <string name="date">Date</string>
     <string name="date_begin">Date begin</string>
@@ -100,6 +101,8 @@
     <!-- Add New Homework -->
     <string name="add_homework">Add homework</string>
 
+    <!-- Add New Mark Type -->
+    <string name="add_grade_type">Add grade type</string>
 
     <!-- Edit Mark Page -->
     <string name="edit_grade">Edit grade</string>

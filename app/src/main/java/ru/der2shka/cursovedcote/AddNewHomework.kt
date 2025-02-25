@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.der2shka.cursovedcote.Models.AddNewHomeworkHelper
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
@@ -49,6 +50,7 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.time.LocalDate
 import java.util.Optional
 
 // TODO: Подобрать цвета и оформить!
@@ -57,14 +59,20 @@ import java.util.Optional
  * **/
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
-fun AddNewNote(
+fun AddNewHomework(
     navHostController: NavHostController
 ) {
     val config = LocalConfiguration.current
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
-    val addNewNoteHelper: AddNewNoteHelper = AddNewNoteHelper.getInstance()
+    val addNewHomeworkHelper = AddNewHomeworkHelper.getInstance()
+
+    val subjectValueList = addNewHomeworkHelper.studySubjectList
+
+    val selectedSubjectValue = remember {
+        mutableStateOf( addNewHomeworkHelper.studySubjectValue )
+    }
 
     val statusList = listOf(
         stringResource(R.string.in_processing),
@@ -76,56 +84,66 @@ fun AddNewNote(
     // Name TextField.
     val nameTextFieldValue = remember {
         mutableStateOf(
-            TextFieldValue( addNewNoteHelper.nameValue )
+            TextFieldValue(addNewHomeworkHelper.nameValue)
         )
     }
 
     // Description TextField.
     val descriptionTextFieldValue = remember {
         mutableStateOf(
-            TextFieldValue( addNewNoteHelper.descriptionValue )
+            TextFieldValue(addNewHomeworkHelper.descriptionValue)
         )
     }
 
     // Day of write.
     val selectedDateOfWrite = remember {
-        mutableStateOf( addNewNoteHelper.dateOfWrite )
+        mutableStateOf(addNewHomeworkHelper.dateOfWrite)
+    }
+
+    // Day begin.
+    val selectedDateBegin = remember {
+        mutableStateOf(addNewHomeworkHelper.dateBegin)
+    }
+
+    // Day end.
+    val selectedDateEnd = remember {
+        mutableStateOf(addNewHomeworkHelper.dateEnd)
     }
 
     val statusCodeMutable = remember {
-        mutableStateOf(addNewNoteHelper.statusCodeValue)
+        mutableStateOf(addNewHomeworkHelper.statusCodeValue)
     }
 
     // Status TextField.
     val selectedStatusItem = remember {
         when (statusCodeMutable.value) {
-            0 -> mutableStateOf( TextFieldValue(statusList.get(0)) )
-            1 -> mutableStateOf( TextFieldValue(statusList.get(1)) )
-            2 -> mutableStateOf( TextFieldValue(statusList.get(2)) )
-            3 -> mutableStateOf( TextFieldValue(statusList.get(3)) )
-            else -> { mutableStateOf(TextFieldValue("None Value")) }
+            0 -> mutableStateOf(TextFieldValue(statusList.get(0)))
+            1 -> mutableStateOf(TextFieldValue(statusList.get(1)))
+            2 -> mutableStateOf(TextFieldValue(statusList.get(2)))
+            3 -> mutableStateOf(TextFieldValue(statusList.get(3)))
+            else -> {
+                mutableStateOf(TextFieldValue("None Value"))
+            }
         }
     }
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
-        ,
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .fillMaxHeight(0.85f)
-            ,
+                .fillMaxHeight(0.85f),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxHeight(0.7f)
-                    .verticalScroll( verticalMainScroll )
-            ){
+                    .verticalScroll(verticalMainScroll)
+            ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
@@ -253,7 +271,7 @@ fun AddNewNote(
                                                 ClearTextField(descriptionTextFieldValue)
                                             }
                                     )
-                                               },
+                                },
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -266,7 +284,47 @@ fun AddNewNote(
                         }
                     }
 
-                    // Choice of date of write.
+                    // Choice of study subject.
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.4f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.subject)}:",
+                                textColor = colorResource(R.color.main_text_dark_gray),
+                                textAlign = TextAlign.Start,
+                                maxLines = 1,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            ComboBoxPseudo(
+                                items = subjectValueList,
+                                selectedItem = selectedSubjectValue,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                ,
+                                onSelect = { value ->
+                                    addNewHomeworkHelper.setStudySubjectValue(Optional.ofNullable(value))
+                                    selectedSubjectValue.value = addNewHomeworkHelper.studySubjectValue
+                                }
+                            )
+                        }
+                    }
+
+                    // Choice of date begin.
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -280,7 +338,7 @@ fun AddNewNote(
                                 .fillMaxWidth(0.4f)
                         ) {
                             ScrollableAnimatedText(
-                                text = "${stringResource(R.string.date)}:",
+                                text = "${stringResource(R.string.date_begin)}:",
                                 textColor = colorResource(R.color.main_text_dark_gray),
                                 textAlign = TextAlign.Start,
                                 maxLines = 1,
@@ -294,7 +352,7 @@ fun AddNewNote(
                                 .fillMaxWidth()
                         ) {
                             DatePickerBox(
-                                selectedLocalDate = selectedDateOfWrite,
+                                selectedLocalDate = selectedDateBegin,
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -302,11 +360,55 @@ fun AddNewNote(
                                         width = 2.dp,
                                         color = colorResource(R.color.primary_blue),
                                         shape = RoundedCornerShape(5.dp)
-                                    )
-                                ,
+                                    ),
                                 onSelect = { localDate ->
                                     // addNewNoteHelper.setDateOfWrite( Optional.ofNullable(localDate) )
-                                    selectedDateOfWrite.value = localDate
+                                    selectedDateBegin.value = localDate
+                                }
+                            )
+                        }
+                    }
+
+                    // Choice of date end.
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Text(text = "Dateo")
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.4f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.date_end)}:",
+                                textColor = colorResource(R.color.main_text_dark_gray),
+                                textAlign = TextAlign.Start,
+                                maxLines = 1,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            DatePickerBox(
+                                selectedLocalDate = selectedDateEnd,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(5.dp)
+                                    ),
+                                onSelect = { localDate ->
+                                    // addNewNoteHelper.setDateOfWrite( Optional.ofNullable(localDate) )
+                                    selectedDateEnd.value = localDate
                                 }
                             )
                         }
@@ -347,30 +449,31 @@ fun AddNewNote(
                                     when (value) {
                                         // In processed.
                                         statusList.get(0) -> {
-                                            addNewNoteHelper.setStatusCodeValue(
+                                            addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(0)
                                             )
                                         }
                                         // Waiting of verification.
                                         statusList.get(1) -> {
-                                            addNewNoteHelper.setStatusCodeValue(
+                                            addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(1)
                                             )
                                         }
                                         // Finished.
                                         statusList.get(2) -> {
-                                            addNewNoteHelper.setStatusCodeValue(
+                                            addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(2)
                                             )
                                         }
                                         // Canceled.
                                         statusList.get(3) -> {
-                                            addNewNoteHelper.setStatusCodeValue(
+                                            addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(3)
                                             )
                                         }
+
                                         else -> {
-                                            addNewNoteHelper.setStatusCodeValue(
+                                            addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(-1)
                                             )
                                         }
@@ -387,12 +490,17 @@ fun AddNewNote(
 
                     }
 
+
                     /*
                     // Only for testing.
                     Text(text = "Name: ${nameTextFieldValue.value.text}")
+                    Text(text = "NameH: ${addNewHomeworkHelper.nameValue}")
                     Text(text = "Description: ${descriptionTextFieldValue.value.text}")
+                    Text(text = "DescriptionH: ${addNewHomeworkHelper.descriptionValue}")
+                    Text(text = "Study Subject: ${selectedSubjectValue.value}")
+                    Text(text = "Study SubjectH: ${addNewHomeworkHelper.studySubjectValue}")
                     Text(
-                        text = "Date: ${selectedDateOfWrite.value.dayOfMonth} " +
+                        text = "Date of write: ${selectedDateOfWrite.value.dayOfMonth} " +
                                 "${
                                     GetMonthStringResourceByLocalDate(
                                         selectedDateOfWrite, true
@@ -400,16 +508,53 @@ fun AddNewNote(
                                 } " +
                                 "${selectedDateOfWrite.value.year}"
                     )
-                    Text(text = "Status: ${selectedStatusItem.value.text}")
                     Text(
-                        text = "Date: ${addNewNoteHelper.dateOfWrite.dayOfMonth} " +
+                        text = "Date of writetH: ${addNewHomeworkHelper.dateOfWrite.dayOfMonth} " +
                                 "${
                                     GetMonthStringResourceByLocalDate(
-                                        mutableStateOf(addNewNoteHelper.dateOfWrite), true
+                                        mutableStateOf(addNewHomeworkHelper.dateOfWrite), true
                                     )
                                 } " +
-                                "${selectedDateOfWrite.value.year}"
+                                "${addNewHomeworkHelper.dateOfWrite.year}"
                     )
+                    Text(
+                        text = "Date Begin: ${selectedDateBegin.value.dayOfMonth} " +
+                                "${
+                                    GetMonthStringResourceByLocalDate(
+                                        selectedDateBegin, true
+                                    )
+                                } " +
+                                "${selectedDateBegin.value.year}"
+                    )
+                    Text(
+                        text = "Date BeginH: ${addNewHomeworkHelper.dateBegin.dayOfMonth} " +
+                                "${
+                                    GetMonthStringResourceByLocalDate(
+                                        mutableStateOf(addNewHomeworkHelper.dateBegin), true
+                                    )
+                                } " +
+                                "${addNewHomeworkHelper.dateBegin.year}"
+                    )
+                    Text(
+                        text = "Date End: ${selectedDateEnd.value.dayOfMonth} " +
+                                "${
+                                    GetMonthStringResourceByLocalDate(
+                                        selectedDateEnd, true
+                                    )
+                                } " +
+                                "${selectedDateEnd.value.year}"
+                    )
+                    Text(
+                        text = "Date EndH: ${addNewHomeworkHelper.dateEnd.dayOfMonth} " +
+                                "${
+                                    GetMonthStringResourceByLocalDate(
+                                        mutableStateOf(addNewHomeworkHelper.dateEnd), true
+                                    )
+                                } " +
+                                "${addNewHomeworkHelper.dateEnd.year}"
+                    )
+                    Text(text = "Status: ${selectedStatusItem.value.text}")
+                    Text(text = "StatusH: ${addNewHomeworkHelper.statusCodeValue}")
                     */
                 }
             }
@@ -423,14 +568,20 @@ fun AddNewNote(
                 // Button to Add.
                 Button(
                     onClick = {
-                        addNewNoteHelper.setNameValue(
-                            Optional.ofNullable( nameTextFieldValue.value.text )
+                        addNewHomeworkHelper.setNameValue(
+                            Optional.ofNullable(nameTextFieldValue.value.text)
                         )
-                        addNewNoteHelper.setDescriptionValue(
-                            Optional.ofNullable( descriptionTextFieldValue.value.text )
+                        addNewHomeworkHelper.setDescriptionValue(
+                            Optional.ofNullable(descriptionTextFieldValue.value.text)
                         )
-                        addNewNoteHelper.setDateOfWrite(
-                            Optional.ofNullable( selectedDateOfWrite.value )
+                        addNewHomeworkHelper.setDateBegin(
+                            Optional.ofNullable( LocalDate.now() )
+                        )
+                        addNewHomeworkHelper.setDateBegin(
+                            Optional.ofNullable(selectedDateBegin.value)
+                        )
+                        addNewHomeworkHelper.setDateEnd(
+                            Optional.ofNullable(selectedDateEnd.value)
                         )
                     },
 
@@ -479,7 +630,7 @@ fun AddNewNote(
                     onClick = {
                         current_page = "general_app"
                         navHostController.navigate(current_page) {
-                            popUpTo("add_new_note") { inclusive = true }
+                            popUpTo("add_new_homework") { inclusive = true }
                         }
                     },
 

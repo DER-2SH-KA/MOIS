@@ -30,6 +30,7 @@
     <string name="grade">Оценка</string>
     <string name="grade_type">Тип оценки</string>
     <string name="subject">Предмет</string>
+    <string name="multiplier">Множитель</string>
 
     <string name="date">Дата</string>
     <string name="date_begin">Дата начала</string>
@@ -100,6 +101,9 @@
 
     <!-- Add New Homework -->
     <string name="add_homework">Добавить домашнее задание</string>
+
+    <!-- Add New Mark Type -->
+    <string name="add_grade_type">Добавить тип оценки</string>
 
     <!-- Edit Mark Page -->
     <string name="edit_grade">Редактировать оценку</string>
