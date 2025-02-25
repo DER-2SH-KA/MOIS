@@ -76,7 +76,7 @@ fun AddNewStudySubject(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
-    val addNewMarkTypeHelper = AddNewMarkTypeHelper.getInstance()
+    val addNewStudySubjectHelper = AddNewStudySubjectHelper.getInstance()
 
     // TODO: Create Singleton for it.
     // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
@@ -84,15 +84,7 @@ fun AddNewStudySubject(
     val nameTextField = remember {
         mutableStateOf(
             TextFieldValue(
-                addNewMarkTypeHelper.nameValue
-            )
-        )
-    }
-
-    val multiplierTextField = remember {
-        mutableStateOf(
-            TextFieldValue(
-                addNewMarkTypeHelper.multiplierValue.toString()
+                addNewStudySubjectHelper.nameValue
             )
         )
     }
@@ -204,81 +196,10 @@ fun AddNewStudySubject(
                         }
                     }
 
-                    // Multiplier.
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth(0.4f)
-                        ) {
-                            ScrollableAnimatedText(
-                                text = "${stringResource(R.string.multiplier)}:",
-                                textColor = colorResource(R.color.main_text_dark_gray),
-                                textAlign = TextAlign.Start,
-                                maxLines = 1,
-                                fontSize = font_size_secondary_text,
-                                lineHeight = line_height_secondary_text,
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            TextFieldCustom(
-                                value = multiplierTextField.value.text,
-                                onValueChange = {
-                                    multiplierTextField.value = TextFieldValue(it)
-                                },
-                                shape = RoundedCornerShape(5.dp),
-                                placeholder = {
-                                    Text(
-                                        text = "1",
-                                        color = colorResource(R.color.secondary_text_gray),
-                                        textAlign = TextAlign.Start,
-                                        fontSize = font_size_secondary_text,
-                                        fontStyle = FontStyle.Italic,
-                                        lineHeight = line_height_secondary_text
-                                    )
-                                },
-                                trailingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.Clear,
-                                        contentDescription = null,
-                                        tint = colorResource(R.color.primary_blue),
-                                        modifier = Modifier
-                                            .clickable {
-                                                ClearTextField(multiplierTextField)
-                                            }
-                                    )
-                                },
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Number
-                                ),
-                                singleLine = true,
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .fillMaxWidth()
-                                    .border(
-                                        width = 2.dp,
-                                        color = colorResource(R.color.primary_blue),
-                                        shape = RoundedCornerShape(5.dp)
-                                    )
-                            )
-
-                        }
-                    }
-
 
                     // Only for testing.
                     Text(text = "Name: ${nameTextField.value.text}")
-                    Text(text = "NameH: ${addNewMarkTypeHelper.nameValue}")
-                    Text(text = "Multiplier: ${multiplierTextField.value.text}")
-                    Text(text = "MultiplierH: ${addNewMarkTypeHelper.multiplierValue}")
+                    Text(text = "NameH: ${addNewStudySubjectHelper.nameValue}")
 
                 }
             }
@@ -292,13 +213,9 @@ fun AddNewStudySubject(
                 // Button to Add.
                 Button(
                     onClick = {
-                        addNewMarkTypeHelper
+                        addNewStudySubjectHelper
                             .setNameValue(
                                 Optional.ofNullable( nameTextField.value.text )
-                            )
-                        addNewMarkTypeHelper
-                            .setMultiplierValue(
-                                Optional.ofNullable( multiplierTextField.value.text.toInt() )
                             )
                     },
 

@@ -13,8 +13,6 @@
     <string name="welcome_phrase_2_secondary_text">Write down your grades in your diary every day!</string>
     <string name="welcome_phrase_3_main_text">See your progress</string>
     <string name="welcome_phrase_3_secondary_text">See the charts and track your study progress!</string>
-    <string name="skip">Skip</string>
-    <string name="finish">Finish</string>
     <string name="title_activity_general_app">GeneralAppActivity</string>
 
     <string name="ok">OK</string>
@@ -22,6 +20,8 @@
     <string name="add">Add</string>
     <string name="back">Back</string>
     <string name="choose">Choose</string>
+    <string name="skip">Skip</string>
+    <string name="finish">Finish</string>
 
     <string name="name">Name</string>
     <string name="description">Description</string>
@@ -88,6 +88,7 @@
     <string name="notes">Notes</string>
     <string name="grades">Grades</string>
     <string name="study_subjects">Study subjects</string>
+    <string name="grade_types">Grade types</string>
 
     <!-- Add New Mark Page -->
     <string name="add_grade">Add grade</string>

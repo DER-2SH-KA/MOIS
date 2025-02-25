@@ -1,2 +1,392 @@
 package ru.der2shka.cursovedcote
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
+import ru.der2shka.cursovedcote.Models.AddNewMarkTypeHelper
+import ru.der2shka.cursovedcote.Models.AddNewStudySubjectHelper
+import ru.der2shka.cursovedcote.Service.ClearTextField
+import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
+import ru.der2shka.cursovedcote.ui.DatePickerBox
+import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.TextFieldCustom
+import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
+import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.time.LocalDate
+import java.util.Date
+import java.util.Optional
+
+// TODO: Подобрать цвета и оформить!
+/**
+ * Page for adding new mark in system.
+ * **/
+@SuppressLint("ResourceAsColor", "UnrememberedMutableState")
+@Composable
+fun AddNewMarkType(
+    navHostController: NavHostController
+) {
+    val config = LocalConfiguration.current
+    val oneBlockHeight = (config.screenHeightDp * 0.2).dp
+    val verticalMainScroll = rememberScrollState(0)
+
+    val addNewMarkTypeHelper = AddNewMarkTypeHelper.getInstance()
+
+    // TODO: Create Singleton for it.
+    // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
+
+    val nameTextField = remember {
+        mutableStateOf(
+            TextFieldValue(
+                addNewMarkTypeHelper.nameValue
+            )
+        )
+    }
+
+    val multiplierTextField = remember {
+        mutableStateOf(
+            TextFieldValue(
+                addNewMarkTypeHelper.multiplierValue.toString()
+            )
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+        //.verticalScroll( verticalMainScroll )
+        ,
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight(0.85f)
+                .fillMaxWidth(0.9f)
+            ,
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.7f)
+                    .verticalScroll( verticalMainScroll )
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(oneBlockHeight.value.dp)
+                        .padding(10.dp)
+                        .background(
+                            color = colorResource(R.color.primary_blue),
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                ) {
+                    // Header Text.
+                    ScrollableAnimatedText(
+                        text = stringResource(R.string.add_grade_type),
+                        textColor = Color.White,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        fontSize = font_size_main_text,
+                        lineHeight = line_height_main_text,
+                        fontWeight = FontWeight.Bold,
+                        textModifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    // Name.
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.4f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.name)}:",
+                                textColor = colorResource(R.color.main_text_dark_gray),
+                                textAlign = TextAlign.Start,
+                                maxLines = 1,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            TextFieldCustom(
+                                value = nameTextField.value.text,
+                                onValueChange = {
+                                    nameTextField.value = TextFieldValue(it)
+                                },
+                                singleLine = true,
+                                shape = RoundedCornerShape(5.dp),
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = null,
+                                        tint = colorResource(R.color.primary_blue),
+                                        modifier = Modifier
+                                            .clickable {
+                                                ClearTextField(nameTextField)
+                                            }
+                                    )
+                                },
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(5.dp)
+                                    )
+                            )
+
+                        }
+                    }
+
+                    // Multiplier.
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.4f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.multiplier)}:",
+                                textColor = colorResource(R.color.main_text_dark_gray),
+                                textAlign = TextAlign.Start,
+                                maxLines = 1,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            TextFieldCustom(
+                                value = multiplierTextField.value.text,
+                                onValueChange = {
+                                    multiplierTextField.value = TextFieldValue(it)
+                                },
+                                shape = RoundedCornerShape(5.dp),
+                                placeholder = {
+                                    Text(
+                                        text = "1",
+                                        color = colorResource(R.color.secondary_text_gray),
+                                        textAlign = TextAlign.Start,
+                                        fontSize = font_size_secondary_text,
+                                        fontStyle = FontStyle.Italic,
+                                        lineHeight = line_height_secondary_text
+                                    )
+                                },
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = null,
+                                        tint = colorResource(R.color.primary_blue),
+                                        modifier = Modifier
+                                            .clickable {
+                                                ClearTextField(multiplierTextField)
+                                            }
+                                    )
+                                },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number
+                                ),
+                                singleLine = true,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(5.dp)
+                                    )
+                            )
+
+                        }
+                    }
+
+
+                    // Only for testing.
+                    Text(text = "Name: ${nameTextField.value.text}")
+                    Text(text = "NameH: ${addNewMarkTypeHelper.nameValue}")
+                    Text(text = "Multiplier: ${multiplierTextField.value.text}")
+                    Text(text = "MultiplierH: ${addNewMarkTypeHelper.multiplierValue}")
+
+                }
+            }
+
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                // Button to Add.
+                Button(
+                    onClick = {
+                        addNewMarkTypeHelper
+                            .setNameValue(
+                                Optional.ofNullable( nameTextField.value.text )
+                            )
+                        addNewMarkTypeHelper
+                            .setMultiplierValue(
+                                Optional.ofNullable( multiplierTextField.value.text.toInt() )
+                            )
+                    },
+
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(
+                            (oneBlockHeight * 0.5f)
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ScrollableAnimatedText(
+                            text = stringResource(R.string.add),
+                            textColor = Color.White,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = line_height_main_text,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+
+                Spacer(
+                    modifier = Modifier.height(10.dp)
+                )
+
+                // Button to Back.
+                Button(
+                    onClick = {
+                        current_page = "general_app"
+                        navHostController.navigate(current_page) {
+                            popUpTo("add_new_study_subject") { inclusive = true }
+                        }
+                    },
+
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(
+                            (oneBlockHeight * 0.5f)
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ScrollableAnimatedText(
+                            text = stringResource(R.string.back),
+                            textColor = Color.White,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = line_height_main_text,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

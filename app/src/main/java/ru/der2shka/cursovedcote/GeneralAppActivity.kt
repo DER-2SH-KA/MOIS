@@ -68,6 +68,7 @@ class GeneralAppActivity : ComponentActivity() {
                     composable(route = "general_app") { GeneralAppActivityMainPage(navHostController) }
                     composable(route = "add_new_note") { AddNewNote(navHostController) }
                     composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController) }
+                    composable(route = "add_new_mark_type") { AddNewMarkType(navHostController) }
                 }
 
             }

@@ -571,6 +571,35 @@ fun GeneralAppPage(
                             shape = RoundedCornerShape(20.0f)
                         )
                 )
+
+                // Grade types.
+                HorizontalGeneralPageItem(
+                    headerText = stringResource(R.string.grade_types),
+                    maxLines = 1,
+                    onItemClick = {
+                        coroutineScope.launch {
+                            pager.scrollToPage(0)
+                        }
+                    },
+                    onPlusClick = {
+                        current_page = "add_new_mark_type"
+                        navHostController.navigate(current_page)
+                    },
+                    onDotsClick = { },
+                    modifier = Modifier
+                        .height( oneBlockHeight * 0.75f )
+                        .fillMaxWidth(0.9f)
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colorStops = arrayOf(
+                                    0.6f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan)
+                                )
+                            )
+                            ,
+                            shape = RoundedCornerShape(20.0f)
+                        )
+                )
             }
         }
     }

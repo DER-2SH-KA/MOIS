@@ -13,8 +13,6 @@
     <string name="welcome_phrase_2_secondary_text">Ежедневно записывайте полученные оценки в свой дневник!</string>
     <string name="welcome_phrase_3_main_text">Смотрите прогресс</string>
     <string name="welcome_phrase_3_secondary_text">Смотрите графики и отслеживайте свой прогресс!</string>
-    <string name="skip">Пропустить</string>
-    <string name="finish">Завершить</string>
     <string name="title_activity_general_app">GeneralAppActivity</string>
 
     <string name="ok">ОК</string>
@@ -22,6 +20,8 @@
     <string name="add">Добавить</string>
     <string name="back">Назад</string>
     <string name="choose">Выбрать</string>
+    <string name="skip">Пропустить</string>
+    <string name="finish">Завершить</string>
 
     <string name="name">Название</string>
     <string name="description">Описание</string>
@@ -88,6 +88,7 @@
     <string name="notes">Записи</string>
     <string name="grades">Оценки</string>
     <string name="study_subjects">Учебные предметы</string>
+    <string name="grade_types">Типы оценок</string>
 
 
     <!-- Add New Mark Page -->
