@@ -90,7 +90,8 @@ fun ViewListOfNotes(navHostController: NavHostController) {
                     fontSize = font_size_main_text,
                     lineHeight = line_height_main_text,
                     fontWeight = FontWeight.Bold,
-                    textModifier = Modifier.fillMaxWidth()
+                    textModifier = Modifier
+                        .fillMaxWidth()
                 )
             }
 

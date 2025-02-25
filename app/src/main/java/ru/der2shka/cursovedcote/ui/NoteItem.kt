@@ -84,6 +84,7 @@ fun NoteItem(
                 Box(
                     contentAlignment = Alignment.TopStart,
                     modifier = Modifier
+                        .padding(20.dp, 0.dp, 0.dp, 0.dp)
                         .fillMaxWidth()
                 ) {
                     ScrollableAnimatedText(
