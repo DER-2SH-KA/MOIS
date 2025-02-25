@@ -45,7 +45,7 @@ import java.time.LocalDate
  * **/
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ViewListOfNotes(navHostController: NavHostController) {
+fun ViewListOfHomeworks(navHostController: NavHostController) {
     val context = LocalContext.current
     val config = LocalConfiguration.current
 
@@ -83,7 +83,7 @@ fun ViewListOfNotes(navHostController: NavHostController) {
             ) {
                 // Header Text.
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.notes),
+                    text = stringResource(R.string.homeworks),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
