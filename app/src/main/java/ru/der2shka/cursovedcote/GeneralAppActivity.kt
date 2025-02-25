@@ -111,7 +111,7 @@ fun GeneralAppActivityMainPage(
                     }
 
                     1 -> {
-                        AbobaTestPage("1")
+                        ViewListOfHomeworks(navHostController)
                     }
 
                     2 -> {

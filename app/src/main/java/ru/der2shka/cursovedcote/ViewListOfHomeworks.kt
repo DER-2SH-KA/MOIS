@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.der2shka.cursovedcote.ui.HomeworkItem
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
@@ -101,44 +102,24 @@ fun ViewListOfHomeworks(navHostController: NavHostController) {
                     .fillMaxHeight()
                     .verticalScroll( contentVScroll )
             ) {
-                NoteItem(
+                HomeworkItem(
                     navHostController = navHostController,
-                    name = "Note 1 (really long text, yeah? YEAH? Oh noo... NOOOOO!)",
-                    description = "Description of note Description of note Description of note Description of note Description of note Description of note Description of note Description of note Description of note Description of note Description of note",
-                    localDate = LocalDate.of(2025, 2, 12),
+                    name = "Сделать ПР9",
+                    description = "Функции и роли",
+                    studySubjectId_string = "ТРиЗБД",
+                    localDateBegin = LocalDate.of(2025, 2, 12),
+                    localDateEnd = LocalDate.of(2025, 2, 24),
+                    statusIndex = 4
+                )
+
+                HomeworkItem(
+                    navHostController = navHostController,
+                    name = "Сделать ЛР3",
+                    description = "Кореляционно-регрессионный анализ. Обязательно в Word и таблицы Excel!",
+                    studySubjectId_string = "Математическое моделирование",
+                    localDateBegin = LocalDate.of(2025, 2, 17),
+                    localDateEnd = LocalDate.of(2025, 2, 28),
                     statusIndex = 0
-                )
-
-                NoteItem(
-                    navHostController = navHostController,
-                    name = "Note 2 (really long text, yeah? YEAH? Oh noo... NOOOOO!)",
-                    description = "Description of note 2",
-                    localDate = LocalDate.of(2025, 2, 12),
-                    statusIndex = 2
-                )
-
-                NoteItem(
-                    navHostController = navHostController,
-                    name = "Note 3",
-                    description = "Description of note 3",
-                    localDate = LocalDate.of(2025, 2, 15),
-                    statusIndex = 1
-                )
-
-                NoteItem(
-                    navHostController = navHostController,
-                    name = "Перевернуть матрас",
-                    description = "Перевернуть матрас у кровати, а то уже больше 3 месяцев не переворачивал",
-                    localDate = LocalDate.of(2025, 2, 25),
-                    statusIndex = 0
-                )
-
-                NoteItem(
-                    navHostController = navHostController,
-                    name = "Купить тетрадь для БЖД",
-                    description = "",
-                    localDate = LocalDate.of(2025, 2, 22),
-                    statusIndex = 3
                 )
             }
         }

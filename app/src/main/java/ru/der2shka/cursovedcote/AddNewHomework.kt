@@ -78,7 +78,8 @@ fun AddNewHomework(
         stringResource(R.string.in_processing),
         stringResource(R.string.waiting_of_verification),
         stringResource(R.string.finished),
-        stringResource(R.string.canceled)
+        stringResource(R.string.canceled),
+        stringResource(R.string.expired)
     )
 
     // Name TextField.
@@ -121,6 +122,7 @@ fun AddNewHomework(
             1 -> mutableStateOf(TextFieldValue(statusList.get(1)))
             2 -> mutableStateOf(TextFieldValue(statusList.get(2)))
             3 -> mutableStateOf(TextFieldValue(statusList.get(3)))
+            4 -> mutableStateOf(TextFieldValue(statusList.get(4)))
             else -> {
                 mutableStateOf(TextFieldValue("None Value"))
             }

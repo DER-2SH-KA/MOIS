@@ -72,7 +72,8 @@ fun HomeworkItem(
         stringResource(R.string.in_processing),
         stringResource(R.string.waiting_of_verification),
         stringResource(R.string.finished),
-        stringResource(R.string.canceled)
+        stringResource(R.string.canceled),
+        stringResource(R.string.expired)
     )
 
     Box(
@@ -93,6 +94,7 @@ fun HomeworkItem(
                 1 -> colorResource(R.color.warning_yellow)
                 2 -> colorResource(R.color.successful_green)
                 3 -> colorResource(R.color.error_red)
+                4 -> colorResource(R.color.error_red)
                 else -> colorResource(R.color.additional_purple)
             }
 

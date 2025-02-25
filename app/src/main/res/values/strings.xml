@@ -40,6 +40,7 @@
     <string name="finished">Finished</string>
     <string name="waiting_of_verification">Waiting of verification</string>
     <string name="canceled">Canceled</string>
+    <string name="expired">Expired</string>
 
     <!-- GeneralAppActivity -->
     <string name="monday_full_name">Monday</string>
