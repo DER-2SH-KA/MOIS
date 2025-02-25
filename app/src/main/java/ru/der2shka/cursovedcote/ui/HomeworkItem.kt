@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -220,7 +221,10 @@ fun HomeworkItem(
                         contentAlignment = Alignment.CenterStart,
                         modifier = Modifier
                             .fillMaxWidth()
-                        // .background( Color.Yellow )
+                            .background(
+                                color = colorResource(R.color.background_color),
+                                shape = RoundedCornerShape(10.dp)
+                            )
                     ) {
                         ScrollableAnimatedText(
                             text = "${statusList.get(statusIndex)}",
@@ -230,7 +234,9 @@ fun HomeworkItem(
                             lineHeight = line_height_secondary_text,
                             maxLines = 1,
                             containterModifier = Modifier.fillMaxWidth(),
-                            textModifier = Modifier.fillMaxWidth()
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
                         )
                     }
                 }

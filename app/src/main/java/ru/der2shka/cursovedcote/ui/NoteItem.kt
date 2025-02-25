@@ -1,12 +1,14 @@
 package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -150,7 +152,10 @@ fun NoteItem(
                         contentAlignment = Alignment.CenterStart,
                         modifier = Modifier
                             .fillMaxWidth()
-                        // .background( Color.Yellow )
+                            .background(
+                                color = colorResource(R.color.background_color),
+                                shape = RoundedCornerShape(10.dp)
+                            )
                     ) {
                         ScrollableAnimatedText(
                             text = "${statusList.get(statusIndex)}",
@@ -160,7 +165,9 @@ fun NoteItem(
                             lineHeight = line_height_secondary_text,
                             maxLines = 1,
                             containterModifier = Modifier.fillMaxWidth(),
-                            textModifier = Modifier.fillMaxWidth()
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
                         )
                     }
                 }
