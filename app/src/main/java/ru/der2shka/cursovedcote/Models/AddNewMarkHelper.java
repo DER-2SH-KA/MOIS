@@ -1,9 +1,12 @@
 package ru.der2shka.cursovedcote.Models;
 
+import static ru.der2shka.cursovedcote.ForTesting.TestingVariables.markTypeTestList;
+import static ru.der2shka.cursovedcote.ForTesting.TestingVariables.markValueTestList;
+import static ru.der2shka.cursovedcote.ForTesting.TestingVariables.studySubjectTestList;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -155,10 +158,8 @@ public class AddNewMarkHelper {
         if (markValueList.isEmpty()) {
             setMarkValueList(
                     Optional.ofNullable(
-                            new ArrayList(
-                                // TODO: Change it to Service which get it collection from DB.
-                                Arrays.asList("5", "4", "3", "2", "1")
-                        )
+                            // TODO: Change it to Service which get it collection from DB.
+                            markValueTestList
                     )
             );
             setCurrentMarkValue( Optional.ofNullable(getMarkValueList().get(0)) );
@@ -185,18 +186,8 @@ public class AddNewMarkHelper {
         if (markTypeList.isEmpty()) {
             setMarkTypeList(
                     Optional.ofNullable(
-                        // TODO: Change it to Service which get it collection from DB.
-                        new ArrayList(
-                                Arrays.asList(
-                                        "Работа на уроке",
-                                        "ДЗ",
-                                        "ПР",
-                                        "СМ",
-                                        "КР",
-                                        "ИР",
-                                        "Экзамен"
-                                )
-                        )
+                            // TODO: Change it to Service which get it collection from DB.
+                            markTypeTestList
                     )
             );
             setCurrentMarkType( Optional.ofNullable(getMarkTypeList().get(0)) );
@@ -224,15 +215,7 @@ public class AddNewMarkHelper {
             setStudySubjectList(
                     Optional.ofNullable(
                         // TODO: Change it to Service which get it collection from DB.
-                        new ArrayList(
-                                Arrays.asList(
-                                        "Математика",
-                                        "ОАиП",
-                                        "ТРиЗБД",
-                                        "ЭВМ",
-                                        "РМП"
-                                )
-                        )
+                        studySubjectTestList
                     )
             );
             setCurrentStudySubject( Optional.ofNullable(getStudySubjectList().get(0)) );

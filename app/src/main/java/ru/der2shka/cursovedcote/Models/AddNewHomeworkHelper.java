@@ -1,5 +1,7 @@
 package ru.der2shka.cursovedcote.Models;
 
+import static ru.der2shka.cursovedcote.ForTesting.TestingVariables.studySubjectTestList;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -221,15 +223,7 @@ public class AddNewHomeworkHelper {
             setStudySubjectList(
                     Optional.ofNullable(
                             // TODO: Change it to Service which get it collection from DB.
-                            new ArrayList(
-                                    Arrays.asList(
-                                            "Математика",
-                                            "ОАиП",
-                                            "ТРиЗБД",
-                                            "ЭВМ",
-                                            "РМП"
-                                    )
-                            )
+                            studySubjectTestList
                     )
             );
             setStudySubjectValue( Optional.ofNullable(getStudySubjectList().get(0)) );
