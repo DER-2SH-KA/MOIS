@@ -104,36 +104,36 @@ fun AddNewStudySubject(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Header Text.
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(oneBlockHeight.value.dp)
+                    .padding(10.dp)
+                    .background(
+                        color = colorResource(R.color.primary_blue),
+                        shape = RoundedCornerShape(20.dp)
+                    )
+            ) {
+                ScrollableAnimatedText(
+                    text = stringResource(R.string.add_grade_type),
+                    textColor = Color.White,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    fontSize = font_size_main_text,
+                    lineHeight = line_height_main_text,
+                    fontWeight = FontWeight.Bold,
+                    textModifier = Modifier.fillMaxWidth()
+                )
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.7f)
                     .verticalScroll( verticalMainScroll )
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(oneBlockHeight.value.dp)
-                        .padding(10.dp)
-                        .background(
-                            color = colorResource(R.color.primary_blue),
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                ) {
-                    // Header Text.
-                    ScrollableAnimatedText(
-                        text = stringResource(R.string.add_grade_type),
-                        textColor = Color.White,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        fontSize = font_size_main_text,
-                        lineHeight = line_height_main_text,
-                        fontWeight = FontWeight.Bold,
-                        textModifier = Modifier.fillMaxWidth()
-                    )
-                }
-
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -197,9 +197,12 @@ fun AddNewStudySubject(
                     }
 
 
+                    /*
                     // Only for testing.
                     Text(text = "Name: ${nameTextField.value.text}")
                     Text(text = "NameH: ${addNewStudySubjectHelper.nameValue}")
+
+                     */
 
                 }
             }

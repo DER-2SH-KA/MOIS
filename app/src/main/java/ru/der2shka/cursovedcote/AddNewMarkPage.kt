@@ -93,11 +93,7 @@ fun AddNewMarkPage(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight(0.7f)
-                    .verticalScroll( verticalMainScroll )
-            ){
+            // Header Text.
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -109,7 +105,6 @@ fun AddNewMarkPage(
                         shape = RoundedCornerShape(20.dp)
                     )
             ) {
-                // Header Text.
                 ScrollableAnimatedText(
                     text = stringResource(R.string.add_grade),
                     textColor = Color.White,
@@ -122,6 +117,11 @@ fun AddNewMarkPage(
                 )
             }
 
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight(0.7f)
+                    .verticalScroll( verticalMainScroll )
+            ) {
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
