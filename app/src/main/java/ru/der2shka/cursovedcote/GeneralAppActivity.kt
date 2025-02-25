@@ -119,7 +119,7 @@ fun GeneralAppActivityMainPage(
                     }
 
                     3 -> {
-                        AbobaTestPage("3")
+                        ViewListOfNotes(navHostController)
                     }
 
                     4 -> {
