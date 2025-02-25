@@ -73,9 +73,8 @@ fun ViewListOfNotes(navHostController: NavHostController) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(oneBlockHeight.value.dp)
-                    .padding(10.dp)
+                    .fillMaxWidth(0.9f)
+                    .height((oneBlockHeight.value * 0.8).dp)
                     .background(
                         color = colorResource(R.color.primary_blue),
                         shape = RoundedCornerShape(20.dp)

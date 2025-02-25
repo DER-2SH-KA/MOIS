@@ -1,5 +1,6 @@
 package ru.der2shka.cursovedcote.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,13 +32,15 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun NoteItem(
     navHostController: NavHostController,
     name: String = "Name",
     description: String = "Description",
     localDate: LocalDate = LocalDate.MIN,
-    statusIndex: Int = -1
+    statusIndex: Int = -1,
+    modifier: Modifier = Modifier
 ) {
     val dateString = "${localDate.dayOfMonth} " +
             "${
@@ -55,7 +58,7 @@ fun NoteItem(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .padding(0.dp, 10.dp, 0.dp, 10.dp)
     ) {
         // Note Card Item.
@@ -100,6 +103,7 @@ fun NoteItem(
                     )
                 }
 
+                // Description.
                 Text(
                     text = description,
                     color = Color.White,
@@ -110,6 +114,7 @@ fun NoteItem(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
+                        .padding(0.dp, 10.dp)
                         .fillMaxWidth()
                 )
 

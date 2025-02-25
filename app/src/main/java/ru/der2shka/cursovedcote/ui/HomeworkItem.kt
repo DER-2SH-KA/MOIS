@@ -45,7 +45,8 @@ fun HomeworkItem(
     // localDateOfWrite: LocalDate = LocalDate.MIN,
     localDateBegin: LocalDate = LocalDate.MIN,
     localDateEnd: LocalDate = LocalDate.MAX,
-    statusIndex: Int = -1
+    statusIndex: Int = -1,
+    modifier: Modifier = Modifier
 ) {
     /*val dateOfWriteString = "${localDateOfWrite.dayOfMonth} " +
             "${
@@ -78,7 +79,7 @@ fun HomeworkItem(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .padding(0.dp, 10.dp, 0.dp, 10.dp)
     ) {
         // Note Card Item.
@@ -143,6 +144,7 @@ fun HomeworkItem(
                     )
                 }
 
+                // Description.
                 Text(
                     text = description,
                     color = Color.White,
@@ -153,6 +155,7 @@ fun HomeworkItem(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
+                        .padding(0.dp, 10.dp)
                         .fillMaxWidth()
                 )
 
@@ -169,7 +172,7 @@ fun HomeworkItem(
                         horizontalAlignment = Alignment.Start,
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
-                            .background(Color.Red)
+                            //.background(Color.Red)
                     ) {
                         // Date Begin.
                         Box(
@@ -195,7 +198,7 @@ fun HomeworkItem(
                         Box(
                             contentAlignment = Alignment.CenterStart,
                             modifier = Modifier
-                                .fillMaxWidth(0.5f)
+                                .fillMaxWidth()
                             // .background( Color.Red )
                         ) {
                             ScrollableAnimatedText(
