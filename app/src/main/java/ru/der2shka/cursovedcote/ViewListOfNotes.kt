@@ -113,7 +113,7 @@ fun ViewListOfNotes(navHostController: NavHostController) {
                     name = "Note 2 (really long text, yeah? YEAH? Oh noo... NOOOOO!)",
                     description = "Description of note 2",
                     localDate = LocalDate.of(2025, 2, 12),
-                    statusIndex = 0
+                    statusIndex = 2
                 )
 
                 NoteItem(
