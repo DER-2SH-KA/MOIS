@@ -126,6 +126,7 @@ fun HomeworkItem(
                     )
                 }
 
+                // Study subject.
                 Box(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier
@@ -136,9 +137,11 @@ fun HomeworkItem(
                         textColor = Color.White,
                         textAlign = TextAlign.Start,
                         fontSize = font_size_middle_size_text,
+                        fontStyle = FontStyle.Italic,
                         fontWeight = FontWeight.Medium,
                         lineHeight = line_height_middle_size_text,
                         containterModifier = Modifier
+                            .padding(10.dp, 0.dp, 0.dp, 0.dp)
                             .fillMaxWidth(),
                         textModifier = Modifier
                             .fillMaxWidth()

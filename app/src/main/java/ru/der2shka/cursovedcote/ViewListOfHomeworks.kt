@@ -120,6 +120,16 @@ fun ViewListOfHomeworks(navHostController: NavHostController) {
                     localDateEnd = LocalDate.of(2025, 2, 28),
                     statusIndex = 0
                 )
+
+                HomeworkItem(
+                    navHostController = navHostController,
+                    name = "Сделать ПР 13",
+                    description = "Создание PDF документов из UI.",
+                    studySubjectId_string = "РМП",
+                    localDateBegin = LocalDate.of(2025, 2, 17),
+                    localDateEnd = LocalDate.of(2025, 2, 22),
+                    statusIndex = 2
+                )
             }
         }
     }
