@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -31,8 +32,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Service.SettingsDataStore
 import ru.der2shka.cursovedcote.Service.setAppTheme
+import ru.der2shka.cursovedcote.Service.setLocaleForApp
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
@@ -52,7 +55,7 @@ fun ChooseAppThemeFromStartAppPage(
     val context = LocalContext.current
     val config = LocalConfiguration.current
     val widthForPicture = config.screenWidthDp * 0.6f
-    // val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -120,8 +123,22 @@ fun ChooseAppThemeFromStartAppPage(
                     /* TODO: Обязательно добавить выбранную
                      *  цветовую тему в SharedPreferences!
                     * */
-                    setAppTheme(context, true)
-                    GoToWelcomePhrasesPage(navHostController)
+
+                    coroutineScope.launch {
+                        var currAppTheme =  false
+
+                        settingsDataStore.saveAppThemeData(true)
+
+                        settingsDataStore.getAppThemeData.collect {
+                            currAppTheme = it
+
+                            setAppTheme(context, currAppTheme)
+                            GoToWelcomePhrasesPage(navHostController)
+                        }
+                    }
+
+                    // setAppTheme(context, true)
+                    // GoToWelcomePhrasesPage(navHostController)
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                 shape = RoundedCornerShape(20.dp),
@@ -164,8 +181,22 @@ fun ChooseAppThemeFromStartAppPage(
                     /* TODO: Обязательно добавить выбранную
                      *  цветовую тему в SharedPreferences!
                     * */
-                    setAppTheme(context, false)
-                    GoToWelcomePhrasesPage(navHostController)
+
+                    coroutineScope.launch {
+                        var currAppTheme =  false
+
+                        settingsDataStore.saveAppThemeData(false)
+
+                        settingsDataStore.getAppThemeData.collect {
+                            currAppTheme = it
+
+                            setAppTheme(context, currAppTheme)
+                            GoToWelcomePhrasesPage(navHostController)
+                        }
+                    }
+
+                    // setAppTheme(context, false)
+                    // GoToWelcomePhrasesPage(navHostController)
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                 shape = RoundedCornerShape(20.dp),

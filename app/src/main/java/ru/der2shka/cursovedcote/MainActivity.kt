@@ -53,33 +53,29 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Service.SettingsDataStore
 
 var current_page = "splash_screen_page"
-
-val Context.dataStore: DataStore<Preferences> by
-        preferencesDataStore(name = "settings")
-
-val LANGUAGE_KEY= stringPreferencesKey("lang")
-val THEME_KEY = stringPreferencesKey("theme")
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var settingsDataStore: SettingsDataStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         settingsDataStore = SettingsDataStore(applicationContext)
-
-        installSplashScreen()
 
         // Fix portait orientation for activity.
          this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -118,7 +114,7 @@ fun MyAppMainWindow(
                     )
             ) {
                 composable(route = "splash_screen_page") {
-                    SplashScreenPage(navController)
+                    SplashScreenPage(navController, settingsDataStore)
                 }
 
                 composable(route = "choose_language_from_start_page") {

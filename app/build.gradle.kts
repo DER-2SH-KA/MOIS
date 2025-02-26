@@ -60,6 +60,9 @@ dependencies {
     // Data store preferences library.
     implementation(libs.androidx.datastore)
 
+    // Lifecycle.
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

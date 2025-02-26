@@ -20,18 +20,26 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Service.SettingsDataStore
+import ru.der2shka.cursovedcote.Service.setAppTheme
+import ru.der2shka.cursovedcote.Service.setLocaleForApp
 import ru.der2shka.cursovedcote.ui.BottomMenu
 import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
@@ -41,6 +49,9 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
  * General Activity for App with actions.
  * **/
 class GeneralAppActivity : ComponentActivity() {
+
+    private lateinit var settingsDataStore: SettingsDataStore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,8 +61,11 @@ class GeneralAppActivity : ComponentActivity() {
         // Fix portait orientation for activity.
         this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+        settingsDataStore = SettingsDataStore(applicationContext)
+
         setContent {
             CursovedCotETheme {
+
                 val navHostController = rememberNavController()
 
                 NavHost(

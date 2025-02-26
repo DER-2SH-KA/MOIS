@@ -1,6 +1,8 @@
 package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -30,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +40,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import ru.der2shka.cursovedcote.Service.SettingsDataStore
+import ru.der2shka.cursovedcote.Service.setAppTheme
+import ru.der2shka.cursovedcote.Service.setLocaleForApp
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -47,9 +54,11 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 @SuppressLint("ResourceAsColor")
 @Composable
 fun SplashScreenPage(
-    navController: NavHostController
+    navController: NavHostController,
+    settingsDataStore: SettingsDataStore
 ) {
-    val config = LocalConfiguration.current;
+    val config = LocalConfiguration.current
+    val context = LocalContext.current
     val width = (config.screenWidthDp * 0.5f).dp
 
     // Background of splash screen with icon.
@@ -110,7 +119,47 @@ fun SplashScreenPage(
             visibleIconState.value = false
             delay(400)
 
-            GoToWelcomePhrases(navController)
+            var currLang = "none"
+            var currTheme = false
+
+            /*settingsDataStore.getLanguageData.collect {
+                currLang = it
+
+                // If language was setted.
+                if (currLang.equals("none")) {
+                    currLang = currLang
+                    GoToChooseLanguage(navController)
+                } else {
+                    current_page = "general_page"
+
+                    setLocaleForApp(context, it)
+
+                    val intent = Intent(context, GeneralAppActivity::class.java)
+                    val activity = (context as? Activity)
+
+                    context.startActivity(intent)
+                    activity?.finish()
+                }
+            }*/
+
+            currLang = settingsDataStore.getLanguageData.first()
+            currTheme = settingsDataStore.getAppThemeData.first()
+
+            // If language was setted.
+            if (currLang.equals("none")) {
+                GoToChooseLanguage(navController)
+            } else {
+                current_page = "general_page"
+
+                setLocaleForApp(context, currLang)
+                setAppTheme(context, currTheme)
+
+                val intent = Intent(context, GeneralAppActivity::class.java)
+                val activity = (context as? Activity)
+
+                context.startActivity(intent)
+                activity?.finish()
+            }
         }
 
         Box(
@@ -133,7 +182,7 @@ fun SplashScreenPage(
     }
 }
 
-private fun GoToWelcomePhrases(navController: NavHostController) {
+private fun GoToChooseLanguage(navController: NavHostController) {
     current_page = "choose_language_from_start_page"
     navController.navigate(current_page) {
         popUpTo("splash_screen_page") { inclusive = true }

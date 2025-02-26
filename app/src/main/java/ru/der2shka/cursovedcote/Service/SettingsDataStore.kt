@@ -1,12 +1,20 @@
 package ru.der2shka.cursovedcote.Service
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.der2shka.cursovedcote.LANGUAGE_KEY
-import ru.der2shka.cursovedcote.THEME_KEY
-import ru.der2shka.cursovedcote.dataStore
+
+val Context.dataStore: DataStore<Preferences> by
+preferencesDataStore(name = "settings")
+
+val LANGUAGE_KEY= stringPreferencesKey("lang")
+val THEME_KEY = booleanPreferencesKey("theme")
 
 class SettingsDataStore(
     private val context: Context
@@ -18,7 +26,7 @@ class SettingsDataStore(
         }
     }
 
-    suspend fun saveAppThemeData(value: String) {
+    suspend fun saveAppThemeData(value: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[THEME_KEY] = value
         }
@@ -29,9 +37,9 @@ class SettingsDataStore(
             preferences[LANGUAGE_KEY] ?: "none"
         }
 
-    val getAppThemeData: Flow<String> = context.dataStore.data
+    val getAppThemeData: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
-            preferences[THEME_KEY] ?: "none"
+            preferences[THEME_KEY] ?: true
         }
 
 }

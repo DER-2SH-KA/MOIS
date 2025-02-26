@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -32,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Service.SettingsDataStore
 import ru.der2shka.cursovedcote.Service.setLocaleForApp
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
@@ -54,7 +57,7 @@ fun ChooseLanguageFromStartAppPage(
     val context = LocalContext.current
     val config = LocalConfiguration.current
     val widthForPicture = config.screenWidthDp * 0.6f
-    // val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -123,10 +126,20 @@ fun ChooseLanguageFromStartAppPage(
                     *   язык в SharedPreferences!
                     * */
 
+                    coroutineScope.launch {
+                        var currLang =  ""
 
+                        settingsDataStore.saveLanguageData("en")
 
-                    setLocaleForApp(context, "en")
-                    GoToWelcomePhrasesPage(navHostController)
+                        settingsDataStore.getLanguageData.collect {
+                            currLang = it
+
+                            setLocaleForApp(context, currLang)
+                            GoToChooseAppThemePage(navHostController)
+                        }
+                    }
+
+                    // setLocaleForApp(context, "en")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                 shape = RoundedCornerShape(20.dp),
@@ -164,8 +177,18 @@ fun ChooseLanguageFromStartAppPage(
                         /* TODO: Обязательно добавить выбранный
                         *   язык в SharedPreferences!
                         * */
-                        setLocaleForApp(context, "ru")
-                        GoToWelcomePhrasesPage(navHostController)
+                        coroutineScope.launch {
+                            var currLang =  ""
+
+                            settingsDataStore.saveLanguageData("ru")
+
+                            settingsDataStore.getLanguageData.collect {
+                                currLang = it
+
+                                setLocaleForApp(context, currLang)
+                                GoToChooseAppThemePage(navHostController)
+                            }
+                        }
                     }
                 ,
                 textModifier = Modifier
@@ -182,7 +205,7 @@ fun ChooseLanguageFromStartAppPage(
     }
 }
 
-private fun GoToWelcomePhrasesPage(navHostController: NavHostController) {
+private fun GoToChooseAppThemePage(navHostController: NavHostController) {
     current_page = "choose_app_theme_from_start_page"
     navHostController.navigate(current_page) {
         popUpTo("choose_language_from_start_page") {
