@@ -122,6 +122,25 @@ fun SplashScreenPage(
             var currLang = "none"
             var currTheme = false
 
+            currLang = settingsDataStore.getLanguageData.first()
+            currTheme = settingsDataStore.getAppThemeData.first()
+
+            // If language was setted.
+            if (currLang.equals("none")) {
+                GoToChooseLanguage(navController)
+            } else {
+                current_page = "general_page"
+
+                setLocaleForApp(context, currLang)
+                setAppTheme(context, currTheme)
+
+                val intent = Intent(context, GeneralAppActivity::class.java)
+                val activity = (context as? Activity)
+
+                context.startActivity(intent)
+                activity?.finish()
+            }
+
             /*settingsDataStore.getLanguageData.collect {
                 currLang = it
 
@@ -141,25 +160,6 @@ fun SplashScreenPage(
                     activity?.finish()
                 }
             }*/
-
-            currLang = settingsDataStore.getLanguageData.first()
-            currTheme = settingsDataStore.getAppThemeData.first()
-
-            // If language was setted.
-            if (currLang.equals("none")) {
-                GoToChooseLanguage(navController)
-            } else {
-                current_page = "general_page"
-
-                setLocaleForApp(context, currLang)
-                setAppTheme(context, currTheme)
-
-                val intent = Intent(context, GeneralAppActivity::class.java)
-                val activity = (context as? Activity)
-
-                context.startActivity(intent)
-                activity?.finish()
-            }
         }
 
         Box(

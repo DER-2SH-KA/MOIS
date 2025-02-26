@@ -36,6 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Service.SettingsDataStore
 import ru.der2shka.cursovedcote.Service.setAppTheme
@@ -58,10 +59,10 @@ class GeneralAppActivity : ComponentActivity() {
 
         current_page = "general_app"
 
+        settingsDataStore = SettingsDataStore(applicationContext)
+
         // Fix portait orientation for activity.
         this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-        settingsDataStore = SettingsDataStore(applicationContext)
 
         setContent {
             CursovedCotETheme {
@@ -79,7 +80,7 @@ class GeneralAppActivity : ComponentActivity() {
                 ) {
                     composable(route = "add_new_grade") { AddNewMarkPage(navHostController) }
                     composable(route = "add_new_homework") { AddNewHomework(navHostController) }
-                    composable(route = "general_app") { GeneralAppActivityMainPage(navHostController) }
+                    composable(route = "general_app") { GeneralAppActivityMainPage(navHostController, settingsDataStore) }
                     composable(route = "add_new_note") { AddNewNote(navHostController) }
                     composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController) }
                     composable(route = "add_new_mark_type") { AddNewMarkType(navHostController) }
@@ -92,7 +93,8 @@ class GeneralAppActivity : ComponentActivity() {
 
 @Composable
 fun GeneralAppActivityMainPage(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    settingsDataStore: SettingsDataStore
 ) {
     val horizontalPager = rememberPagerState(initialPage = 2, pageCount = { 5 })
 
@@ -137,7 +139,7 @@ fun GeneralAppActivityMainPage(
                     }
 
                     4 -> {
-                        AbobaTestPage("4")
+                        ProfileSettingsPage(navHostController, settingsDataStore)
                     }
                 }
             }
