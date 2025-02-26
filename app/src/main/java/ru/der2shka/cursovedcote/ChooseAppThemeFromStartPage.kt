@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.der2shka.cursovedcote.Service.SettingsDataStore
 import ru.der2shka.cursovedcote.Service.setAppTheme
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
@@ -45,7 +46,8 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 @SuppressLint("ResourceAsColor")
 @Composable
 fun ChooseAppThemeFromStartAppPage(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    settingsDataStore: SettingsDataStore
 ) {
     val context = LocalContext.current
     val config = LocalConfiguration.current

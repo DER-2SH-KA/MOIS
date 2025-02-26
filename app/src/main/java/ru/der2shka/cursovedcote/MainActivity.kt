@@ -1,6 +1,7 @@
 package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -48,26 +49,43 @@ import androidx.compose.ui.unit.dp
 import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import ru.der2shka.cursovedcote.Service.SettingsDataStore
 
 var current_page = "splash_screen_page"
 
+val Context.dataStore: DataStore<Preferences> by
+        preferencesDataStore(name = "settings")
+
+val LANGUAGE_KEY= stringPreferencesKey("lang")
+val THEME_KEY = stringPreferencesKey("theme")
+
 class MainActivity : ComponentActivity() {
+
+    private lateinit var settingsDataStore: SettingsDataStore
+
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        installSplashScreen()
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        settingsDataStore = SettingsDataStore(applicationContext)
+
+        installSplashScreen()
 
         // Fix portait orientation for activity.
          this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
-            MyAppMainWindow()
+            MyAppMainWindow(settingsDataStore)
         }
     }
 }
@@ -78,7 +96,9 @@ class MainActivity : ComponentActivity() {
  * **/
 @SuppressLint("ResourceAsColor")
 @Composable
-fun MyAppMainWindow() {
+fun MyAppMainWindow(
+    settingsDataStore: SettingsDataStore
+) {
     CursovedCotETheme {
         val navController = rememberNavController()
 
@@ -102,11 +122,11 @@ fun MyAppMainWindow() {
                 }
 
                 composable(route = "choose_language_from_start_page") {
-                    ChooseLanguageFromStartAppPage(navController)
+                    ChooseLanguageFromStartAppPage(navController, settingsDataStore)
                 }
 
                 composable(route = "choose_app_theme_from_start_page") {
-                    ChooseAppThemeFromStartAppPage(navController)
+                    ChooseAppThemeFromStartAppPage(navController, settingsDataStore)
                 }
 
                 composable(route = "welcome_pages_page") {
