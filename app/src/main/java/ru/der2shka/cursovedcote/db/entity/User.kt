@@ -13,20 +13,20 @@ import ru.der2shka.cursovedcote.db.TableNames
 data class User (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo( name = "id" )
-    var id: Long,
+    var id: Long = 0,
 
     @ColumnInfo( name = "name" )
-    var name: String?,
+    var name: String? = "",
 
     @ColumnInfo( name = "login" )
-    var login: String?,
+    var login: String? = "",
 
     @ColumnInfo( name = "password" )
-    var password: String?,
+    var password: String? = "",
 
-    @ColumnInfo( name = "password" )
-    var email: String?,
+    @ColumnInfo( name = "email" )
+    var email: String? = "",
 
     @ColumnInfo( name = "global_id" )
-    var globalId: Long?
+    var globalId: Long? = 0
 )

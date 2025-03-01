@@ -42,6 +42,7 @@ import ru.der2shka.cursovedcote.Models.AddNewHomeworkHelper
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
@@ -60,7 +61,8 @@ import java.util.Optional
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
 fun AddNewHomework(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    database: AppDatabase
 ) {
     val config = LocalConfiguration.current
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp

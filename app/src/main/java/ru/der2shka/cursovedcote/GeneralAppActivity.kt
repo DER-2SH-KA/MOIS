@@ -36,11 +36,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Service.SettingsDataStore
 import ru.der2shka.cursovedcote.Service.setAppTheme
 import ru.der2shka.cursovedcote.Service.setLocaleForApp
+import ru.der2shka.cursovedcote.db.entity.User
+import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.BottomMenu
 import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
@@ -61,6 +64,18 @@ class GeneralAppActivity : ComponentActivity() {
 
         settingsDataStore = SettingsDataStore(applicationContext)
 
+        val database = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "app-database"
+        ).build()
+
+        lifecycleScope.launch {
+            if ( database.userDao().findUsers().isEmpty() ) {
+                database.userDao().insertUser(User())
+            }
+        }
+
         // Fix portait orientation for activity.
         this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
@@ -78,12 +93,12 @@ class GeneralAppActivity : ComponentActivity() {
                             colorResource(R.color.background_color)
                         )
                 ) {
-                    composable(route = "add_new_grade") { AddNewMarkPage(navHostController) }
-                    composable(route = "add_new_homework") { AddNewHomework(navHostController) }
-                    composable(route = "general_app") { GeneralAppActivityMainPage(navHostController, settingsDataStore) }
-                    composable(route = "add_new_note") { AddNewNote(navHostController) }
-                    composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController) }
-                    composable(route = "add_new_mark_type") { AddNewMarkType(navHostController) }
+                    composable(route = "add_new_grade") { AddNewMarkPage(navHostController, database) }
+                    composable(route = "add_new_homework") { AddNewHomework(navHostController, database) }
+                    composable(route = "general_app") { GeneralAppActivityMainPage(navHostController, settingsDataStore, database) }
+                    composable(route = "add_new_note") { AddNewNote(navHostController, database) }
+                    composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController, database) }
+                    composable(route = "add_new_mark_type") { AddNewMarkType(navHostController, database) }
                 }
 
             }
@@ -94,7 +109,8 @@ class GeneralAppActivity : ComponentActivity() {
 @Composable
 fun GeneralAppActivityMainPage(
     navHostController: NavHostController,
-    settingsDataStore: SettingsDataStore
+    settingsDataStore: SettingsDataStore,
+    database: AppDatabase
 ) {
     val horizontalPager = rememberPagerState(initialPage = 2, pageCount = { 5 })
 
