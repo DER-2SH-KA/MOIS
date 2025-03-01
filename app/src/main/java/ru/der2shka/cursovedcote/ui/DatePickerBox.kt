@@ -76,7 +76,7 @@ fun DatePickerBox(
 
     val expanded = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = selectedLocalDate.value
+        initialSelectedDateMillis = LocalDate.of(2025, 12, 14)
             .atStartOfDay()
             .atZone( ZoneId.systemDefault() )
             .toInstant()
@@ -85,7 +85,14 @@ fun DatePickerBox(
 
     // Here date value updates by DatePickerState,
     // but can be null.
-    val selectedDate= remember { mutableStateOf(LocalDate.now()) }
+    val selectedDate= remember {
+        mutableStateOf(
+            Instant
+                .ofEpochMilli( datePickerState.selectedDateMillis!! )
+                .atZone( ZoneId.systemDefault() )
+                .toLocalDate()
+        )
+    }
 
     // Update selectedLocalDate by new date.
     if (selectedDate != null) {
