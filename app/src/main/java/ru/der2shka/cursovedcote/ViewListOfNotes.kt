@@ -18,6 +18,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -32,22 +34,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 
 /**
  * View list of saved notes.
  * **/
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ViewListOfNotes(navHostController: NavHostController) {
+fun ViewListOfNotes(
+    navHostController: NavHostController,
+    database: AppDatabase
+) {
     val context = LocalContext.current
     val config = LocalConfiguration.current
+
+    var noteList = remember { database.noteDao().findNotes().toMutableList() }
 
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
 
@@ -100,6 +110,7 @@ fun ViewListOfNotes(navHostController: NavHostController) {
                     .fillMaxHeight()
                     .verticalScroll( contentVScroll )
             ) {
+                /*
                 NoteItem(
                     navHostController = navHostController,
                     name = "Note 1 (really long text, yeah? YEAH? Oh noo... NOOOOO!)",
@@ -139,6 +150,20 @@ fun ViewListOfNotes(navHostController: NavHostController) {
                     localDate = LocalDate.of(2025, 2, 22),
                     statusIndex = 3
                 )
+                 */
+
+                noteList.forEach {
+                    NoteItem(
+                        navHostController = navHostController,
+                        name = it.name,
+                        description =  it.description,
+                        localDate = Instant
+                            .ofEpochMilli(it.date)
+                            .atZone( ZoneId.systemDefault() )
+                            .toLocalDate(),
+                        statusIndex = it.status
+                    )
+                }
             }
         }
     }

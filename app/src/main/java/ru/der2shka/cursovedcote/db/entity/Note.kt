@@ -26,7 +26,7 @@ import java.time.LocalDate
 data class Note(
     @PrimaryKey( autoGenerate = true )
     @ColumnInfo( name = "id" )
-    var id: Long,
+    var id: Long = 0,
 
     @ColumnInfo( name = "name" )
     var name: String,
@@ -35,7 +35,7 @@ data class Note(
         name = "description",
         typeAffinity = ColumnInfo.TEXT
     )
-    var description: String?,
+    var description: String = "",
 
     @ColumnInfo( name = "date" )
     var date: Long,

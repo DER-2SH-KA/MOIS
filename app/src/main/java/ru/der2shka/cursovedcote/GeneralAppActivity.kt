@@ -49,6 +49,8 @@ import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 
+var userId: Long = 0
+
 /**
  * General Activity for App with actions.
  * **/
@@ -74,6 +76,8 @@ class GeneralAppActivity : ComponentActivity() {
             if ( database.userDao().findUsers().isEmpty() ) {
                 database.userDao().insertUser(User())
             }
+
+            userId = database.userDao().findUsers().last().id
         }
 
         // Fix portait orientation for activity.
@@ -151,7 +155,7 @@ fun GeneralAppActivityMainPage(
                     }
 
                     3 -> {
-                        ViewListOfNotes(navHostController)
+                        ViewListOfNotes(navHostController, database)
                     }
 
                     4 -> {

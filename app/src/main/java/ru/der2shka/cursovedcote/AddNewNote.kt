@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -38,9 +39,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -50,6 +53,8 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Optional
 
 // TODO: Подобрать цвета и оформить!
@@ -66,6 +71,7 @@ fun AddNewNote(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
+    val coroutineScope = rememberCoroutineScope()
     val addNewNoteHelper: AddNewNoteHelper = AddNewNoteHelper.getInstance()
 
     val statusList = listOf(
@@ -426,15 +432,49 @@ fun AddNewNote(
                 // Button to Add.
                 Button(
                     onClick = {
-                        addNewNoteHelper.setNameValue(
-                            Optional.ofNullable( nameTextFieldValue.value.text )
-                        )
-                        addNewNoteHelper.setDescriptionValue(
-                            Optional.ofNullable( descriptionTextFieldValue.value.text )
-                        )
-                        addNewNoteHelper.setDateOfWrite(
-                            Optional.ofNullable( selectedDateOfWrite.value )
-                        )
+                        coroutineScope.launch {
+                            // Add data into Helper object.
+                            addNewNoteHelper.setNameValue(
+                                Optional.ofNullable(nameTextFieldValue.value.text)
+                            )
+                            addNewNoteHelper.setDescriptionValue(
+                                Optional.ofNullable(descriptionTextFieldValue.value.text)
+                            )
+                            addNewNoteHelper.setDateOfWrite(
+                                Optional.ofNullable(selectedDateOfWrite.value)
+                            )
+                            addNewNoteHelper.setStatusCodeValue(
+                                Optional.ofNullable( statusList.indexOf( selectedStatusItem.value.text ) )
+                            )
+
+                            // Add data into DataBase.
+                            var dateInMills: Long = selectedDateOfWrite.value
+                                .atStartOfDay()
+                                .atZone( ZoneId.systemDefault() )
+                                .toInstant()
+                                .toEpochMilli()
+
+                            var newNote = Note(
+                                name = addNewNoteHelper.nameValue,
+                                description = addNewNoteHelper.descriptionValue,
+                                date = dateInMills,
+                                status = addNewNoteHelper.statusCodeValue,
+                                userId = userId
+                            )
+
+                            database.noteDao().insertNote( newNote )
+
+                            if ( database.noteDao().findNotes().last().id == newNote.id ) {
+                                addNewNoteHelper.setNameValue( Optional.ofNullable("") )
+                                addNewNoteHelper.setDescriptionValue( Optional.ofNullable("") )
+                                addNewNoteHelper.setDateOfWrite( Optional.ofNullable(LocalDate.MIN) )
+                                addNewNoteHelper.setStatusCodeValue( Optional.ofNullable(0) )
+
+                                nameTextFieldValue.value = TextFieldValue("Successfully")
+                            } else {
+                                nameTextFieldValue.value = TextFieldValue("Failed")
+                            }
+                        }
                     },
 
                     shape = RoundedCornerShape(20.dp),
