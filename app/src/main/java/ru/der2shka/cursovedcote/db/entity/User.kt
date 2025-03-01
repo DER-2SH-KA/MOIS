@@ -1,4 +1,8 @@
 package ru.der2shka.cursovedcote.db.entity
 
-class User {
-}
+import androidx.room.Entity
+
+@Entity
+data class User (
+    var id: Long
+)
