@@ -39,6 +39,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
@@ -53,6 +54,7 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Optional
@@ -432,7 +434,7 @@ fun AddNewNote(
                 // Button to Add.
                 Button(
                     onClick = {
-                        coroutineScope.launch {
+                        coroutineScope.launch(Dispatchers.IO) {
                             // Add data into Helper object.
                             addNewNoteHelper.setNameValue(
                                 Optional.ofNullable(nameTextFieldValue.value.text)
@@ -462,17 +464,23 @@ fun AddNewNote(
                                 userId = userId
                             )
 
-                            database.noteDao().insertNote( newNote )
+                            val addedId = database.noteDao().insertNote( newNote )
 
-                            if ( database.noteDao().findNotes().last().id == newNote.id ) {
+                            if ( database.noteDao().findNotes().last().id == addedId ) {
                                 addNewNoteHelper.setNameValue( Optional.ofNullable("") )
                                 addNewNoteHelper.setDescriptionValue( Optional.ofNullable("") )
-                                addNewNoteHelper.setDateOfWrite( Optional.ofNullable(LocalDate.MIN) )
+                                addNewNoteHelper.setDateOfWrite( Optional.ofNullable(LocalDate.now()) )
                                 addNewNoteHelper.setStatusCodeValue( Optional.ofNullable(0) )
 
-                                nameTextFieldValue.value = TextFieldValue("Successfully")
+                                nameTextFieldValue.value = TextFieldValue( addNewNoteHelper.nameValue )
+                                descriptionTextFieldValue.value = TextFieldValue( addNewNoteHelper.descriptionValue )
+                                statusCodeMutable.value = addNewNoteHelper.statusCodeValue
+                                selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
+
+                                // nameTextFieldValue.value = TextFieldValue("Successfully")
                             } else {
                                 nameTextFieldValue.value = TextFieldValue("Failed")
+                                descriptionTextFieldValue.value = TextFieldValue(addedId.toString())
                             }
                         }
                     },

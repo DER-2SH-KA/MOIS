@@ -26,14 +26,14 @@ import ru.der2shka.cursovedcote.db.TableNames
 data class GradeType(
     @PrimaryKey( autoGenerate = true )
     @ColumnInfo( name = "id" )
-    var id: Long,
+    var id: Long = 0,
 
     @ColumnInfo( name = "name" )
-    var name: String,
+    var name: String = "",
 
     @ColumnInfo( name = "multiplier" )
-    var mulltiplier: Long,
+    var mulltiplier: Long = 0,
 
     @ColumnInfo( name = "user_local_id" )
-    var userLocalId: Long
+    var userLocalId: Long = 0
 )

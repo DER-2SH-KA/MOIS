@@ -37,6 +37,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Service.SettingsDataStore
@@ -66,27 +67,29 @@ class GeneralAppActivity : ComponentActivity() {
 
         settingsDataStore = SettingsDataStore(applicationContext)
 
-        val database = Room.databaseBuilder(
+        val database: AppDatabase = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
             "app-database"
         ).build()
-
-        lifecycleScope.launch {
-            if ( database.userDao().findUsers().isEmpty() ) {
-                database.userDao().insertUser(User())
-            }
-
-            userId = database.userDao().findUsers().last().id
-        }
 
         // Fix portait orientation for activity.
         this?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
             CursovedCotETheme {
-
                 val navHostController = rememberNavController()
+                val coroutineScope = rememberCoroutineScope()
+
+                LaunchedEffect(key1 = Unit) {
+                    coroutineScope.launch(Dispatchers.IO) {
+                        if ( database.userDao().findUsers().isEmpty() ) {
+                            database.userDao().insertUser(User())
+                        }
+
+                        userId = database.userDao().findUsers().last().id
+                    }
+                }
 
                 NavHost(
                     navController = navHostController,

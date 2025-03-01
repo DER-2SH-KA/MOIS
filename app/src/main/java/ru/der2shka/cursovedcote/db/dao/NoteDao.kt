@@ -14,12 +14,12 @@ interface NoteDao {
     /** Insert new Note into table. If note is already exist make a abort.
      * @param note new note object**/
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insertNote(note: Note)
+    fun insertNote(note: Note): Long
 
     /** Insert new Notes into table. If notes is already exist make a abort.
      * @param notes new notes objects**/
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insertNotes(vararg notes: Note)
+    fun insertNotes(vararg notes: Note): List<Long>
 
     /** Update note row. On conflict make a replace.
      * @param note note object**/
@@ -47,9 +47,13 @@ interface NoteDao {
     @Query(value = "SELECT * FROM ${TableNames.NOTES_TABLE} AS n WHERE( n.id == :noteId)")
     fun findNoteById(noteId: Long): Note
 
-    /** Return all notes with ordering by ID. **/
-    @Query(value = "SELECT * FROM ${TableNames.NOTES_TABLE} AS n ORDER BY n.date DESC")
+    /** Return all notes. **/
+    @Query(value = "SELECT * FROM ${TableNames.NOTES_TABLE} AS n ORDER BY n.id ASC")
     fun findNotes(): List<Note>
+
+    /** Return all notes with ordering by date. **/
+    @Query(value = "SELECT * FROM ${TableNames.NOTES_TABLE} AS n ORDER BY n.date DESC")
+    fun findNotesWithOrdering(): List<Note>
 
     /**  Return all notes by filters **/
     @Query(

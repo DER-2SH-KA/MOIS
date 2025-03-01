@@ -31,12 +31,12 @@ interface GradeTypeDao {
     fun deleteGradeTypes(vararg gt: GradeType)
 
     @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE} AS gt WHERE( gt.id == :gtId )")
-    fun findGradeTypeById(gtId: Long): Note
+    fun findGradeTypeById(gtId: Long): GradeType
 
     @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE} AS gt ORDER BY gt.name ASC")
-    fun findGradeTypes(): List<Note>
+    fun findGradeTypes(): List<GradeType>
 
 
     @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE} AS gt WHERE( gt.name LIKE '%' || :name || '%' ) ORDER BY gt.name ASC")
-    fun findGradeTypesByName(name: String): List<Note>
+    fun findGradeTypesByName(name: String): List<GradeType>
 }

@@ -75,7 +75,13 @@ fun DatePickerBox(
     val config = LocalConfiguration.current
 
     val expanded = remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = selectedLocalDate.value
+            .atStartOfDay()
+            .atZone( ZoneId.systemDefault() )
+            .toInstant()
+            .toEpochMilli()
+    )
 
     // Here date value updates by DatePickerState,
     // but can be null.

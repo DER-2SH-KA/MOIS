@@ -18,8 +18,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -34,6 +36,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
@@ -56,8 +61,16 @@ fun ViewListOfNotes(
 ) {
     val context = LocalContext.current
     val config = LocalConfiguration.current
+    val coroutineScope = rememberCoroutineScope()
 
-    var noteList = remember { database.noteDao().findNotes().toMutableList() }
+    var noteList = remember { mutableStateOf( listOf<Note>() ) }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            noteList.value = database.noteDao().findNotes().toMutableList()
+            println()
+        }
+    }
 
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
 
@@ -152,7 +165,7 @@ fun ViewListOfNotes(
                 )
                  */
 
-                noteList.forEach {
+                noteList.value.forEach {
                     NoteItem(
                         navHostController = navHostController,
                         name = it.name,
