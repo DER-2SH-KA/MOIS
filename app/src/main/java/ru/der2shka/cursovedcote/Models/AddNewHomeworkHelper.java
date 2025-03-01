@@ -24,10 +24,10 @@ public class AddNewHomeworkHelper {
     private Optional<LocalDate> dateOfWrite = Optional.ofNullable(LocalDate.now());
 
     // Date begin.
-    private Optional<LocalDate> dateBegin = Optional.ofNullable(LocalDate.MIN);
+    private Optional<LocalDate> dateBegin = Optional.ofNullable(LocalDate.now());
 
     // Date end.
-    private Optional<LocalDate> dateEnd = Optional.ofNullable(LocalDate.MAX);
+    private Optional<LocalDate> dateEnd = Optional.ofNullable(LocalDate.now());
 
     // Status code.
     private Optional<Integer> statusCode = Optional.ofNullable(0);
@@ -157,7 +157,7 @@ public class AddNewHomeworkHelper {
      * @return if date begin is present, return date begin, else LocalDate.MIN
      * **/
     public LocalDate getDateBegin() {
-        return dateBegin.orElse( LocalDate.MIN );
+        return dateBegin.orElse( LocalDate.now() );
     }
 
     /**
@@ -179,7 +179,7 @@ public class AddNewHomeworkHelper {
      * @return if date end is present, return date end, else LocalDate.MIN
      * **/
     public LocalDate getDateEnd() {
-        return dateEnd.orElse( LocalDate.MIN );
+        return dateEnd.orElse( LocalDate.now() );
     }
 
     /**

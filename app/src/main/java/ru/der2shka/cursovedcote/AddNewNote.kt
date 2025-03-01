@@ -398,7 +398,7 @@ fun AddNewNote(
 
                     }
 
-                    /*
+
                     // Only for testing.
                     Text(text = "Name: ${nameTextFieldValue.value.text}")
                     Text(text = "Description: ${descriptionTextFieldValue.value.text}")
@@ -421,7 +421,7 @@ fun AddNewNote(
                                 } " +
                                 "${selectedDateOfWrite.value.year}"
                     )
-                    */
+
                 }
             }
 

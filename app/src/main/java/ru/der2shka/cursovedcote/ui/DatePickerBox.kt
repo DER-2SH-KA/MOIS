@@ -76,7 +76,8 @@ fun DatePickerBox(
 
     val expanded = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = LocalDate.of(2025, 12, 14)
+        initialSelectedDateMillis = selectedLocalDate.value
+            .plusDays(1)
             .atStartOfDay()
             .atZone( ZoneId.systemDefault() )
             .toInstant()
@@ -103,6 +104,7 @@ fun DatePickerBox(
     var selectedLocalDateString = "${selectedLocalDate.value.dayOfMonth} " +
                     "${GetMonthStringResourceByLocalDate(selectedLocalDate, fullMonthName)} " +
                     "${selectedLocalDate.value.year}"
+    val sldsmutable = remember { mutableStateOf(selectedLocalDateString) }
 
     Box(
         modifier = modifier
@@ -111,7 +113,7 @@ fun DatePickerBox(
             }
     ) {
         TextFieldCustom(
-            value = selectedLocalDateString,
+            value = sldsmutable.value,
             onValueChange = { },
             readOnly = true,
             enabled = false,
