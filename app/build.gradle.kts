@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
 }
 
 android {
@@ -50,18 +51,23 @@ android {
 }
 
 dependencies {
-    // Splash screen library.
+    // Splash screen.
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    // Navigation library.
+    // Navigation.
     implementation("androidx.navigation:navigation-compose:2.8.4")
     // implementation("androidx.compose.material3:material3:1.2.0")
 
-    // Data store preferences library.
+    // Data store preferences.
     implementation(libs.androidx.datastore)
 
     // Lifecycle.
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+
+    // Room.
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    testImplementation(libs.androidx.room.testing)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
