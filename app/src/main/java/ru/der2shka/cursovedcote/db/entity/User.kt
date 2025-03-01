@@ -28,5 +28,5 @@ data class User (
     var email: String?,
 
     @ColumnInfo( name = "global_id" )
-    var glovalId: Long?
+    var globalId: Long?
 )
