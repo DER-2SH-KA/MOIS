@@ -37,9 +37,7 @@ data class Note(
     )
     var description: String?,
 
-    @ColumnInfo(
-        name = "date"
-    )
+    @ColumnInfo( name = "date" )
     var date: Long,
 
     @ColumnInfo( name = "status" )

@@ -23,7 +23,7 @@ import ru.der2shka.cursovedcote.db.TableNames
         )
     ]
 )
-class GradeType(
+data class GradeType(
     @PrimaryKey( autoGenerate = true )
     @ColumnInfo( name = "id" )
     var id: Long,
