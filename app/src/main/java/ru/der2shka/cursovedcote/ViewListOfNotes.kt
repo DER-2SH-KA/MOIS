@@ -174,6 +174,7 @@ fun ViewListOfNotes(
                             .ofEpochMilli(it.date)
                             .atZone( ZoneId.systemDefault() )
                             .toLocalDate(),
+                        note = it,
                         statusIndex = it.status
                     )
                 }

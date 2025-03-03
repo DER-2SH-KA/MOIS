@@ -2,6 +2,7 @@ package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,14 +26,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ru.der2shka.cursovedcote.Models.NoteHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.current_page
+import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
+import java.util.Optional
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -42,8 +47,11 @@ fun NoteItem(
     description: String = "Description",
     localDate: LocalDate = LocalDate.MIN,
     statusIndex: Int = -1,
+    note: Note,
     modifier: Modifier = Modifier
 ) {
+    val noteHelper = NoteHelper.getInstance()
+
     val dateString = "${localDate.dayOfMonth} " +
             "${
                 GetMonthStringResourceByLocalDate(
@@ -62,6 +70,14 @@ fun NoteItem(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .padding(0.dp, 10.dp, 0.dp, 10.dp)
+            .clickable {
+                noteHelper.setNoteValue(
+                    Optional.ofNullable( note )
+                )
+
+                current_page = "edit_note"
+                navHostController.navigate(current_page)
+            }
     ) {
         // Note Card Item.
         Card(

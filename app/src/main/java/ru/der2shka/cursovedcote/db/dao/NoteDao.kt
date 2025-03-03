@@ -24,12 +24,12 @@ interface NoteDao {
     /** Update note row. On conflict make a replace.
      * @param note note object**/
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateNote(note: Note)
+    fun updateNote(note: Note): Unit
 
     /** Update note rows. On conflict make a replace.
      * @param notes note objects**/
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateNotes(vararg notes: Note)
+    fun updateNotes(vararg notes: Note): Unit
 
     /** Delete note row.
      * @param note note object**/

@@ -100,12 +100,17 @@ class GeneralAppActivity : ComponentActivity() {
                             colorResource(R.color.background_color)
                         )
                 ) {
+                    composable(route = "general_app") { GeneralAppActivityMainPage(navHostController, settingsDataStore, database) }
+
+                    // Add pages.
                     composable(route = "add_new_grade") { AddNewMarkPage(navHostController, database) }
                     composable(route = "add_new_homework") { AddNewHomework(navHostController, database) }
-                    composable(route = "general_app") { GeneralAppActivityMainPage(navHostController, settingsDataStore, database) }
                     composable(route = "add_new_note") { AddNewNote(navHostController, database) }
                     composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController, database) }
                     composable(route = "add_new_mark_type") { AddNewMarkType(navHostController, database) }
+
+                    // Edit pages.
+                    composable(route = "edit_note") { EditNotePage(navHostController, database) }
                 }
 
             }

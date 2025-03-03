@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,8 +42,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
+import ru.der2shka.cursovedcote.Models.NoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
-import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
@@ -66,7 +65,7 @@ import java.util.Optional
  * **/
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
-fun AddNewNote(
+fun EditNotePage(
     navHostController: NavHostController,
     database: AppDatabase
 ) {
@@ -75,7 +74,20 @@ fun AddNewNote(
     val verticalMainScroll = rememberScrollState(0)
 
     val coroutineScope = rememberCoroutineScope()
-    val addNewNoteHelper: AddNewNoteHelper = AddNewNoteHelper.getInstance()
+    val addNewNoteHelper = AddNewNoteHelper.getInstance()
+    val noteHelper: NoteHelper = NoteHelper.getInstance()
+    val noteFromnNoteHelpert = remember { mutableStateOf( noteHelper.noteValue ) }
+
+    addNewNoteHelper.setNameValue( Optional.ofNullable( noteFromnNoteHelpert.value.name ) )
+    addNewNoteHelper.setDescriptionValue( Optional.ofNullable( noteFromnNoteHelpert.value.description ) )
+    addNewNoteHelper.setDateOfWrite(
+        Optional.ofNullable(
+            Instant.ofEpochMilli( noteFromnNoteHelpert.value.date )
+                .atZone( ZoneId.systemDefault() )
+                .toLocalDate()
+        )
+    )
+    addNewNoteHelper.setStatusCodeValue( Optional.ofNullable( noteFromnNoteHelpert.value.status ) )
 
     val statusList = listOf(
         stringResource(R.string.in_processing),
@@ -87,27 +99,26 @@ fun AddNewNote(
     // Name TextField.
     val nameTextFieldValue = remember {
         mutableStateOf(
-            TextFieldValue( "" )
+            TextFieldValue( addNewNoteHelper.nameValue )
         )
     }
 
     // Description TextField.
     val descriptionTextFieldValue = remember {
         mutableStateOf(
-            TextFieldValue( "" )
+            TextFieldValue( addNewNoteHelper.descriptionValue )
         )
     }
 
     // Day of write.
     val selectedDateOfWrite = remember {
         mutableStateOf(
-            // addNewNoteHelper.dateOfWrite
-            LocalDate.now()
+            addNewNoteHelper.dateOfWrite
         )
     }
 
     val statusCodeMutable = remember {
-        mutableStateOf(0)
+        mutableStateOf(addNewNoteHelper.statusCodeValue)
     }
 
     // Status TextField.
@@ -131,16 +142,16 @@ fun AddNewNote(
 
     // Transaction status text.
     val transactionText = when( transactionStatusString.value ) {
-                "s" -> succText
-                "f" -> errText
-                else -> transactionStatusString.value
+        "s" -> succText
+        "f" -> errText
+        else -> transactionStatusString.value
     }
 
     // Transaction status color.
     val transactionColor = when( transactionStatusString.value ) {
-                "s" -> succColor
-                "f" -> errColor
-                else -> Color.Black
+        "s" -> succColor
+        "f" -> errColor
+        else -> Color.Black
     }
     Box(
         modifier = Modifier
@@ -289,7 +300,7 @@ fun AddNewNote(
                                                 ClearTextField(descriptionTextFieldValue)
                                             }
                                     )
-                                               },
+                                },
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -501,6 +512,7 @@ fun AddNewNote(
                                 .toEpochMilli()
 
                             var newNote = Note(
+                                id = noteFromnNoteHelpert.value.id,
                                 name = addNewNoteHelper.nameValue,
                                 description = addNewNoteHelper.descriptionValue,
                                 date = dateInMills,
@@ -508,17 +520,10 @@ fun AddNewNote(
                                 userId = userId
                             )
 
-                            val addedId = database.noteDao().insertNote( newNote )
+                            val updatedId = database.noteDao().updateNote( newNote )
 
-                            // If note was added.
-                            if ( database.noteDao().findNotes().last().id == addedId ) {
-                                clearAddNewNoteHelperFields(addNewNoteHelper)
-
-                                nameTextFieldValue.value = TextFieldValue( "" )
-                                descriptionTextFieldValue.value = TextFieldValue( "" )
-                                statusCodeMutable.value = addNewNoteHelper.statusCodeValue
-                                selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
-
+                            // If note was updated.
+                            if ( database.noteDao().findNoteById( noteFromnNoteHelpert.value.id ).equals( newNote ) ) {
                                 // Show status of transaction.
                                 transactionStatusString.value = "s"
                                 delay(4000L)
@@ -585,7 +590,7 @@ fun AddNewNote(
 
                         current_page = "general_app"
                         navHostController.navigate(current_page) {
-                            popUpTo("add_new_note") { inclusive = true }
+                            popUpTo("edit_note") { inclusive = true }
                         }
                     },
 
@@ -627,14 +632,4 @@ fun AddNewNote(
             }
         }
     }
-}
-
-fun clearAddNewNoteHelperFields(
-    addNewNoteHelper: AddNewNoteHelper
-) {
-    // Clear fields into addNewNoteHelper
-    addNewNoteHelper.setNameValue( Optional.ofNullable("") )
-    addNewNoteHelper.setDescriptionValue( Optional.ofNullable("") )
-    addNewNoteHelper.setDateOfWrite( Optional.ofNullable( LocalDate.now() ) )
-    addNewNoteHelper.setStatusCodeValue( Optional.ofNullable(0) )
 }
