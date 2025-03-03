@@ -67,6 +67,7 @@ import kotlin.math.exp
 @Composable
 fun DatePickerBox(
     selectedLocalDate: MutableState<LocalDate>,
+    startValueOfDatePicker: LocalDate = LocalDate.now(),
     outlinedTextFieldModifier: Modifier = Modifier,
     fullMonthName: Boolean = false,
     modifier: Modifier = Modifier,
@@ -76,8 +77,8 @@ fun DatePickerBox(
 
     val expanded = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = selectedLocalDate.value
-            .plusDays(1)
+        initialSelectedDateMillis = startValueOfDatePicker
+            .plusDays(1) // He calculate with minus 1 day.
             .atStartOfDay()
             .atZone( ZoneId.systemDefault() )
             .toInstant()
@@ -86,7 +87,7 @@ fun DatePickerBox(
 
     // Here date value updates by DatePickerState,
     // but can be null.
-    val selectedDate= remember {
+    val selectedLocalDateFromDatePicker= remember {
         mutableStateOf(
             Instant
                 .ofEpochMilli( datePickerState.selectedDateMillis!! )
@@ -95,16 +96,16 @@ fun DatePickerBox(
         )
     }
 
-    // Update selectedLocalDate by new date.
-    if (selectedDate != null) {
-        onSelect( selectedDate.value )
-    }
-
     // Building string value by LocalDate for OutputTextField.
-    var selectedLocalDateString = "${selectedLocalDate.value.dayOfMonth} " +
-                    "${GetMonthStringResourceByLocalDate(selectedLocalDate, fullMonthName)} " +
-                    "${selectedLocalDate.value.year}"
-    val sldsmutable = remember { mutableStateOf(selectedLocalDateString) }
+    var selectedLocalDateString = "${selectedLocalDateFromDatePicker.value.dayOfMonth} " +
+            "${GetMonthStringResourceByLocalDate(selectedLocalDateFromDatePicker, fullMonthName)} " +
+            "${selectedLocalDateFromDatePicker.value.year}"
+    val stringSelectedDate = remember { mutableStateOf(selectedLocalDateString) }
+
+    // Update selectedLocalDate by new date.
+    if (selectedLocalDateFromDatePicker != null) {
+        onSelect( selectedLocalDateFromDatePicker.value )
+    }
 
     Box(
         modifier = modifier
@@ -113,7 +114,7 @@ fun DatePickerBox(
             }
     ) {
         TextFieldCustom(
-            value = sldsmutable.value,
+            value = selectedLocalDateString,
             onValueChange = { },
             readOnly = true,
             enabled = false,
@@ -137,7 +138,7 @@ fun DatePickerBox(
             DatePickerModal(
                 datePickerState = datePickerState,
                 onDateSelected = {dateInMills ->
-                    selectedDate.value = dateInMills?.let { dateMills ->
+                    selectedLocalDateFromDatePicker.value = dateInMills?.let { dateMills ->
                     Instant.ofEpochMilli(dateMills)
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate()

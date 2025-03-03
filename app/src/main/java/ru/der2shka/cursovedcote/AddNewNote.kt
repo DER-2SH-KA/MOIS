@@ -99,7 +99,10 @@ fun AddNewNote(
 
     // Day of write.
     val selectedDateOfWrite = remember {
-        mutableStateOf( addNewNoteHelper.dateOfWrite )
+        mutableStateOf(
+            // addNewNoteHelper.dateOfWrite
+            LocalDate.now()
+        )
     }
 
     val statusCodeMutable = remember {
@@ -304,8 +307,11 @@ fun AddNewNote(
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {
+                            // addNewNoteHelper.setDateOfWrite( Optional.ofNullable(LocalDate.of(2025, 9, 1)) )
+
                             DatePickerBox(
                                 selectedLocalDate = selectedDateOfWrite,
+                                // startValueOfDatePicker = addNewNoteHelper.dateOfWrite,
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -413,7 +419,7 @@ fun AddNewNote(
                     )
                     Text(text = "Status: ${selectedStatusItem.value.text}")
                     Text(
-                        text = "Date: ${addNewNoteHelper.dateOfWrite.dayOfMonth} " +
+                        text = "DateH: ${addNewNoteHelper.dateOfWrite.dayOfMonth} " +
                                 "${
                                     GetMonthStringResourceByLocalDate(
                                         mutableStateOf(addNewNoteHelper.dateOfWrite), true
@@ -442,9 +448,12 @@ fun AddNewNote(
                             addNewNoteHelper.setDescriptionValue(
                                 Optional.ofNullable(descriptionTextFieldValue.value.text)
                             )
-                            addNewNoteHelper.setDateOfWrite(
+                            nameTextFieldValue.value =  TextFieldValue(addNewNoteHelper.setDateOfWrite(
                                 Optional.ofNullable(selectedDateOfWrite.value)
-                            )
+                            ).toString())
+
+                            descriptionTextFieldValue.value = TextFieldValue( addNewNoteHelper.dateOfWrite.toString() )
+
                             addNewNoteHelper.setStatusCodeValue(
                                 Optional.ofNullable( statusList.indexOf( selectedStatusItem.value.text ) )
                             )
@@ -467,13 +476,13 @@ fun AddNewNote(
                             val addedId = database.noteDao().insertNote( newNote )
 
                             if ( database.noteDao().findNotes().last().id == addedId ) {
-                                addNewNoteHelper.setNameValue( Optional.ofNullable("") )
+                                /*addNewNoteHelper.setNameValue( Optional.ofNullable("") )
                                 addNewNoteHelper.setDescriptionValue( Optional.ofNullable("") )
-                                addNewNoteHelper.setDateOfWrite( Optional.ofNullable(LocalDate.now()) )
-                                addNewNoteHelper.setStatusCodeValue( Optional.ofNullable(0) )
+                                addNewNoteHelper.setDateOfWrite( Optional.ofNullable( LocalDate.now() ) )
+                                addNewNoteHelper.setStatusCodeValue( Optional.ofNullable(0) )*/
 
-                                nameTextFieldValue.value = TextFieldValue( addNewNoteHelper.nameValue )
-                                descriptionTextFieldValue.value = TextFieldValue( addNewNoteHelper.descriptionValue )
+                                nameTextFieldValue.value = TextFieldValue( addNewNoteHelper.statusCodeValue.toString() )
+                                descriptionTextFieldValue.value = TextFieldValue( addNewNoteHelper.dateOfWrite.toString() )
                                 statusCodeMutable.value = addNewNoteHelper.statusCodeValue
                                 selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
 
