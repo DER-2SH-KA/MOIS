@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
@@ -120,6 +121,27 @@ fun AddNewNote(
         }
     }
 
+    // Transaction status
+    val transactionStatusString = remember { mutableStateOf("") }
+
+    val succText = stringResource(R.string.successfully)
+    val errText = stringResource(R.string.fail)
+    var succColor = colorResource (R.color.successful_green)
+    var errColor = colorResource (R.color.error_red)
+
+    // Transaction status text.
+    val transactionText = when( transactionStatusString.value ) {
+                "s" -> succText
+                "f" -> errText
+                else -> transactionStatusString.value
+    }
+
+    // Transaction status color.
+    val transactionColor = when( transactionStatusString.value ) {
+                "s" -> succColor
+                "f" -> errColor
+                else -> Color.Black
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -287,8 +309,6 @@ fun AddNewNote(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Text(text = "Dateo")
-
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth(0.4f)
@@ -307,11 +327,9 @@ fun AddNewNote(
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {
-                            // addNewNoteHelper.setDateOfWrite( Optional.ofNullable(LocalDate.of(2025, 9, 1)) )
-
                             DatePickerBox(
                                 selectedLocalDate = selectedDateOfWrite,
-                                // startValueOfDatePicker = addNewNoteHelper.dateOfWrite,
+                                startValueOfDatePicker = selectedDateOfWrite.value,
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -322,7 +340,6 @@ fun AddNewNote(
                                     )
                                 ,
                                 onSelect = { localDate ->
-                                    // addNewNoteHelper.setDateOfWrite( Optional.ofNullable(localDate) )
                                     selectedDateOfWrite.value = localDate
                                 }
                             )
@@ -404,7 +421,7 @@ fun AddNewNote(
 
                     }
 
-
+                    /*
                     // Only for testing.
                     Text(text = "Name: ${nameTextFieldValue.value.text}")
                     Text(text = "Description: ${descriptionTextFieldValue.value.text}")
@@ -426,8 +443,29 @@ fun AddNewNote(
                                     )
                                 } " +
                                 "${selectedDateOfWrite.value.year}"
-                    )
+                    )*/
 
+                    // Transaction status.
+                    Box(
+                        contentAlignment = Alignment
+                            .Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        ScrollableAnimatedText(
+                            text = transactionText,
+                            textColor = transactionColor,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = line_height_main_text,
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                            ,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f)
+                        )
+                    }
                 }
             }
 
@@ -448,12 +486,9 @@ fun AddNewNote(
                             addNewNoteHelper.setDescriptionValue(
                                 Optional.ofNullable(descriptionTextFieldValue.value.text)
                             )
-                            nameTextFieldValue.value =  TextFieldValue(addNewNoteHelper.setDateOfWrite(
+                            addNewNoteHelper.setDateOfWrite(
                                 Optional.ofNullable(selectedDateOfWrite.value)
-                            ).toString())
-
-                            descriptionTextFieldValue.value = TextFieldValue( addNewNoteHelper.dateOfWrite.toString() )
-
+                            )
                             addNewNoteHelper.setStatusCodeValue(
                                 Optional.ofNullable( statusList.indexOf( selectedStatusItem.value.text ) )
                             )
@@ -475,21 +510,25 @@ fun AddNewNote(
 
                             val addedId = database.noteDao().insertNote( newNote )
 
+                            // If note was added.
                             if ( database.noteDao().findNotes().last().id == addedId ) {
-                                /*addNewNoteHelper.setNameValue( Optional.ofNullable("") )
-                                addNewNoteHelper.setDescriptionValue( Optional.ofNullable("") )
-                                addNewNoteHelper.setDateOfWrite( Optional.ofNullable( LocalDate.now() ) )
-                                addNewNoteHelper.setStatusCodeValue( Optional.ofNullable(0) )*/
+                                clearAddNewNoteHelperFields(addNewNoteHelper)
 
-                                nameTextFieldValue.value = TextFieldValue( addNewNoteHelper.statusCodeValue.toString() )
-                                descriptionTextFieldValue.value = TextFieldValue( addNewNoteHelper.dateOfWrite.toString() )
+                                nameTextFieldValue.value = TextFieldValue( "" )
+                                descriptionTextFieldValue.value = TextFieldValue( "" )
                                 statusCodeMutable.value = addNewNoteHelper.statusCodeValue
                                 selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
 
-                                // nameTextFieldValue.value = TextFieldValue("Successfully")
-                            } else {
-                                nameTextFieldValue.value = TextFieldValue("Failed")
-                                descriptionTextFieldValue.value = TextFieldValue(addedId.toString())
+                                // Show status of transaction.
+                                transactionStatusString.value = "s"
+                                delay(4000L)
+                                transactionStatusString.value = ""
+                            }
+                            else {
+                                // Show status of transaction.
+                                transactionStatusString.value = "f"
+                                delay(4000L)
+                                transactionStatusString.value = ""
                             }
                         }
                     },
@@ -537,6 +576,13 @@ fun AddNewNote(
                 // Button to Back.
                 Button(
                     onClick = {
+                        clearAddNewNoteHelperFields(addNewNoteHelper)
+
+                        nameTextFieldValue.value = TextFieldValue( "" )
+                        descriptionTextFieldValue.value = TextFieldValue( "" )
+                        statusCodeMutable.value = addNewNoteHelper.statusCodeValue
+                        selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
+
                         current_page = "general_app"
                         navHostController.navigate(current_page) {
                             popUpTo("add_new_note") { inclusive = true }
@@ -581,4 +627,14 @@ fun AddNewNote(
             }
         }
     }
+}
+
+fun clearAddNewNoteHelperFields(
+    addNewNoteHelper: AddNewNoteHelper
+) {
+    // Clear fields into addNewNoteHelper
+    addNewNoteHelper.setNameValue( Optional.ofNullable("") )
+    addNewNoteHelper.setDescriptionValue( Optional.ofNullable("") )
+    addNewNoteHelper.setDateOfWrite( Optional.ofNullable( LocalDate.now() ) )
+    addNewNoteHelper.setStatusCodeValue( Optional.ofNullable(0) )
 }

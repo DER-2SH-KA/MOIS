@@ -23,6 +23,9 @@
     <string name="skip">Пропустить</string>
     <string name="finish">Завершить</string>
 
+    <string name="successfully">Успешно</string>
+    <string name="fail">Ошибка</string>
+
     <string name="name">Название</string>
     <string name="description">Описание</string>
     <string name="status">Статус</string>
