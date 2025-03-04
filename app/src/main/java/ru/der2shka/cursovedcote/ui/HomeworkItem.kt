@@ -78,33 +78,37 @@ fun HomeworkItem(
         stringResource(R.string.expired)
     )
 
+    val statusColor = when (statusIndex) {
+        0 -> colorResource(R.color.tertiary_orange)
+        1 -> colorResource(R.color.warning_yellow)
+        2 -> colorResource(R.color.successful_green)
+        3 -> colorResource(R.color.error_red)
+        4 -> colorResource(R.color.error_red)
+        else -> colorResource(R.color.additional_purple)
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .padding(0.dp, 10.dp, 0.dp, 10.dp)
+            .background(
+                color = statusColor,
+                shape = RoundedCornerShape(20.dp)
+            )
     ) {
         // Note Card Item.
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.primary_blue)
+                containerColor = Color.Transparent
             ),
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            val statusColor = when (statusIndex) {
-                0 -> colorResource(R.color.tertiary_orange)
-                1 -> colorResource(R.color.warning_yellow)
-                2 -> colorResource(R.color.successful_green)
-                3 -> colorResource(R.color.error_red)
-                4 -> colorResource(R.color.error_red)
-                else -> colorResource(R.color.additional_purple)
-            }
-
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(20.dp)
             ) {
                 // Name.
                 Box(
@@ -159,7 +163,7 @@ fun HomeworkItem(
                     softWrap = true,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .padding(0.dp, 10.dp)
+                        .padding(20.dp, 20.dp, 0.dp, 20.dp)
                         .fillMaxWidth()
                 )
 
@@ -224,14 +228,10 @@ fun HomeworkItem(
                         contentAlignment = Alignment.CenterStart,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(
-                                color = colorResource(R.color.background_color),
-                                shape = RoundedCornerShape(10.dp)
-                            )
                     ) {
                         ScrollableAnimatedText(
                             text = "${statusList.get(statusIndex)}",
-                            textColor = statusColor,
+                            textColor = Color.White,
                             textAlign = TextAlign.End,
                             fontSize = font_size_secondary_text,
                             lineHeight = line_height_secondary_text,

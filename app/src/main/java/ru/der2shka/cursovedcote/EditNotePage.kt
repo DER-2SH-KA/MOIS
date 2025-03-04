@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -76,18 +77,18 @@ fun EditNotePage(
     val coroutineScope = rememberCoroutineScope()
     val addNewNoteHelper = AddNewNoteHelper.getInstance()
     val noteHelper: NoteHelper = NoteHelper.getInstance()
-    val noteFromnNoteHelpert = remember { mutableStateOf( noteHelper.noteValue ) }
+    val noteFromNoteHelpert = remember { mutableStateOf( noteHelper.noteValue ) }
 
-    addNewNoteHelper.setNameValue( Optional.ofNullable( noteFromnNoteHelpert.value.name ) )
-    addNewNoteHelper.setDescriptionValue( Optional.ofNullable( noteFromnNoteHelpert.value.description ) )
+    addNewNoteHelper.setNameValue( Optional.ofNullable( noteFromNoteHelpert.value.name ) )
+    addNewNoteHelper.setDescriptionValue( Optional.ofNullable( noteFromNoteHelpert.value.description ) )
     addNewNoteHelper.setDateOfWrite(
         Optional.ofNullable(
-            Instant.ofEpochMilli( noteFromnNoteHelpert.value.date )
+            Instant.ofEpochMilli( noteFromNoteHelpert.value.date )
                 .atZone( ZoneId.systemDefault() )
                 .toLocalDate()
         )
     )
-    addNewNoteHelper.setStatusCodeValue( Optional.ofNullable( noteFromnNoteHelpert.value.status ) )
+    addNewNoteHelper.setStatusCodeValue( Optional.ofNullable( noteFromNoteHelpert.value.status ) )
 
     val statusList = listOf(
         stringResource(R.string.in_processing),
@@ -153,6 +154,9 @@ fun EditNotePage(
         "f" -> errColor
         else -> Color.Black
     }
+
+    val isDeleted = remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -180,7 +184,7 @@ fun EditNotePage(
                     )
             ) {
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.add_note),
+                    text = stringResource(R.string.edit_note),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
@@ -194,7 +198,7 @@ fun EditNotePage(
             // Fields.
             Column(
                 modifier = Modifier
-                    .fillMaxHeight(0.7f)
+                    .fillMaxHeight(0.6f)
                     .verticalScroll( verticalMainScroll )
             ){
                 Column(
@@ -486,91 +490,156 @@ fun EditNotePage(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                // Button to Add.
-                Button(
-                    onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            // Add data into Helper object.
-                            addNewNoteHelper.setNameValue(
-                                Optional.ofNullable(nameTextFieldValue.value.text)
-                            )
-                            addNewNoteHelper.setDescriptionValue(
-                                Optional.ofNullable(descriptionTextFieldValue.value.text)
-                            )
-                            addNewNoteHelper.setDateOfWrite(
-                                Optional.ofNullable(selectedDateOfWrite.value)
-                            )
-                            addNewNoteHelper.setStatusCodeValue(
-                                Optional.ofNullable( statusList.indexOf( selectedStatusItem.value.text ) )
-                            )
+                // Update and delete buttons.
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    // Button to Update.
+                    Button(
+                        onClick = {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                // Add data into Helper object.
+                                addNewNoteHelper.setNameValue(
+                                    Optional.ofNullable(nameTextFieldValue.value.text)
+                                )
+                                addNewNoteHelper.setDescriptionValue(
+                                    Optional.ofNullable(descriptionTextFieldValue.value.text)
+                                )
+                                addNewNoteHelper.setDateOfWrite(
+                                    Optional.ofNullable(selectedDateOfWrite.value)
+                                )
+                                addNewNoteHelper.setStatusCodeValue(
+                                    Optional.ofNullable(statusList.indexOf(selectedStatusItem.value.text))
+                                )
 
-                            // Add data into DataBase.
-                            var dateInMills: Long = selectedDateOfWrite.value
-                                .atStartOfDay()
-                                .atZone( ZoneId.systemDefault() )
-                                .toInstant()
-                                .toEpochMilli()
+                                // Add data into DataBase.
+                                var dateInMills: Long = selectedDateOfWrite.value
+                                    .atStartOfDay()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toInstant()
+                                    .toEpochMilli()
 
-                            var newNote = Note(
-                                id = noteFromnNoteHelpert.value.id,
-                                name = addNewNoteHelper.nameValue,
-                                description = addNewNoteHelper.descriptionValue,
-                                date = dateInMills,
-                                status = addNewNoteHelper.statusCodeValue,
-                                userId = userId
+                                var newNote = Note(
+                                    id = noteFromNoteHelpert.value.id,
+                                    name = addNewNoteHelper.nameValue,
+                                    description = addNewNoteHelper.descriptionValue,
+                                    date = dateInMills,
+                                    status = addNewNoteHelper.statusCodeValue,
+                                    userId = userId
+                                )
+
+                                val updatedId = database.noteDao().updateNote(newNote)
+
+                                // If note was updated.
+                                if (database.noteDao().findNoteById(noteFromNoteHelpert.value.id)
+                                        .equals(newNote)
+                                ) {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                } else {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
+                            }
+                        },
+
+                        enabled = !isDeleted.value,
+                        shape = RoundedCornerShape(20.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        modifier = Modifier
+                            .width( (config.screenWidthDp * 0.45f).dp )
+                            .height( (oneBlockHeight * 0.5f) )
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colorStops = arrayOf(
+                                            0.6f to colorResource(R.color.primary_blue),
+                                            1f to colorResource(R.color.secondary_cyan)
+                                        )
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ScrollableAnimatedText(
+                                text = stringResource(R.string.update),
+                                textColor = Color.White,
+                                textAlign = TextAlign.Center,
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                containterModifier = Modifier
+                                    .fillMaxWidth(0.9f),
+                                textModifier = Modifier
+                                    .fillMaxWidth()
                             )
+                        }
+                    }
 
-                            val updatedId = database.noteDao().updateNote( newNote )
+                    Spacer(
+                        modifier = Modifier.width(10.dp)
+                    )
 
-                            // If note was updated.
-                            if ( database.noteDao().findNoteById( noteFromnNoteHelpert.value.id ).equals( newNote ) ) {
-                                // Show status of transaction.
+                    // Button to Delete.
+                    Button(
+                        onClick = {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                database.noteDao().deleteNote(noteFromNoteHelpert.value)
+                                isDeleted.value = true
+
+                                addNewNoteHelper.setNameValue(Optional.ofNullable(""))
+                                addNewNoteHelper.setDescriptionValue(Optional.ofNullable(""))
+                                addNewNoteHelper.setDateOfWrite(Optional.ofNullable(LocalDate.now()))
+                                addNewNoteHelper.setStatusCodeValue(Optional.ofNullable(0))
+
                                 transactionStatusString.value = "s"
                                 delay(4000L)
                                 transactionStatusString.value = ""
                             }
-                            else {
-                                // Show status of transaction.
-                                transactionStatusString.value = "f"
-                                delay(4000L)
-                                transactionStatusString.value = ""
-                            }
-                        }
-                    },
+                        },
 
-                    shape = RoundedCornerShape(20.dp),
-                    contentPadding = PaddingValues(0.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(
-                            (oneBlockHeight * 0.5f)
-                        )
-                ) {
-                    Box(
+                        enabled = !isDeleted.value,
+                        shape = RoundedCornerShape(20.dp),
+                        contentPadding = PaddingValues(0.dp),
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colorStops = arrayOf(
-                                        0.6f to colorResource(R.color.primary_blue),
-                                        1f to colorResource(R.color.secondary_cyan)
-                                    )
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
+                            .width( (config.screenWidthDp * 0.45f).dp )
+                            .height( (oneBlockHeight * 0.5f) )
                     ) {
-                        ScrollableAnimatedText(
-                            text = stringResource(R.string.add),
-                            textColor = Color.White,
-                            textAlign = TextAlign.Center,
-                            fontSize = font_size_main_text,
-                            fontWeight = FontWeight.Bold,
-                            lineHeight = line_height_main_text,
-                            containterModifier = Modifier
-                                .fillMaxWidth(0.9f),
-                            textModifier = Modifier
-                                .fillMaxWidth()
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colorStops = arrayOf(
+                                            0.6f to colorResource(R.color.primary_blue),
+                                            1f to colorResource(R.color.secondary_cyan)
+                                        )
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ScrollableAnimatedText(
+                                text = stringResource(R.string.delete),
+                                textColor = Color.White,
+                                textAlign = TextAlign.Center,
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                containterModifier = Modifier
+                                    .fillMaxWidth(0.9f),
+                                textModifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
                     }
                 }
 
