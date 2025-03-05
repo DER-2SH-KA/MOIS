@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import ru.der2shka.cursovedcote.db.entity.GradeType;
+
 public class AddNewMarkHelper {
 
     // Singleton object.
@@ -19,7 +21,7 @@ public class AddNewMarkHelper {
     private static Optional<String> currentMarkValue = Optional.ofNullable(null);
 
     // Current mark type.
-    private static Optional<String> currentMarkType = Optional.ofNullable(null);
+    private static Optional<GradeType> currentMarkType = Optional.ofNullable(null);
 
     // Current study subject.
     private static Optional<String> currentStudySubject = Optional.ofNullable(null);
@@ -31,7 +33,7 @@ public class AddNewMarkHelper {
     private static List<String> markValueList = new ArrayList<String>();
 
     // List Of Mark Types.
-    private static List<String> markTypeList = new ArrayList<String>();
+    private static List<GradeType> markTypeList = new ArrayList<GradeType>();
 
     // List Of  Study Subjects.
     private static List<String> studySubjectList = new ArrayList<String>();
@@ -78,7 +80,7 @@ public class AddNewMarkHelper {
      * @param newMarkType Optional new mark type string value.
      * @return Return true if mark was type updated, else false.
      */
-    public Boolean setCurrentMarkType(Optional<String> newMarkType) {
+    public Boolean setCurrentMarkType(Optional<GradeType> newMarkType) {
         if (newMarkType.isPresent()) {
             currentMarkType = newMarkType;
             return true;
@@ -91,8 +93,8 @@ public class AddNewMarkHelper {
      *  Get current mark type string value.
      * @return if mark type is present, return current mark type, else &quot;None value&quot;
      * **/
-    public String getCurrentMarkType() {
-        return currentMarkType.orElse("None value");
+    public GradeType getCurrentMarkType() {
+        return currentMarkType.orElse( null );
     }
 
     /**
@@ -172,7 +174,7 @@ public class AddNewMarkHelper {
      * Set collection of mark values
      * @param newMarkTypes Optional list of mark string values.
      * **/
-    public void setMarkTypeList( Optional<List<String>> newMarkTypes) {
+    public void setMarkTypeList( Optional<List<GradeType>> newMarkTypes) {
         if (newMarkTypes.isPresent()) {
             markTypeList = newMarkTypes.get();
         }
@@ -182,15 +184,15 @@ public class AddNewMarkHelper {
      * Return list of mark type string values.
      * @return List of String mark type values
      * **/
-    public List<String> getMarkTypeList() {
+    public List<GradeType> getMarkTypeList() {
         if (markTypeList.isEmpty()) {
-            setMarkTypeList(
+            /*setMarkTypeList(
                     Optional.ofNullable(
                             // TODO: Change it to Service which get it collection from DB.
-                            markTypeTestList
+
                     )
             );
-            setCurrentMarkType( Optional.ofNullable(getMarkTypeList().get(0)) );
+            setCurrentMarkType( Optional.ofNullable(getMarkTypeList().get(0)) );*/
         }
 
         return markTypeList;

@@ -1,6 +1,7 @@
 package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -20,9 +21,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -34,6 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
@@ -52,6 +57,7 @@ import java.util.Optional
 /**
  * Page for adding new mark in system.
  * **/
+@RequiresApi(35)
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
 fun AddNewMarkPage(
@@ -59,13 +65,16 @@ fun AddNewMarkPage(
     database: AppDatabase
 ) {
     val config = LocalConfiguration.current
+    val coroutineScope = rememberCoroutineScope()
+
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
     val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
     val markValueList = addNewMarkHelper.markValueList
-    val markTypeList = addNewMarkHelper.markTypeList
+    val markTypeList = remember { mutableStateOf(addNewMarkHelper.markTypeList) }
+    val gradeTypeStringList = remember { mutableStateOf( mutableListOf<String>() ) }
     val subjectValueList = addNewMarkHelper.studySubjectList
 
     val selectedMarkValue = remember {
@@ -79,6 +88,29 @@ fun AddNewMarkPage(
     }
     val selectedLocalDate = remember {
         mutableStateOf( addNewMarkHelper.currentLocalDate )
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            addNewMarkHelper.setMarkTypeList(
+                Optional.ofNullable(
+                    database.gradeTypeDao().findGradeTypesWithOrdering()
+                )
+            )
+
+            addNewMarkHelper.setCurrentMarkType(
+                Optional.ofNullable(
+                    addNewMarkHelper.markTypeList.get(0)
+                )
+            )
+
+            markTypeList.value = addNewMarkHelper.markTypeList
+            markTypeList.value.forEach {
+                gradeTypeStringList.value.addLast( it.name )
+            }
+
+            selectedMarkType.value = addNewMarkHelper.currentMarkType
+        }
     }
 
     Box(
@@ -199,14 +231,22 @@ fun AddNewMarkPage(
                             .fillMaxWidth()
                     ) {
                         ComboBoxPseudo(
-                            items = markTypeList,
-                            selectedItem = selectedMarkType,
+                            items = gradeTypeStringList.value,
+                            selectedItem = mutableStateOf( selectedMarkType.value.name ),
                             modifier = Modifier
                                 .padding(5.dp)
                                 .fillMaxWidth()
                             ,
                             onSelect = { value ->
-                                addNewMarkHelper.setCurrentMarkType(Optional.ofNullable(value))
+                                var curr_mark_type = markTypeList.value.filter {
+                                    it.name.equals(value)
+                                }.first()
+
+                                addNewMarkHelper.setCurrentMarkType(
+                                    Optional.ofNullable(
+                                        curr_mark_type
+                                    )
+                                )
                                 selectedMarkType.value = addNewMarkHelper.currentMarkType
                             }
                         )

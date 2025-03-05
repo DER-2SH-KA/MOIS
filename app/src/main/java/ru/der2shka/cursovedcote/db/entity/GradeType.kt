@@ -32,7 +32,7 @@ data class GradeType(
     var name: String = "",
 
     @ColumnInfo( name = "multiplier" )
-    var mulltiplier: Long = 0,
+    var mulltiplier: Int = 0,
 
     @ColumnInfo( name = "user_local_id" )
     var userLocalId: Long = 0

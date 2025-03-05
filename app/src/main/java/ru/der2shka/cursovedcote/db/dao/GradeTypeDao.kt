@@ -13,7 +13,7 @@ import ru.der2shka.cursovedcote.db.entity.Note
 @Dao
 interface GradeTypeDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insertGradeType(gt: GradeType)
+    fun insertGradeType(gt: GradeType): Long
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertGradeTypes(vararg gt: GradeType)
@@ -33,8 +33,11 @@ interface GradeTypeDao {
     @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE} AS gt WHERE( gt.id == :gtId )")
     fun findGradeTypeById(gtId: Long): GradeType
 
-    @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE} AS gt ORDER BY gt.name ASC")
+    @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE}")
     fun findGradeTypes(): List<GradeType>
+
+    @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE} AS gt ORDER BY gt.name ASC")
+    fun findGradeTypesWithOrdering(): List<GradeType>
 
 
     @Query(value = "SELECT * FROM ${TableNames.GRADE_TYPE_TABLE} AS gt WHERE( gt.name LIKE '%' || :name || '%' ) ORDER BY gt.name ASC")

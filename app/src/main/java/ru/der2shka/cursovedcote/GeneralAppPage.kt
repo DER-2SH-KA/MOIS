@@ -581,8 +581,8 @@ fun GeneralAppPage(
                         navHostController.navigate(current_page)
                     },
                     onPlusClick = {
-                        /*current_page = "add_new_grade_type"
-                        navHostController.navigate(current_page)*/
+                        current_page = "add_new_grade_type"
+                        navHostController.navigate(current_page)
                     },
                     onDotsClick = { },
                     modifier = Modifier

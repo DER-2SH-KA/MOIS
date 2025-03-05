@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -45,11 +46,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
 import ru.der2shka.cursovedcote.Models.AddNewMarkTypeHelper
 import ru.der2shka.cursovedcote.Models.AddNewStudySubjectHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -75,6 +80,8 @@ fun AddNewMarkType(
     database: AppDatabase
 ) {
     val config = LocalConfiguration.current
+    val coroutineScope = rememberCoroutineScope()
+
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
@@ -97,6 +104,28 @@ fun AddNewMarkType(
                 addNewMarkTypeHelper.multiplierValue.toString()
             )
         )
+    }
+
+    // Transaction status
+    val transactionStatusString = remember { mutableStateOf("") }
+
+    val succText = stringResource(R.string.successfully)
+    val errText = stringResource(R.string.fail)
+    var succColor = colorResource (R.color.successful_green)
+    var errColor = colorResource (R.color.error_red)
+
+    // Transaction status text.
+    val transactionText = when( transactionStatusString.value ) {
+        "s" -> succText
+        "f" -> errText
+        else -> transactionStatusString.value
+    }
+
+    // Transaction status color.
+    val transactionColor = when( transactionStatusString.value ) {
+        "s" -> succColor
+        "f" -> errColor
+        else -> Color.Black
     }
 
     Box(
@@ -275,16 +304,38 @@ fun AddNewMarkType(
                         }
                     }
 
-
+                    /*
                     // Only for testing.
                     Text(text = "Name: ${nameTextField.value.text}")
                     Text(text = "NameH: ${addNewMarkTypeHelper.nameValue}")
                     Text(text = "Multiplier: ${multiplierTextField.value.text}")
                     Text(text = "MultiplierH: ${addNewMarkTypeHelper.multiplierValue}")
+                     */
 
+                    // Transaction status.
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        ScrollableAnimatedText(
+                            text = transactionText,
+                            textColor = transactionColor,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = line_height_main_text,
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                            ,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f)
+                        )
+                    }
                 }
             }
 
+            // Buttons.
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -294,14 +345,45 @@ fun AddNewMarkType(
                 // Button to Add.
                 Button(
                     onClick = {
-                        addNewMarkTypeHelper
-                            .setNameValue(
-                                Optional.ofNullable( nameTextField.value.text )
+                        coroutineScope.launch(Dispatchers.IO) {
+                            // Add data into Helper object.
+                            addNewMarkTypeHelper
+                                .setNameValue(
+                                    Optional.ofNullable( nameTextField.value.text )
+                                )
+                            addNewMarkTypeHelper
+                                .setMultiplierValue(
+                                    Optional.ofNullable( multiplierTextField.value.text.toInt() )
+                                )
+
+                            // Add data into DataBase.
+                            var newGradeType = GradeType(
+                                name = addNewMarkTypeHelper.nameValue,
+                                mulltiplier = addNewMarkTypeHelper.multiplierValue,
+                                userLocalId = userId
                             )
-                        addNewMarkTypeHelper
-                            .setMultiplierValue(
-                                Optional.ofNullable( multiplierTextField.value.text.toInt() )
-                            )
+
+                            val addedId = database.gradeTypeDao().insertGradeType( newGradeType )
+
+                            if (database.gradeTypeDao().findGradeTypes().last().id == addedId) {
+                                clearAddNewGradeTypeHelperValues(addNewMarkTypeHelper)
+
+                                nameTextField.value = TextFieldValue("")
+                                multiplierTextField.value = TextFieldValue("1")
+
+                                // Show status of transaction.
+                                transactionStatusString.value = "s"
+                                delay(4000L)
+                                transactionStatusString.value = ""
+                            }
+                            else {
+                                // Show status of transaction.
+                                transactionStatusString.value = "f"
+                                delay(4000L)
+                                transactionStatusString.value = ""
+                            }
+                        }
+
                     },
 
                     shape = RoundedCornerShape(20.dp),
@@ -391,4 +473,11 @@ fun AddNewMarkType(
             }
         }
     }
+}
+
+fun clearAddNewGradeTypeHelperValues(
+    addNewMarkTypeHelper: AddNewMarkTypeHelper
+) {
+    addNewMarkTypeHelper.setNameValue( Optional.ofNullable("") )
+    addNewMarkTypeHelper.setMultiplierValue( Optional.ofNullable( 1 ) )
 }

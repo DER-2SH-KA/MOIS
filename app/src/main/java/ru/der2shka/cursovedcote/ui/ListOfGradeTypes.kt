@@ -74,7 +74,7 @@ fun ViewListOfGradeTypes(
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            gradeTypeList.value = database.gradeTypeDao().findGradeTypes()
+            gradeTypeList.value = database.gradeTypeDao().findGradeTypesWithOrdering()
             println()
         }
     }

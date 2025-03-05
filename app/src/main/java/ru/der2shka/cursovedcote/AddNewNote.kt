@@ -142,6 +142,7 @@ fun AddNewNote(
                 "f" -> errColor
                 else -> Color.Black
     }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -447,8 +448,7 @@ fun AddNewNote(
 
                     // Transaction status.
                     Box(
-                        contentAlignment = Alignment
-                            .Center,
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
