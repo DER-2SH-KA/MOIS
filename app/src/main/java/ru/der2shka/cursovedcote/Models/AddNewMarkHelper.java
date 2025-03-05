@@ -33,7 +33,7 @@ public class AddNewMarkHelper {
     private static List<String> markValueList = new ArrayList<String>();
 
     // List Of Mark Types.
-    private static List<GradeType> markTypeList = Arrays.asList(new GradeType(-1, "None", 0, 0));
+    private static List<GradeType> markTypeList = Arrays.asList(new GradeType(0, "None", 0, 0));
 
     // List Of  Study Subjects.
     private static List<String> studySubjectList = new ArrayList<String>();
@@ -94,7 +94,7 @@ public class AddNewMarkHelper {
      * @return if mark type is present, return current mark type, else GradeType(-1, "None", 0, 0)
      * **/
     public GradeType getCurrentMarkType() {
-        return currentMarkType.orElse( new GradeType(-1, "None", 0, 0) );
+        return currentMarkType.orElse( new GradeType(0, "None", 0, 0) );
     }
 
     /**

@@ -98,14 +98,15 @@ fun AddNewMarkPage(
                         database.gradeTypeDao().findGradeTypesWithOrdering()
                     )
                 )
-                markTypeList.value = addNewMarkHelper.markTypeList
-            }
 
-            addNewMarkHelper.setCurrentMarkType(
-                Optional.ofNullable(
-                    addNewMarkHelper.markTypeList.get(0)
+                markTypeList.value = addNewMarkHelper.markTypeList
+
+                addNewMarkHelper.setCurrentMarkType(
+                    Optional.ofNullable(
+                        addNewMarkHelper.markTypeList.get(0)
+                    )
                 )
-            )
+            }
 
             markTypeList.value.forEach {
                 gradeTypeStringList.value.add( it.name )
@@ -343,7 +344,7 @@ fun AddNewMarkPage(
                     }
                 }
 
-                /*
+
                 // Only for testing.
                 Text(text = "Mark value: ${selectedMarkValue.value}")
                 Text(text = "Mark type: ${selectedMarkType.value}")
@@ -357,7 +358,19 @@ fun AddNewMarkPage(
                             } " +
                             "${selectedLocalDate.value.year}"
                 )
-                 */
+                Text(text = "Mark valueH: ${addNewMarkHelper.currentMarkValue}")
+                Text(text = "Mark typeH: ${addNewMarkHelper.currentMarkType.name}")
+                Text(text = "Subject ValueH: ${addNewMarkHelper.currentStudySubject}")
+                Text(
+                    text = "DateH: ${addNewMarkHelper.currentLocalDate.dayOfMonth} " +
+                            "${
+                                GetMonthStringResourceByLocalDate(
+                                    mutableStateOf(addNewMarkHelper.currentLocalDate), true
+                                )
+                            } " +
+                            "${addNewMarkHelper.currentLocalDate.year}"
+                )
+
             }
         }
 
