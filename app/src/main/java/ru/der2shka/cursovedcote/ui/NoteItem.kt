@@ -37,21 +37,24 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Optional
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun NoteItem(
     navHostController: NavHostController,
-    name: String = "Name",
-    description: String = "Description",
-    localDate: LocalDate = LocalDate.MIN,
-    statusIndex: Int = -1,
     note: Note,
     modifier: Modifier = Modifier
 ) {
     val noteHelper = NoteHelper.getInstance()
+
+    var localDate = Instant
+        .ofEpochMilli( note.date)
+        .atZone( ZoneId.systemDefault() )
+        .toLocalDate()
 
     val dateString = "${localDate.dayOfMonth} " +
             "${
@@ -67,7 +70,7 @@ fun NoteItem(
         stringResource(R.string.canceled)
     )
 
-    val statusColor = when (statusIndex) {
+    val statusColor = when (note.status) {
         0 -> colorResource(R.color.tertiary_orange)
         1 -> colorResource(R.color.warning_yellow)
         2 -> colorResource(R.color.successful_green)
@@ -114,7 +117,7 @@ fun NoteItem(
                         .fillMaxWidth()
                 ) {
                     ScrollableAnimatedText(
-                        text = name,
+                        text = note.name,
                         textColor = Color.White,
                         textAlign = TextAlign.Start,
                         fontSize = font_size_main_text,
@@ -128,7 +131,7 @@ fun NoteItem(
 
                 // Description.
                 Text(
-                    text = "\t\t" + description,
+                    text = "\t\t" + note.description,
                     color = Color.White,
                     textAlign = TextAlign.Start,
                     fontSize = font_size_secondary_text,
@@ -175,7 +178,7 @@ fun NoteItem(
                             .fillMaxWidth()
                     ) {
                         ScrollableAnimatedText(
-                            text = "${statusList.get(statusIndex)}",
+                            text = "${statusList.get(note.status)}",
                             textColor = Color.White,
                             textAlign = TextAlign.End,
                             fontSize = font_size_secondary_text,

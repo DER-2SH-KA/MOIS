@@ -46,6 +46,7 @@ import ru.der2shka.cursovedcote.Service.setLocaleForApp
 import ru.der2shka.cursovedcote.db.entity.User
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.BottomMenu
+import ru.der2shka.cursovedcote.ui.ViewListOfGradeTypes
 import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -111,6 +112,10 @@ class GeneralAppActivity : ComponentActivity() {
 
                     // Edit pages.
                     composable(route = "edit_note") { EditNotePage(navHostController, database) }
+                    composable(route = "edit_grade_type") { EditNotePage(navHostController, database) }
+
+                    // View pages.
+                    composable(route = "view_grade_type") { ViewListOfGradeTypes(navHostController, database) }
                 }
 
             }

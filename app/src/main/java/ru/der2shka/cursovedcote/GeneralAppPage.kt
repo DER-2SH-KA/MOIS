@@ -577,13 +577,12 @@ fun GeneralAppPage(
                     headerText = stringResource(R.string.grade_types),
                     maxLines = 1,
                     onItemClick = {
-                        coroutineScope.launch {
-                            pager.scrollToPage(0)
-                        }
+                        current_page = "view_grade_type"
+                        navHostController.navigate(current_page)
                     },
                     onPlusClick = {
-                        current_page = "add_new_mark_type"
-                        navHostController.navigate(current_page)
+                        /*current_page = "add_new_grade_type"
+                        navHostController.navigate(current_page)*/
                     },
                     onDotsClick = { },
                     modifier = Modifier

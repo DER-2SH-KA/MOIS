@@ -1,10 +1,12 @@
-package ru.der2shka.cursovedcote
+package ru.der2shka.cursovedcote.ui
 
+import ru.der2shka.cursovedcote.R
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -32,12 +35,16 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.clearAddNewNoteHelperFields
+import ru.der2shka.cursovedcote.current_page
+import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.NoteItem
@@ -51,11 +58,11 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 /**
- * View list of saved notes.
+ * View list of saved grade types.
  * **/
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ViewListOfNotes(
+fun ViewListOfGradeTypes(
     navHostController: NavHostController,
     database: AppDatabase
 ) {
@@ -63,11 +70,11 @@ fun ViewListOfNotes(
     val config = LocalConfiguration.current
     val coroutineScope = rememberCoroutineScope()
 
-    var noteList = remember { mutableStateOf( listOf<Note>() ) }
+    var gradeTypeList = remember { mutableStateOf( listOf<GradeType>() ) }
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            noteList.value = database.noteDao().findNotes().toMutableList()
+            gradeTypeList.value = database.gradeTypeDao().findGradeTypes()
             println()
         }
     }
@@ -105,7 +112,7 @@ fun ViewListOfNotes(
             ) {
                 // Header Text.
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.notes),
+                    text = stringResource(R.string.grade_types),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
@@ -120,15 +127,67 @@ fun ViewListOfNotes(
             Column(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .fillMaxHeight()
+                    .fillMaxHeight(0.7f)
                     .verticalScroll( contentVScroll )
             ) {
 
-                noteList.value.forEach {
-                    NoteItem( navHostController,  it )
+                gradeTypeList.value.forEach {
+                    GradeTypeItem( navHostController, it )
                 }
             }
 
+            // Buttons.
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                // Button to Back.
+                Button(
+                    onClick = {
+                        current_page = "general_app"
+                        navHostController.navigate(current_page) {
+                            popUpTo("view_grade_type") { inclusive = true }
+                        }
+                    },
+
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(
+                            (oneBlockHeight * 0.5f)
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ScrollableAnimatedText(
+                            text = stringResource(R.string.back),
+                            textColor = Color.White,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = line_height_main_text,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
         }
     }
 }
