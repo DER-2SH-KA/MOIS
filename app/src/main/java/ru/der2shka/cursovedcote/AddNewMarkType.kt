@@ -431,7 +431,7 @@ fun AddNewMarkType(
                     onClick = {
                         current_page = "general_app"
                         navHostController.navigate(current_page) {
-                            popUpTo("add_new_study_subject") { inclusive = true }
+                            popUpTo("add_new_grade_type") { inclusive = true }
                         }
                     },
 

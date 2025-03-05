@@ -106,7 +106,7 @@ fun AddNewMarkPage(
 
             markTypeList.value = addNewMarkHelper.markTypeList
             markTypeList.value.forEach {
-                gradeTypeStringList.value.addLast( it.name )
+                gradeTypeStringList.value.add( it.name )
             }
 
             selectedMarkType.value = addNewMarkHelper.currentMarkType

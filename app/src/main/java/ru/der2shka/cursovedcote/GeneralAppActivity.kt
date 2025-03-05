@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,6 +61,7 @@ class GeneralAppActivity : ComponentActivity() {
 
     private lateinit var settingsDataStore: SettingsDataStore
 
+    @RequiresApi(35)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -108,7 +110,7 @@ class GeneralAppActivity : ComponentActivity() {
                     composable(route = "add_new_homework") { AddNewHomework(navHostController, database) }
                     composable(route = "add_new_note") { AddNewNote(navHostController, database) }
                     composable(route = "add_new_study_subject") { AddNewStudySubject(navHostController, database) }
-                    composable(route = "add_new_mark_type") { AddNewMarkType(navHostController, database) }
+                    composable(route = "add_new_grade_type") { AddNewMarkType(navHostController, database) }
 
                     // Edit pages.
                     composable(route = "edit_note") { EditNotePage(navHostController, database) }

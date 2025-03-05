@@ -94,7 +94,7 @@ public class AddNewMarkHelper {
      * @return if mark type is present, return current mark type, else &quot;None value&quot;
      * **/
     public GradeType getCurrentMarkType() {
-        return currentMarkType.orElse( null );
+        return currentMarkType.orElse( new GradeType(0, "None", 0, 0) );
     }
 
     /**
