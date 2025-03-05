@@ -1,24 +1,19 @@
-package ru.der2shka.cursovedcote.ui
+package ru.der2shka.cursovedcote
 
-import ru.der2shka.cursovedcote.R
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,27 +30,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.der2shka.cursovedcote.clearAddNewNoteHelperFields
-import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.GradeType
-import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
-import ru.der2shka.cursovedcote.ui.NoteItem
+import ru.der2shka.cursovedcote.ui.GradeTypeItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
-import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
+import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
 
 /**
  * View list of saved grade types.
@@ -131,9 +118,22 @@ fun ViewListOfGradeTypes(
                     .fillMaxHeight(0.7f)
                     .verticalScroll( contentVScroll )
             ) {
-
-                gradeTypeList.value.forEach {
-                    GradeTypeItem( navHostController, it )
+                if (gradeTypeList.value.isNotEmpty()) {
+                    gradeTypeList.value.forEach {
+                        GradeTypeItem( navHostController, it )
+                    }
+                }
+                else {
+                    Text(
+                        text = "\\_( -_ -)_/",
+                        color = colorResource(R.color.main_text_dark_gray),
+                        textAlign = TextAlign.Center,
+                        fontSize = font_size_secondary_text,
+                        fontStyle = FontStyle.Italic,
+                        lineHeight = line_height_middle_size_text,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
                 }
             }
 

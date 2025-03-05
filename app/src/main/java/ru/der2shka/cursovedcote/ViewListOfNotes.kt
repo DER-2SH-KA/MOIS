@@ -45,6 +45,7 @@ import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.Instant
 import java.time.LocalDate
@@ -123,9 +124,22 @@ fun ViewListOfNotes(
                     .fillMaxHeight()
                     .verticalScroll( contentVScroll )
             ) {
-
-                noteList.value.forEach {
-                    NoteItem( navHostController,  it )
+                if (noteList.value.size != 0) {
+                    noteList.value.forEach {
+                        NoteItem(navHostController, it)
+                    }
+                }
+                else {
+                    Text(
+                        text = "\\_( -_ -)_/",
+                        color = colorResource(R.color.main_text_dark_gray),
+                        textAlign = TextAlign.Center,
+                        fontSize = font_size_secondary_text,
+                        fontStyle = FontStyle.Italic,
+                        lineHeight = line_height_middle_size_text,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
                 }
             }
 
