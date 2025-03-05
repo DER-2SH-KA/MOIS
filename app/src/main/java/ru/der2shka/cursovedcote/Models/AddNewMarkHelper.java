@@ -21,7 +21,7 @@ public class AddNewMarkHelper {
     private static Optional<String> currentMarkValue = Optional.ofNullable(null);
 
     // Current mark type.
-    private static Optional<GradeType> currentMarkType = Optional.ofNullable(null);
+    private static Optional<GradeType> currentMarkType = Optional.ofNullable(new GradeType(-1, "None", 0, 0));
 
     // Current study subject.
     private static Optional<String> currentStudySubject = Optional.ofNullable(null);
@@ -33,7 +33,7 @@ public class AddNewMarkHelper {
     private static List<String> markValueList = new ArrayList<String>();
 
     // List Of Mark Types.
-    private static List<GradeType> markTypeList = new ArrayList<GradeType>();
+    private static List<GradeType> markTypeList = Arrays.asList(new GradeType(-1, "None", 0, 0));
 
     // List Of  Study Subjects.
     private static List<String> studySubjectList = new ArrayList<String>();
@@ -91,10 +91,10 @@ public class AddNewMarkHelper {
 
     /**
      *  Get current mark type string value.
-     * @return if mark type is present, return current mark type, else &quot;None value&quot;
+     * @return if mark type is present, return current mark type, else GradeType(-1, "None", 0, 0)
      * **/
     public GradeType getCurrentMarkType() {
-        return currentMarkType.orElse( new GradeType(0, "None", 0, 0) );
+        return currentMarkType.orElse( new GradeType(-1, "None", 0, 0) );
     }
 
     /**

@@ -92,11 +92,14 @@ fun AddNewMarkPage(
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            addNewMarkHelper.setMarkTypeList(
-                Optional.ofNullable(
-                    database.gradeTypeDao().findGradeTypesWithOrdering()
+            if ( database.gradeTypeDao().findGradeTypesWithOrdering().size != 0 ) {
+                addNewMarkHelper.setMarkTypeList(
+                    Optional.ofNullable(
+                        database.gradeTypeDao().findGradeTypesWithOrdering()
+                    )
                 )
-            )
+                markTypeList.value = addNewMarkHelper.markTypeList
+            }
 
             addNewMarkHelper.setCurrentMarkType(
                 Optional.ofNullable(
@@ -104,7 +107,6 @@ fun AddNewMarkPage(
                 )
             )
 
-            markTypeList.value = addNewMarkHelper.markTypeList
             markTypeList.value.forEach {
                 gradeTypeStringList.value.add( it.name )
             }

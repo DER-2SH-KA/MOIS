@@ -102,55 +102,55 @@ fun GradeTypeItem(
                         containterModifier = Modifier.fillMaxWidth(),
                         textModifier = Modifier.fillMaxWidth()
                     )
-
-                    // Multiplier
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                }
+                // Multiplier
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    // Multiplier Text.
+                    Box(
+                        contentAlignment = Alignment.CenterStart,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.5f)
                     ) {
-                        // Multiplier Text.
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                        ) {
-                            ScrollableAnimatedText(
-                                text = "${stringResource(R.string.multiplier)}:",
-                                textColor = Color.White,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_middle_size_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_middle_size_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                        }
+                        ScrollableAnimatedText(
+                            text = "${stringResource(R.string.multiplier)}:",
+                            textColor = Color.White,
+                            textAlign = TextAlign.Start,
+                            fontSize = font_size_middle_size_text,
+                            fontStyle = FontStyle.Italic,
+                            lineHeight = line_height_middle_size_text,
+                            textModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            containterModifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
 
-                        // Multiplier Value.
-                        Box(
-                            contentAlignment = Alignment.CenterEnd,
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                        ) {
-                            ScrollableAnimatedText(
-                                text = gradeType.mulltiplier.toString(),
-                                textColor = Color.White,
-                                textAlign = TextAlign.End,
-                                fontSize = font_size_middle_size_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_middle_size_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                        }
+                    // Multiplier Value.
+                    Box(
+                        contentAlignment = Alignment.CenterEnd,
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                    ) {
+                        ScrollableAnimatedText(
+                            text = gradeType.mulltiplier.toString(),
+                            textColor = Color.White,
+                            textAlign = TextAlign.End,
+                            fontSize = font_size_middle_size_text,
+                            fontStyle = FontStyle.Italic,
+                            lineHeight = line_height_middle_size_text,
+                            textModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            containterModifier = Modifier
+                                .fillMaxWidth()
+                        )
                     }
                 }
+
             }
         }
     }

@@ -95,7 +95,8 @@ fun ViewListOfGradeTypes(
         // Main Content.
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .fillMaxHeight(0.9f)
             ,
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
