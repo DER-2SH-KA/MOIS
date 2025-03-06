@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -38,6 +39,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewHomeworkHelper
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
@@ -65,15 +68,27 @@ fun AddNewHomework(
     database: AppDatabase
 ) {
     val config = LocalConfiguration.current
+    val coroutineScope = rememberCoroutineScope()
+
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
 
     val addNewHomeworkHelper = AddNewHomeworkHelper.getInstance()
 
-    val subjectValueList = addNewHomeworkHelper.studySubjectList
+    val subjectValueList = remember { mutableStateOf(addNewHomeworkHelper.studySubjectList) }
 
     val selectedSubjectValue = remember {
         mutableStateOf( addNewHomeworkHelper.studySubjectValue )
+    }
+
+    coroutineScope.launch(Dispatchers.IO) {
+        val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
+
+        if (studySubjectsDbList.isNotEmpty()) {
+            addNewHomeworkHelper.setStudySubjectList( Optional.ofNullable( studySubjectsDbList ) )
+        }
+
+        subjectValueList.value = addNewHomeworkHelper.studySubjectList
     }
 
     val statusList = listOf(
@@ -314,7 +329,7 @@ fun AddNewHomework(
                                 .fillMaxWidth()
                         ) {
                             ComboBoxPseudo(
-                                items = subjectValueList,
+                                items = subjectValueList.value,
                                 selectedItem = selectedSubjectValue,
                                 modifier = Modifier
                                     .padding(5.dp)

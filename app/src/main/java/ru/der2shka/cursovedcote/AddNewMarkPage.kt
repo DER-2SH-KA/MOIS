@@ -74,8 +74,7 @@ fun AddNewMarkPage(
 
     val markValueList = addNewMarkHelper.markValueList
     val markTypeList = remember { mutableStateOf(addNewMarkHelper.markTypeList) }
-    val gradeTypeStringList = remember { mutableStateOf( mutableListOf<String>() ) }
-    val subjectValueList = addNewMarkHelper.studySubjectList
+    val subjectValueList = remember { mutableStateOf(addNewMarkHelper.studySubjectList) }
 
     val selectedMarkValue = remember {
         mutableStateOf( addNewMarkHelper.currentMarkValue )
@@ -92,27 +91,26 @@ fun AddNewMarkPage(
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            if ( database.gradeTypeDao().findGradeTypesWithOrdering().size != 0 ) {
+            val gradeTypeDbList = database.gradeTypeDao().findGradeTypesWithOrdering()
+            val studySubjectDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
+
+            if (gradeTypeDbList.isNotEmpty() ) {
                 addNewMarkHelper.setMarkTypeList(
-                    Optional.ofNullable(
-                        database.gradeTypeDao().findGradeTypesWithOrdering()
-                    )
+                    Optional.ofNullable( gradeTypeDbList )
                 )
 
                 markTypeList.value = addNewMarkHelper.markTypeList
-
-                addNewMarkHelper.setCurrentMarkType(
-                    Optional.ofNullable(
-                        addNewMarkHelper.markTypeList.get(0)
-                    )
-                )
-            }
-
-            markTypeList.value.forEach {
-                gradeTypeStringList.value.add( it.name )
             }
 
             selectedMarkType.value = addNewMarkHelper.currentMarkType
+
+            if (studySubjectDbList.isNotEmpty() ) {
+                addNewMarkHelper.setStudySubjectList(
+                    Optional.ofNullable( studySubjectDbList )
+                )
+
+                markTypeList.value = addNewMarkHelper.markTypeList
+            }
         }
     }
 
@@ -234,23 +232,14 @@ fun AddNewMarkPage(
                             .fillMaxWidth()
                     ) {
                         ComboBoxPseudo(
-                            items = gradeTypeStringList.value,
-                            selectedItem = mutableStateOf( selectedMarkType.value.name ),
+                            items = markTypeList.value,
+                            selectedItem = selectedMarkType,
                             modifier = Modifier
                                 .padding(5.dp)
                                 .fillMaxWidth()
                             ,
                             onSelect = { value ->
-                                var curr_mark_type = markTypeList.value.filter {
-                                    it.name.equals(value)
-                                }.first()
-
-                                addNewMarkHelper.setCurrentMarkType(
-                                    Optional.ofNullable(
-                                        curr_mark_type
-                                    )
-                                )
-                                selectedMarkType.value = addNewMarkHelper.currentMarkType
+                                selectedMarkType.value = value
                             }
                         )
                     }
@@ -263,8 +252,6 @@ fun AddNewMarkPage(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Text(text = "Subjecto")
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(0.4f)
@@ -284,14 +271,14 @@ fun AddNewMarkPage(
                             .fillMaxWidth()
                     ) {
                         ComboBoxPseudo(
-                            items = subjectValueList,
+                            items = subjectValueList.value,
                             selectedItem = selectedSubjectValue,
                             modifier = Modifier
                                 .padding(5.dp)
                                 .fillMaxWidth()
                             ,
                             onSelect = { value ->
-                                addNewMarkHelper.setCurrentStudySubject(Optional.ofNullable(value))
+                                // addNewMarkHelper.setCurrentStudySubject(Optional.ofNullable(value))
                                 selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
                             }
                         )

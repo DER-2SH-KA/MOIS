@@ -38,10 +38,101 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import ru.der2shka.cursovedcote.R
+import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
-// TODO: Подобрать цвета и оформить!
+/**
+ *  Analog of ComboBox from HTML or WindowsForms.
+ *  @param items List of items of combobox
+ *  @param selectedItem Mutable state of variable for selected item
+ * **/
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("ResourcesAsColor")
+@Composable
+fun <T : Nameable> ComboBoxPseudo(
+    items: List<T>,
+    selectedItem: MutableState<T>,
+    onSelect: (T) -> Unit = {  },
+    outlinedTextFieldModifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+) {
+    val expanded = remember { mutableStateOf(false) }
+    val verticalScrollState = rememberScrollState(0)
+    val itemsIsEmpty = items.isEmpty()
+
+    Box(
+        modifier = modifier
+    ) {
+        ExposedDropdownMenuBox(
+            expanded = expanded.value,
+            onExpandedChange = {
+                if (!itemsIsEmpty) { expanded.value = !expanded.value }
+            }
+        ) {
+            TextFieldCustom(
+                value = if (!selectedItem.value.equals( null )) selectedItem.value.name else "\\_( -_ -)_/)",
+                onValueChange = {},
+                enabled = !itemsIsEmpty,
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "dropdown icon",
+                        tint = colorResource(R.color.primary_blue),
+                        modifier = Modifier.clickable {
+                            if (!itemsIsEmpty) { expanded.value = !expanded.value }
+                        }
+                    )
+                },
+                shape = RoundedCornerShape(5.dp),
+                modifier = Modifier
+                    .border(
+                        width = 2.dp,
+                        color = colorResource(R.color.primary_blue),
+                        shape = RoundedCornerShape(5.dp)
+                    )
+                    .menuAnchor()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded.value,
+                onDismissRequest = {
+                    expanded.value = false
+                },
+                modifier = Modifier
+                    .background(
+                        color =  colorResource(R.color.primary_blue) //Color.White
+                    )
+                    .verticalScroll( verticalScrollState )
+            ) {
+                if (items.isNotEmpty()) {
+                    items.forEach { item ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = item.name,
+                                    color = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    lineHeight = line_height_secondary_text,
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.9f)
+                                )
+                            },
+                            onClick = {
+                                onSelect(item)
+                                expanded.value = false
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 /**
  *  Analog of ComboBox from HTML or WindowsForms.
  *  @param items List of items of combobox
@@ -59,6 +150,7 @@ fun ComboBoxPseudo(
 ) {
     val expanded = remember { mutableStateOf(false) }
     val verticalScrollState = rememberScrollState(0)
+    val itemsIsEmpty = items.isEmpty()
 
     Box(
         modifier = modifier
@@ -66,12 +158,13 @@ fun ComboBoxPseudo(
         ExposedDropdownMenuBox(
             expanded = expanded.value,
             onExpandedChange = {
-                expanded.value = !expanded.value
+                if (!itemsIsEmpty) { expanded.value = !expanded.value }
             }
         ) {
             TextFieldCustom(
-                value = selectedItem.value,
+                value = if (!selectedItem.value.equals( null )) selectedItem.value else "\\_( -_ -)_/)",
                 onValueChange = {},
+                enabled = !itemsIsEmpty,
                 readOnly = true,
                 singleLine = true,
                 trailingIcon = {
@@ -79,7 +172,9 @@ fun ComboBoxPseudo(
                         imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = "dropdown icon",
                         tint = colorResource(R.color.primary_blue),
-                        modifier = Modifier.clickable { expanded.value = !expanded.value }
+                        modifier = Modifier.clickable {
+                            if (!itemsIsEmpty) { expanded.value = !expanded.value }
+                        }
                     )
                 },
                 shape = RoundedCornerShape(5.dp),
@@ -91,22 +186,6 @@ fun ComboBoxPseudo(
                     )
                     .menuAnchor()
             )
-            /*
-            OutlinedTextField(
-                value = selectedItem.value,
-                onValueChange = {},
-                readOnly = true,
-                maxLines = 1,
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "dropdown icon",
-                        tint = colorResource(R.color.primary_blue),
-                        modifier = Modifier.clickable { expanded.value = !expanded.value }
-                    )
-                },
-                modifier = Modifier.menuAnchor()
-            )*/
 
             ExposedDropdownMenu(
                 expanded = expanded.value,
@@ -119,24 +198,26 @@ fun ComboBoxPseudo(
                     )
                     .verticalScroll( verticalScrollState )
             ) {
-                items.forEach { item ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = item,
-                                color = Color.White,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                lineHeight = line_height_secondary_text,
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                            )
-                               },
-                        onClick = {
-                            onSelect(item)
-                            expanded.value = false
-                        }
-                    )
+                if (items.isNotEmpty()) {
+                    items.forEach { item ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = item,
+                                    color = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    lineHeight = line_height_secondary_text,
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.9f)
+                                )
+                            },
+                            onClick = {
+                                onSelect(item)
+                                expanded.value = false
+                            }
+                        )
+                    }
                 }
             }
         }

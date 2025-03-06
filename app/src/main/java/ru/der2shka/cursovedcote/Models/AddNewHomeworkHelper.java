@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import ru.der2shka.cursovedcote.db.entity.StudySubject;
+
 public class AddNewHomeworkHelper {
     private static AddNewHomeworkHelper instance = null;
 
@@ -18,7 +20,7 @@ public class AddNewHomeworkHelper {
     private Optional<String> description = Optional.ofNullable("");
 
     // Study Subject.
-    private Optional<String> studySubject = Optional.ofNullable("");
+    private Optional<StudySubject> studySubject = Optional.ofNullable( null );
 
     // Date of write.
     private Optional<LocalDate> dateOfWrite = Optional.ofNullable(LocalDate.now());
@@ -33,7 +35,7 @@ public class AddNewHomeworkHelper {
     private Optional<Integer> statusCode = Optional.ofNullable(0);
 
     // List Of  Study Subjects.
-    private static List<String> studySubjectList = new ArrayList<String>();
+    private static List<StudySubject> studySubjectList = new ArrayList();
 
     // Private constructor.
     private AddNewHomeworkHelper() {}
@@ -77,7 +79,7 @@ public class AddNewHomeworkHelper {
      * @param newStudySubject Optional new study subject string value.
      * @return Return true if study subject was updated, else false.
      */
-    public Boolean setStudySubjectValue(Optional<String> newStudySubject) {
+    public Boolean setStudySubjectValue(Optional<StudySubject> newStudySubject) {
         if (newStudySubject.isPresent()) {
             studySubject = newStudySubject;
             return true;
@@ -88,10 +90,10 @@ public class AddNewHomeworkHelper {
 
     /**
      *  Get study subject string value.
-     * @return if study subject is present, return description, else &quot;None value&quot;
+     * @return if study subject is present, return description, else null;
      * **/
-    public String getStudySubjectValue() {
-        return studySubject.orElse("None value");
+    public StudySubject getStudySubjectValue() {
+        return studySubject.get();
     }
 
     /**
@@ -208,9 +210,10 @@ public class AddNewHomeworkHelper {
      * Set collection of study subject values
      * @param newStudySubjects Optional list of study subject string values.
      * **/
-    public void setStudySubjectList(Optional<List<String>> newStudySubjects) {
+    public void setStudySubjectList(Optional<List<StudySubject>> newStudySubjects) {
         if (newStudySubjects.isPresent()) {
             studySubjectList = newStudySubjects.get();
+            this.setStudySubjectValue( Optional.ofNullable( studySubjectList.get(0) ) );
         }
     }
 
@@ -218,15 +221,15 @@ public class AddNewHomeworkHelper {
      * Return list of study subject values.
      * @return List of String study subjects.
      * **/
-    public List<String> getStudySubjectList() {
+    public List<StudySubject> getStudySubjectList() {
         if (studySubjectList.isEmpty()) {
-            setStudySubjectList(
+            /*setStudySubjectList(
                     Optional.ofNullable(
                             // TODO: Change it to Service which get it collection from DB.
                             studySubjectTestList
                     )
             );
-            setStudySubjectValue( Optional.ofNullable(getStudySubjectList().get(0)) );
+            setStudySubjectValue( Optional.ofNullable(getStudySubjectList().get(0)) );*/
         }
 
         return studySubjectList;

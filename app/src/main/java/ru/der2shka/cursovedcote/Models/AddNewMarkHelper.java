@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ru.der2shka.cursovedcote.db.entity.GradeType;
+import ru.der2shka.cursovedcote.db.entity.StudySubject;
 
 public class AddNewMarkHelper {
 
@@ -21,10 +22,10 @@ public class AddNewMarkHelper {
     private static Optional<String> currentMarkValue = Optional.ofNullable(null);
 
     // Current mark type.
-    private static Optional<GradeType> currentMarkType = Optional.ofNullable(new GradeType(-1, "None", 0, 0));
+    private static Optional<GradeType> currentMarkType = Optional.ofNullable( null );
 
     // Current study subject.
-    private static Optional<String> currentStudySubject = Optional.ofNullable(null);
+    private static Optional<StudySubject> currentStudySubject = Optional.ofNullable(null);
 
     // Current local date.
     private static Optional<LocalDate> currentLocalDate = Optional.ofNullable(LocalDate.now());
@@ -33,10 +34,10 @@ public class AddNewMarkHelper {
     private static List<String> markValueList = new ArrayList<String>();
 
     // List Of Mark Types.
-    private static List<GradeType> markTypeList = Arrays.asList(new GradeType(0, "None", 0, 0));
+    private static List<GradeType> markTypeList = Arrays.asList();
 
     // List Of  Study Subjects.
-    private static List<String> studySubjectList = new ArrayList<String>();
+    private static List<StudySubject> studySubjectList = new ArrayList();
 
     // Private constructor.
     private AddNewMarkHelper() {}
@@ -102,7 +103,7 @@ public class AddNewMarkHelper {
      * @param newStudySubject Optional new study subject string value.
      * @return Return true if study subject was updated, else false.
      */
-    public Boolean setCurrentStudySubject(Optional<String> newStudySubject) {
+    public Boolean setCurrentStudySubject(Optional<StudySubject> newStudySubject) {
         if (newStudySubject.isPresent()) {
             currentStudySubject = newStudySubject;
             return true;
@@ -113,10 +114,10 @@ public class AddNewMarkHelper {
 
     /**
      *  Get current study subject string value.
-     * @return if study subject is present, return current subject, else &quot;None value&quot;
+     * @return if study subject is present, return current subject, else null;
      * **/
-    public String getCurrentStudySubject() {
-        return currentStudySubject.orElse("None value");
+    public StudySubject getCurrentStudySubject() {
+        return currentStudySubject.get();
     }
 
     /**
@@ -177,6 +178,7 @@ public class AddNewMarkHelper {
     public void setMarkTypeList( Optional<List<GradeType>> newMarkTypes) {
         if (newMarkTypes.isPresent()) {
             markTypeList = newMarkTypes.get();
+            this.setCurrentMarkType(  Optional.ofNullable(markTypeList.get(0)) );
         }
     }
 
@@ -202,7 +204,7 @@ public class AddNewMarkHelper {
      * Set collection of study subject values
      * @param newStudySubjects Optional list of study subject string values.
      * **/
-    public void setStudySubjectList(Optional<List<String>> newStudySubjects) {
+    public void setStudySubjectList(Optional<List<StudySubject>> newStudySubjects) {
         if (newStudySubjects.isPresent()) {
             studySubjectList = newStudySubjects.get();
         }
@@ -212,15 +214,15 @@ public class AddNewMarkHelper {
      * Return list of study subject values.
      * @return List of String study subjects.
      * **/
-    public List<String> getStudySubjectList() {
+    public List<StudySubject> getStudySubjectList() {
         if (studySubjectList.isEmpty()) {
-            setStudySubjectList(
+            /*setStudySubjectList(
                     Optional.ofNullable(
                         // TODO: Change it to Service which get it collection from DB.
                         studySubjectTestList
                     )
             );
-            setCurrentStudySubject( Optional.ofNullable(getStudySubjectList().get(0)) );
+            setCurrentStudySubject( Optional.ofNullable(getStudySubjectList().get(0)) );*/
         }
 
         return studySubjectList;

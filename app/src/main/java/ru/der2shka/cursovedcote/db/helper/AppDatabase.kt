@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import ru.der2shka.cursovedcote.db.dao.GradeTypeDao
 import ru.der2shka.cursovedcote.db.dao.NoteDao
+import ru.der2shka.cursovedcote.db.dao.StudySubjectDao
 import ru.der2shka.cursovedcote.db.dao.UserDao
 import ru.der2shka.cursovedcote.db.entity.Grade
 import ru.der2shka.cursovedcote.db.entity.GradeType
@@ -36,10 +37,11 @@ abstract class AppDatabase : RoomDatabase() {
     /**  Abstract function of GradeTypeDao **/
     abstract fun gradeTypeDao(): GradeTypeDao
 
-    /*
-    /**  Abstract function of UserDao **/
-    abstract fun userDao(): UserDao
 
+    /**  Abstract function of StudySubjectDao **/
+    abstract fun studySubjectDao(): StudySubjectDao
+
+    /*
     /**  Abstract function of UserDao **/
     abstract fun userDao(): UserDao
 
