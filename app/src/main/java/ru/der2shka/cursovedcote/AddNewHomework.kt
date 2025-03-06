@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -81,14 +82,16 @@ fun AddNewHomework(
         mutableStateOf( addNewHomeworkHelper.studySubjectValue )
     }
 
-    coroutineScope.launch(Dispatchers.IO) {
-        val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
 
-        if (studySubjectsDbList.isNotEmpty()) {
-            addNewHomeworkHelper.setStudySubjectList( Optional.ofNullable( studySubjectsDbList ) )
+            if (studySubjectsDbList.isNotEmpty()) {
+                addNewHomeworkHelper.setStudySubjectList(Optional.ofNullable(studySubjectsDbList))
+            }
+
+            subjectValueList.value = addNewHomeworkHelper.studySubjectList
         }
-
-        subjectValueList.value = addNewHomeworkHelper.studySubjectList
     }
 
     val statusList = listOf(

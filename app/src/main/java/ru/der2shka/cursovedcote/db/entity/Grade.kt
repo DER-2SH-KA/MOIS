@@ -52,7 +52,7 @@ data class Grade(
 
     @ColumnInfo(name = "study_subject_id")
     var subjectStudyId: Long,
-
+) : Nameable {
     @Ignore
     override var name: String = "None Name"
-) : Nameable
+}

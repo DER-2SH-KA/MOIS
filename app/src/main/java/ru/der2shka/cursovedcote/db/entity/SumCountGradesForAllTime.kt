@@ -40,7 +40,7 @@ data  class SumCountGradesForAllTime(
 
     @ColumnInfo( name = "study_subject_id" )
     var studySubjectId: Long,
-
+) : Nameable {
     @Ignore
     override  var name: String = "None Name"
-) : Nameable
+}

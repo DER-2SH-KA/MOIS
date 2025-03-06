@@ -20,7 +20,13 @@ public class AddNewHomeworkHelper {
     private Optional<String> description = Optional.ofNullable("");
 
     // Study Subject.
-    private Optional<StudySubject> studySubject = Optional.ofNullable( null );
+    private Optional<StudySubject> studySubject = Optional.ofNullable(
+            new StudySubject(
+                    -1,
+                    "\\_( -_ -)_/",
+                    0
+            )
+    );
 
     // Date of write.
     private Optional<LocalDate> dateOfWrite = Optional.ofNullable(LocalDate.now());
@@ -90,10 +96,16 @@ public class AddNewHomeworkHelper {
 
     /**
      *  Get study subject string value.
-     * @return if study subject is present, return description, else null;
+     * @return if study subject is present, return description, else new StudySubject(-1, "\\_( -_ -)_/", 0);
      * **/
     public StudySubject getStudySubjectValue() {
-        return studySubject.get();
+        return studySubject.orElse(
+                new StudySubject(
+                        -1,
+                        "\\_( -_ -)_/",
+                        0
+                )
+        );
     }
 
     /**

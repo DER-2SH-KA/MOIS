@@ -25,7 +25,13 @@ public class AddNewMarkHelper {
     private static Optional<GradeType> currentMarkType = Optional.ofNullable( null );
 
     // Current study subject.
-    private static Optional<StudySubject> currentStudySubject = Optional.ofNullable(null);
+    private static Optional<StudySubject> currentStudySubject = Optional.ofNullable(
+            new StudySubject(
+                    -1,
+                    "\\_( -_ -)_/",
+                    0
+            )
+    );
 
     // Current local date.
     private static Optional<LocalDate> currentLocalDate = Optional.ofNullable(LocalDate.now());
@@ -114,10 +120,16 @@ public class AddNewMarkHelper {
 
     /**
      *  Get current study subject string value.
-     * @return if study subject is present, return current subject, else null;
+     * @return if study subject is present, return current subject, else new StudySubject(-1, "\\_( -_ -)_/", 0);
      * **/
     public StudySubject getCurrentStudySubject() {
-        return currentStudySubject.get();
+        return currentStudySubject.orElse(
+                new StudySubject(
+                        -1,
+                        "\\_( -_ -)_/",
+                        0
+                )
+        );
     }
 
     /**

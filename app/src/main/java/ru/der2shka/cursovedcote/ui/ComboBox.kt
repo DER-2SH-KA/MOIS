@@ -50,7 +50,7 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("ResourcesAsColor")
 @Composable
-fun <T : Nameable> ComboBoxPseudo(
+fun <T> ComboBoxPseudo(
     items: List<T>,
     selectedItem: MutableState<T>,
     onSelect: (T) -> Unit = {  },
@@ -71,7 +71,17 @@ fun <T : Nameable> ComboBoxPseudo(
             }
         ) {
             TextFieldCustom(
-                value = if (!selectedItem.value.equals( null )) selectedItem.value.name else "\\_( -_ -)_/)",
+                value = // if (!selectedItem.value.equals( null )) selectedItem.value.name else "\\_( -_ -)_/)"
+                when (selectedItem.value) {
+                    is Nameable ->  {
+                        if ( !(selectedItem.value as Nameable).equals( null ) ) (selectedItem.value as Nameable).name else "\\_( -_ -)_/)"
+                    }
+                    is String -> {
+                        if ( !(selectedItem.value as String).equals( null )) (selectedItem.value as String) else "\\_( -_ -)_/)"
+                    }
+                    else -> "\\_( -_ -)_/)"
+                }.toString()
+                ,
                 onValueChange = {},
                 enabled = !itemsIsEmpty,
                 readOnly = true,
@@ -112,7 +122,15 @@ fun <T : Nameable> ComboBoxPseudo(
                         DropdownMenuItem(
                             text = {
                                 Text(
-                                    text = item.name,
+                                    text = when (item) {
+                                        is Nameable ->  {
+                                            if ( !(item as Nameable).equals( null ) ) (item as Nameable).name else "\\_( -_ -)_/)"
+                                        }
+                                        is String -> {
+                                            if ( !(item as String).equals( null )) item else "\\_( -_ -)_/)"
+                                        }
+                                        else -> "\\_( -_ -)_/)"
+                                    }.toString(),
                                     color = Color.White,
                                     textAlign = TextAlign.Start,
                                     fontSize = font_size_secondary_text,
@@ -133,6 +151,7 @@ fun <T : Nameable> ComboBoxPseudo(
     }
 }
 
+/*
 /**
  *  Analog of ComboBox from HTML or WindowsForms.
  *  @param items List of items of combobox
@@ -223,3 +242,4 @@ fun ComboBoxPseudo(
         }
     }
 }
+ */
