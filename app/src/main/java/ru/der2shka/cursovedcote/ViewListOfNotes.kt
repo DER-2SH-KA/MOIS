@@ -68,7 +68,7 @@ fun ViewListOfNotes(
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            noteList.value = database.noteDao().findNotes().toMutableList()
+            noteList.value = database.noteDao().findNotesWithOrdering().toMutableList()
             println()
         }
     }

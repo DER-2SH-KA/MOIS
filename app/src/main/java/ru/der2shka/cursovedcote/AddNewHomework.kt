@@ -50,6 +50,7 @@ import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.SomeConstantValues
 import ru.der2shka.cursovedcote.ui.TextFieldCustom
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
@@ -94,13 +95,7 @@ fun AddNewHomework(
         }
     }
 
-    val statusList = listOf(
-        stringResource(R.string.in_processing),
-        stringResource(R.string.waiting_of_verification),
-        stringResource(R.string.finished),
-        stringResource(R.string.canceled),
-        stringResource(R.string.expired)
-    )
+    val statusList = SomeConstantValues().getStatusList()
 
     // Name TextField.
     val nameTextFieldValue = remember {
@@ -144,7 +139,7 @@ fun AddNewHomework(
             3 -> mutableStateOf(TextFieldValue(statusList.get(3)))
             4 -> mutableStateOf(TextFieldValue(statusList.get(4)))
             else -> {
-                mutableStateOf(TextFieldValue("None Value"))
+                mutableStateOf(TextFieldValue("\\_( -_ -)_/"))
             }
         }
     }
@@ -174,13 +169,14 @@ fun AddNewHomework(
                     )
             ) {
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.add_note),
+                    text = stringResource(R.string.add_homework),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     fontSize = font_size_main_text,
                     lineHeight = line_height_main_text,
                     fontWeight = FontWeight.Bold,
+                    containterModifier = Modifier.fillMaxWidth(0.9f),
                     textModifier = Modifier.fillMaxWidth()
                 )
             }
@@ -469,28 +465,35 @@ fun AddNewHomework(
                                 ),
                                 onSelect = { value ->
                                     when (value) {
-                                        // In processed.
+                                        // Created.
                                         statusList.get(0) -> {
                                             addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(0)
                                             )
                                         }
-                                        // Waiting of verification.
+
+                                        // In processed.
                                         statusList.get(1) -> {
                                             addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(1)
                                             )
                                         }
-                                        // Finished.
+                                        // Waiting of verification.
                                         statusList.get(2) -> {
                                             addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(2)
                                             )
                                         }
-                                        // Canceled.
+                                        // Finished.
                                         statusList.get(3) -> {
                                             addNewHomeworkHelper.setStatusCodeValue(
                                                 Optional.ofNullable(3)
+                                            )
+                                        }
+                                        // Canceled.
+                                        statusList.get(4) -> {
+                                            addNewHomeworkHelper.setStatusCodeValue(
+                                                Optional.ofNullable(4)
                                             )
                                         }
 

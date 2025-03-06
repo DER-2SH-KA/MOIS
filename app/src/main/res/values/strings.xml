@@ -41,6 +41,7 @@
     <string name="date_begin">Date begin</string>
     <string name="date_end">Date end</string>
 
+    <string name="created">Created</string>
     <string name="in_processing">In processing</string>
     <string name="finished">Finished</string>
     <string name="waiting_of_verification">Waiting of verification</string>

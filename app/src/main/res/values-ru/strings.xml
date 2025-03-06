@@ -41,6 +41,7 @@
     <string name="date_begin">Дата начала</string>
     <string name="date_end">Дата окончания</string>
 
+    <string name="created">Создано</string>
     <string name="in_processing">В процессе</string>
     <string name="finished">Выполнено</string>
     <string name="waiting_of_verification">Ожидание проверки</string>

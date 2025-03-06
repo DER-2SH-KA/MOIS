@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import ru.der2shka.cursovedcote.db.entity.GradeType;
 import ru.der2shka.cursovedcote.db.entity.StudySubject;
+import ru.der2shka.cursovedcote.ui.SomeConstantValues;
 
 public class AddNewMarkHelper {
 
@@ -174,7 +175,7 @@ public class AddNewMarkHelper {
             setMarkValueList(
                     Optional.ofNullable(
                             // TODO: Change it to Service which get it collection from DB.
-                            markValueTestList
+                            new SomeConstantValues().getGradeValueList()
                     )
             );
             setCurrentMarkValue( Optional.ofNullable(getMarkValueList().get(0)) );

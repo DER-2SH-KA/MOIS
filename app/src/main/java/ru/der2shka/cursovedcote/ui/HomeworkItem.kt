@@ -70,21 +70,15 @@ fun HomeworkItem(
                 )} " +
             "${localDateEnd.year}"
 
-    val statusList = listOf(
-        stringResource(R.string.in_processing),
-        stringResource(R.string.waiting_of_verification),
-        stringResource(R.string.finished),
-        stringResource(R.string.canceled),
-        stringResource(R.string.expired)
-    )
+    val statusList = SomeConstantValues().getStatusList()
 
     val statusColor = when (statusIndex) {
-        0 -> colorResource(R.color.tertiary_orange)
-        1 -> colorResource(R.color.warning_yellow)
-        2 -> colorResource(R.color.successful_green)
-        3 -> colorResource(R.color.error_red)
+        0 -> colorResource(R.color.additional_purple)
+        1 -> colorResource(R.color.tertiary_orange)
+        2 -> colorResource(R.color.warning_yellow)
+        3 -> colorResource(R.color.successful_green)
         4 -> colorResource(R.color.error_red)
-        else -> colorResource(R.color.additional_purple)
+        else -> colorResource(R.color.black)
     }
 
     Box(

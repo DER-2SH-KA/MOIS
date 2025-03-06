@@ -63,19 +63,15 @@ fun NoteItem(
                 )} " +
             "${localDate.year}"
 
-    val statusList = listOf(
-        stringResource(R.string.in_processing),
-        stringResource(R.string.waiting_of_verification),
-        stringResource(R.string.finished),
-        stringResource(R.string.canceled)
-    )
+    val statusList = SomeConstantValues().getStatusList()
 
     val statusColor = when (note.status) {
-        0 -> colorResource(R.color.tertiary_orange)
-        1 -> colorResource(R.color.warning_yellow)
-        2 -> colorResource(R.color.successful_green)
-        3 -> colorResource(R.color.error_red)
-        else -> colorResource(R.color.additional_purple)
+        0 -> colorResource(R.color.additional_purple)
+        1 -> colorResource(R.color.tertiary_orange)
+        2 -> colorResource(R.color.warning_yellow)
+        3 -> colorResource(R.color.successful_green)
+        4 -> colorResource(R.color.error_red)
+        else -> colorResource(R.color.black)
     }
 
     Box(

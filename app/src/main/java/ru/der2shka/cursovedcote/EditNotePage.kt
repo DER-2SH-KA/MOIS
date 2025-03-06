@@ -50,6 +50,7 @@ import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.SomeConstantValues
 import ru.der2shka.cursovedcote.ui.TextFieldCustom
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
@@ -90,12 +91,7 @@ fun EditNotePage(
     )
     addNewNoteHelper.setStatusCodeValue( Optional.ofNullable( noteFromNoteHelpert.value.status ) )
 
-    val statusList = listOf(
-        stringResource(R.string.in_processing),
-        stringResource(R.string.waiting_of_verification),
-        stringResource(R.string.finished),
-        stringResource(R.string.canceled)
-    )
+    val statusList = SomeConstantValues().getStatusList()
 
     // Name TextField.
     val nameTextFieldValue = remember {
@@ -129,6 +125,7 @@ fun EditNotePage(
             1 -> mutableStateOf( TextFieldValue(statusList.get(1)) )
             2 -> mutableStateOf( TextFieldValue(statusList.get(2)) )
             3 -> mutableStateOf( TextFieldValue(statusList.get(3)) )
+            4 -> mutableStateOf( TextFieldValue(statusList.get(4)) )
             else -> { mutableStateOf(TextFieldValue("None Value")) }
         }
     }
@@ -394,28 +391,35 @@ fun EditNotePage(
                                 ),
                                 onSelect = { value ->
                                     when (value) {
-                                        // In processed.
+                                        // Created.
                                         statusList.get(0) -> {
                                             addNewNoteHelper.setStatusCodeValue(
                                                 Optional.ofNullable(0)
                                             )
                                         }
-                                        // Waiting of verification.
+
+                                        // In processed.
                                         statusList.get(1) -> {
                                             addNewNoteHelper.setStatusCodeValue(
                                                 Optional.ofNullable(1)
                                             )
                                         }
-                                        // Finished.
+                                        // Waiting of verification.
                                         statusList.get(2) -> {
                                             addNewNoteHelper.setStatusCodeValue(
                                                 Optional.ofNullable(2)
                                             )
                                         }
-                                        // Canceled.
+                                        // Finished.
                                         statusList.get(3) -> {
                                             addNewNoteHelper.setStatusCodeValue(
                                                 Optional.ofNullable(3)
+                                            )
+                                        }
+                                        // Canceled.
+                                        statusList.get(4) -> {
+                                            addNewNoteHelper.setStatusCodeValue(
+                                                Optional.ofNullable(4)
                                             )
                                         }
                                         else -> {

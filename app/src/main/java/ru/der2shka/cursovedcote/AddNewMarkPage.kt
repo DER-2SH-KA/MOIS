@@ -331,7 +331,7 @@ fun AddNewMarkPage(
                     }
                 }
 
-
+                /*
                 // Only for testing.
                 Text(text = "Mark value: ${selectedMarkValue.value}")
                 Text(text = "Mark type: ${selectedMarkType.value}")
@@ -357,6 +357,7 @@ fun AddNewMarkPage(
                             } " +
                             "${addNewMarkHelper.currentLocalDate.year}"
                 )
+                 */
 
             }
         }
