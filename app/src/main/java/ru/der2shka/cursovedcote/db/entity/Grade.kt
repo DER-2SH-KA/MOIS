@@ -3,9 +3,11 @@ package ru.der2shka.cursovedcote.db.entity;
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.der2shka.cursovedcote.db.TableNames
+import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 
 @Entity(
     tableName = TableNames.GRADES_TABLE,
@@ -49,5 +51,8 @@ data class Grade(
     var gradeTypeId: Long,
 
     @ColumnInfo(name = "study_subject_id")
-    var subjectStudyId: Long
-)
+    var subjectStudyId: Long,
+
+    @Ignore
+    override var name: String = "None Name"
+) : Nameable

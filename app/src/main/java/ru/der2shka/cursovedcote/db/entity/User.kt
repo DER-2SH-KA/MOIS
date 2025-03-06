@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.der2shka.cursovedcote.db.TableNames
+import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 
 @Entity(
     tableName = TableNames.USERS_TABLE,
@@ -16,7 +17,7 @@ data class User (
     var id: Long = 0,
 
     @ColumnInfo( name = "name" )
-    var name: String? = "",
+    override var name: String = "",
 
     @ColumnInfo( name = "login" )
     var login: String? = "",
@@ -29,4 +30,4 @@ data class User (
 
     @ColumnInfo( name = "global_id" )
     var globalId: Long? = 0
-)
+) : Nameable

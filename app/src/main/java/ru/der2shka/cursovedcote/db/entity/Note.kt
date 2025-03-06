@@ -6,6 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.der2shka.cursovedcote.db.TableNames
+import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 import java.time.LocalDate
 
 @Entity(
@@ -29,7 +30,7 @@ data class Note(
     var id: Long = 0,
 
     @ColumnInfo( name = "name" )
-    var name: String,
+    override var name: String,
 
     @ColumnInfo(
         name = "description",
@@ -45,4 +46,4 @@ data class Note(
 
     @ColumnInfo( name = "user_local_id" )
     var userId: Long
-)
+) : Nameable

@@ -6,6 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.der2shka.cursovedcote.db.TableNames
+import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 
 @Entity(
     tableName = TableNames.STUDY_SUBJECTSS_TABLE,
@@ -28,8 +29,8 @@ data class StudySubject(
     var id: Long,
 
     @ColumnInfo(name = "name")
-    var name: String,
+    override var name: String,
 
     @ColumnInfo(name = "user_local_id")
     var userLocalId: Long
-)
+) : Nameable

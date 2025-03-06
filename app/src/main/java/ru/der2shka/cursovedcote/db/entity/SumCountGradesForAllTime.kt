@@ -3,9 +3,11 @@ package ru.der2shka.cursovedcote.db.entity;
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.der2shka.cursovedcote.db.TableNames
+import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 
 @Entity(
     tableName = TableNames.SUM_COUNT_GRADES_FOR_ALL_TIME_TABLE,
@@ -37,5 +39,8 @@ data  class SumCountGradesForAllTime(
     var count_of_grades: Long,
 
     @ColumnInfo( name = "study_subject_id" )
-    var studySubjectId: Long
-)
+    var studySubjectId: Long,
+
+    @Ignore
+    override  var name: String = "None Name"
+) : Nameable

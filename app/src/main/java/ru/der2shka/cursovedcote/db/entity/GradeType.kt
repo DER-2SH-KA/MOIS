@@ -7,6 +7,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.der2shka.cursovedcote.db.TableNames
+import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 
 @Entity(
     tableName = TableNames.GRADE_TYPE_TABLE,
@@ -29,11 +30,11 @@ data class GradeType(
     var id: Long = 0,
 
     @ColumnInfo( name = "name" )
-    var name: String = "",
+    override var name: String = "",
 
     @ColumnInfo( name = "multiplier" )
     var mulltiplier: Int = 0,
 
     @ColumnInfo( name = "user_local_id" )
     var userLocalId: Long = 0
-)
+) : Nameable
