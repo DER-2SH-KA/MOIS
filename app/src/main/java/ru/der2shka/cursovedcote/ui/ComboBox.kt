@@ -137,6 +137,7 @@ fun <T> ComboBoxPseudo(
                                     lineHeight = line_height_secondary_text,
                                     modifier = Modifier
                                         .fillMaxWidth(0.9f)
+                                        .padding(0.dp, 0.dp, 0.dp, 5.dp)
                                 )
                             },
                             onClick = {
