@@ -33,7 +33,7 @@ import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 data class Homework(
     @PrimaryKey( autoGenerate = true )
     @ColumnInfo( name = "id" )
-    var id: Long,
+    var id: Long = 0,
 
     @ColumnInfo( name = "name" )
     override var name: String,
@@ -42,7 +42,7 @@ data class Homework(
         name = "description",
         typeAffinity = ColumnInfo.TEXT
     )
-    var description: String?,
+    var description: String,
 
     @ColumnInfo( name = "date_of_write" )
     var dateOfWrite: Long,

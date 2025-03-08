@@ -13,7 +13,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,8 +28,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.entity.Homework
+import ru.der2shka.cursovedcote.db.entity.StudySubject
+import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_middle_size_text
@@ -34,21 +42,20 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import ru.der2shka.cursovedcote.userId
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun HomeworkItem(
     navHostController: NavHostController,
-    name: String = "Name",
-    description: String = "Description",
-    studySubjectId_string: String = "Study subject",
-    // localDateOfWrite: LocalDate = LocalDate.MIN,
-    localDateBegin: LocalDate = LocalDate.MIN,
-    localDateEnd: LocalDate = LocalDate.MAX,
-    statusIndex: Int = -1,
+    homework: Homework,
+    database: AppDatabase,
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
     /*val dateOfWriteString = "${localDateOfWrite.dayOfMonth} " +
             "${
                 GetMonthStringResourceByLocalDate(
@@ -56,12 +63,37 @@ fun HomeworkItem(
                 )} " +
             "${localDateOfWrite.year}"*/
 
-    val dateBeginString = "${localDateBegin.dayOfMonth} " +
+    // Date of write.
+    var localDateOfWrite = Instant
+        .ofEpochMilli( homework.dateOfWrite)
+        .atZone( ZoneId.systemDefault() )
+        .toLocalDate()
+
+    var dateOfWriteString = "${localDateOfWrite.dayOfMonth} " +
+            "${
+                GetMonthStringResourceByLocalDate(
+                    mutableStateOf(localDateOfWrite), false
+                )} " +
+            "${localDateOfWrite.year}"
+
+    // Date Begin.
+    var localDateBegin = Instant
+        .ofEpochMilli( homework.dateBegin)
+        .atZone( ZoneId.systemDefault() )
+        .toLocalDate()
+
+    var dateBeginString = "${localDateBegin.dayOfMonth} " +
             "${
                 GetMonthStringResourceByLocalDate(
                     mutableStateOf(localDateBegin), false
                 )} " +
             "${localDateBegin.year}"
+
+    // Date End.
+    var localDateEnd = Instant
+        .ofEpochMilli( homework.dateEnd)
+        .atZone( ZoneId.systemDefault() )
+        .toLocalDate()
 
     val dateEndString = "${localDateEnd.dayOfMonth} " +
             "${
@@ -70,15 +102,24 @@ fun HomeworkItem(
                 )} " +
             "${localDateEnd.year}"
 
+    // Status.
     val statusList = SomeConstantValues().getStatusList()
 
-    val statusColor = when (statusIndex) {
+    val statusColor = when (homework.status) {
         0 -> colorResource(R.color.additional_purple)
         1 -> colorResource(R.color.tertiary_orange)
         2 -> colorResource(R.color.warning_yellow)
         3 -> colorResource(R.color.successful_green)
         4 -> colorResource(R.color.error_red)
         else -> colorResource(R.color.black)
+    }
+
+    val studySubjectName = remember { mutableStateOf( StudySubject(name = "\\_( -_ -)_/", userLocalId = userId) ) }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            studySubjectName.value = database.studySubjectDao().findStudySubjectById( homework.studySubjectId )
+        }
     }
 
     Box(
@@ -90,7 +131,7 @@ fun HomeworkItem(
                 shape = RoundedCornerShape(20.dp)
             )
     ) {
-        // Note Card Item.
+        // Homework Card Item.
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent
@@ -112,7 +153,7 @@ fun HomeworkItem(
                         .fillMaxWidth()
                 ) {
                     ScrollableAnimatedText(
-                        text = name,
+                        text = homework.name,
                         textColor = Color.White,
                         textAlign = TextAlign.Start,
                         fontSize = font_size_main_text,
@@ -131,7 +172,7 @@ fun HomeworkItem(
                         .fillMaxWidth()
                 ) {
                     ScrollableAnimatedText(
-                        text = studySubjectId_string.toString(),
+                        text = studySubjectName.value.name,
                         textColor = Color.White,
                         textAlign = TextAlign.Start,
                         fontSize = font_size_middle_size_text,
@@ -148,7 +189,7 @@ fun HomeworkItem(
 
                 // Description.
                 Text(
-                    text = description,
+                    text = homework.description,
                     color = Color.White,
                     textAlign = TextAlign.Start,
                     fontSize = font_size_secondary_text,
@@ -160,23 +201,87 @@ fun HomeworkItem(
                         .padding(20.dp, 20.dp, 0.dp, 20.dp)
                         .fillMaxWidth()
                 )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                // Dates.
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start,
                     modifier = Modifier
                         .fillMaxWidth()
-                    // .background( Color.Green )
+                        //.background(Color.Red)
                 ) {
-                    // Dates.
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.Start,
+                    // Date of Write.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                            //.background(Color.Red)
+                            .fillMaxWidth()
                     ) {
-                        // Date Begin.
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.date_of_write)}:",
+                                textColor = Color.White,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                fontStyle = FontStyle.Italic,
+                                lineHeight = line_height_secondary_text,
+                                textModifier = Modifier
+                                    .fillMaxWidth(0.9f),
+                                containterModifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
+
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                            // .background( Color.Red )
+                        ) {
+                            ScrollableAnimatedText(
+                                text = dateOfWriteString,
+                                textColor = VeryLightGrayMostlyWhite,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                fontStyle = FontStyle.Italic,
+                                lineHeight = line_height_secondary_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+
+                    // Date Begin.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(2.dp)
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.date_begin)}:",
+                                textColor = Color.White,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                fontStyle = FontStyle.Italic,
+                                lineHeight = line_height_secondary_text,
+                                textModifier = Modifier
+                                    .fillMaxWidth(0.9f),
+                                containterModifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
+
                         Box(
                             contentAlignment = Alignment.CenterStart,
                             modifier = Modifier
@@ -195,8 +300,34 @@ fun HomeworkItem(
                                 textModifier = Modifier.fillMaxWidth()
                             )
                         }
+                    }
 
-                        // Date End.
+                    // Date End.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                            // .background( Color.Red )
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.date_end)}:",
+                                textColor = VeryLightGrayMostlyWhite,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                fontStyle = FontStyle.Italic,
+                                lineHeight = line_height_secondary_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
                         Box(
                             contentAlignment = Alignment.CenterStart,
                             modifier = Modifier
@@ -224,7 +355,7 @@ fun HomeworkItem(
                             .fillMaxWidth()
                     ) {
                         ScrollableAnimatedText(
-                            text = "${statusList.get(statusIndex)}",
+                            text = "${statusList.get(homework.status)}",
                             textColor = Color.White,
                             textAlign = TextAlign.End,
                             fontSize = font_size_secondary_text,

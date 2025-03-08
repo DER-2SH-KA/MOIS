@@ -41,11 +41,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewHomeworkHelper
 import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -57,6 +59,7 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Optional
 
 // TODO: Подобрать цвета и оформить!
@@ -143,6 +146,28 @@ fun AddNewHomework(
                 mutableStateOf(TextFieldValue("\\_( -_ -)_/"))
             }
         }
+    }
+
+    // Transaction status
+    val transactionStatusString = remember { mutableStateOf("") }
+
+    val succText = stringResource(R.string.successfully)
+    val errText = stringResource(R.string.fail)
+    var succColor = colorResource (R.color.successful_green)
+    var errColor = colorResource (R.color.error_red)
+
+    // Transaction status text.
+    val transactionText = when( transactionStatusString.value ) {
+        "s" -> succText
+        "f" -> errText
+        else -> transactionStatusString.value
+    }
+
+    // Transaction status color.
+    val transactionColor = when( transactionStatusString.value ) {
+        "s" -> succColor
+        "f" -> errColor
+        else -> Color.Black
     }
 
     Box(
@@ -582,6 +607,27 @@ fun AddNewHomework(
                     Text(text = "Status: ${selectedStatusItem.value.text}")
                     Text(text = "StatusH: ${addNewHomeworkHelper.statusCodeValue}")
                     */
+
+                    // Transaction status.
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        ScrollableAnimatedText(
+                            text = transactionText,
+                            textColor = transactionColor,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = line_height_main_text,
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                            ,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f)
+                        )
+                    }
                 }
             }
 
@@ -594,21 +640,71 @@ fun AddNewHomework(
                 // Button to Add.
                 Button(
                     onClick = {
-                        addNewHomeworkHelper.setNameValue(
-                            Optional.ofNullable(nameTextFieldValue.value.text)
-                        )
-                        addNewHomeworkHelper.setDescriptionValue(
-                            Optional.ofNullable(descriptionTextFieldValue.value.text)
-                        )
-                        addNewHomeworkHelper.setDateBegin(
-                            Optional.ofNullable( LocalDate.now() )
-                        )
-                        addNewHomeworkHelper.setDateBegin(
-                            Optional.ofNullable(selectedDateBegin.value)
-                        )
-                        addNewHomeworkHelper.setDateEnd(
-                            Optional.ofNullable(selectedDateEnd.value)
-                        )
+                        coroutineScope.launch(Dispatchers.IO) {
+                            addNewHomeworkHelper.setNameValue(
+                                Optional.ofNullable(nameTextFieldValue.value.text)
+                            )
+                            addNewHomeworkHelper.setDescriptionValue(
+                                Optional.ofNullable(descriptionTextFieldValue.value.text)
+                            )
+                            addNewHomeworkHelper.setDateOfWrite(
+                                Optional.ofNullable(LocalDate.now())
+                            )
+                            addNewHomeworkHelper.setDateBegin(
+                                Optional.ofNullable(selectedDateBegin.value)
+                            )
+                            addNewHomeworkHelper.setDateEnd(
+                                Optional.ofNullable(selectedDateEnd.value)
+                            )
+
+                            // Add data into DataBase.
+                            var dateInMills: Long = addNewHomeworkHelper.dateOfWrite
+                                .atStartOfDay()
+                                .atZone( ZoneId.systemDefault() )
+                                .toInstant()
+                                .toEpochMilli()
+
+                            var dateBeginInMills: Long = addNewHomeworkHelper.dateBegin
+                                .atStartOfDay()
+                                .atZone( ZoneId.systemDefault() )
+                                .toInstant()
+                                .toEpochMilli()
+
+                            var dateEndInMills: Long = addNewHomeworkHelper.dateEnd
+                                .atStartOfDay()
+                                .atZone( ZoneId.systemDefault() )
+                                .toInstant()
+                                .toEpochMilli()
+
+                            var nHomeWork = Homework(
+                                name = addNewHomeworkHelper.nameValue,
+                                description = addNewHomeworkHelper.descriptionValue,
+                                dateOfWrite = dateInMills,
+                                dateBegin = dateBeginInMills,
+                                dateEnd = dateEndInMills,
+                                status = addNewHomeworkHelper.statusCodeValue,
+                                studySubjectId = addNewHomeworkHelper.studySubjectValue.id
+                            )
+
+                            var addedId = database.homeworkDao().insertHomework( nHomeWork )
+
+                            if (database.homeworkDao().findHomeworks().last().id == addedId) {
+                                clearAddNewHomeworkHelperFields( addNewHomeworkHelper )
+
+                                nameTextFieldValue.value = TextFieldValue("")
+                                descriptionTextFieldValue.value = TextFieldValue("")
+                                // Show status of transaction.
+                                transactionStatusString.value = "s"
+                                delay(4000L)
+                                transactionStatusString.value = ""
+                            }
+                            else {
+                                // Show status of transaction.
+                                transactionStatusString.value = "f"
+                                delay(4000L)
+                                transactionStatusString.value = ""
+                            }
+                        }
                     },
 
                     shape = RoundedCornerShape(20.dp),
@@ -698,4 +794,17 @@ fun AddNewHomework(
             }
         }
     }
+}
+
+fun clearAddNewHomeworkHelperFields(
+    addNewHomeworkHelper: AddNewHomeworkHelper
+) {
+    // Clear fields into addNewNoteHelper
+    addNewHomeworkHelper.setNameValue( Optional.ofNullable("") )
+    addNewHomeworkHelper.setDescriptionValue( Optional.ofNullable("") )
+    addNewHomeworkHelper.setDateOfWrite( Optional.ofNullable( LocalDate.now() ) )
+    addNewHomeworkHelper.setDateBegin( Optional.ofNullable( LocalDate.now() ) )
+    addNewHomeworkHelper.setDateEnd( Optional.ofNullable( LocalDate.now() ) )
+    addNewHomeworkHelper.setStatusCodeValue( Optional.ofNullable(0) )
+    addNewHomeworkHelper.setStudySubjectValue( Optional.ofNullable( null ) )
 }

@@ -148,7 +148,7 @@ fun GeneralAppActivityMainPage(
                     }
 
                     1 -> {
-                        ViewListOfHomeworks(navHostController)
+                        ViewListOfHomeworks(navHostController, database)
                     }
 
                     2 -> {

@@ -39,7 +39,7 @@ import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 data class Grade(
     @PrimaryKey( autoGenerate = true )
     @ColumnInfo(name = "id")
-    var id: Long,
+    var id: Long = 0,
 
     @ColumnInfo(name = "grade_value")
     var gradeValue: Int,

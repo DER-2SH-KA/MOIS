@@ -2,7 +2,9 @@ package ru.der2shka.cursovedcote.db.helper
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import ru.der2shka.cursovedcote.db.dao.GradeDao
 import ru.der2shka.cursovedcote.db.dao.GradeTypeDao
+import ru.der2shka.cursovedcote.db.dao.HomeworkDao
 import ru.der2shka.cursovedcote.db.dao.NoteDao
 import ru.der2shka.cursovedcote.db.dao.StudySubjectDao
 import ru.der2shka.cursovedcote.db.dao.UserDao
@@ -41,13 +43,14 @@ abstract class AppDatabase : RoomDatabase() {
     /**  Abstract function of StudySubjectDao **/
     abstract fun studySubjectDao(): StudySubjectDao
 
+
+    /**  Abstract function of UserDao **/
+    abstract fun gradeDao(): GradeDao
+
+    /**  Abstract function of UserDao **/
+    abstract fun homeworkDao(): HomeworkDao
+
     /*
-    /**  Abstract function of UserDao **/
-    abstract fun userDao(): UserDao
-
-    /**  Abstract function of UserDao **/
-    abstract fun userDao(): UserDao
-
     /**  Abstract function of UserDao **/
     abstract fun userDao(): UserDao
     */

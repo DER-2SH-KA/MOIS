@@ -38,6 +38,7 @@
     <string name="multiplier">Multiplier</string>
 
     <string name="date">Date</string>
+    <string name="date_of_write">Date of write</string>
     <string name="date_begin">Date begin</string>
     <string name="date_end">Date end</string>
 

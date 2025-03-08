@@ -38,6 +38,7 @@
     <string name="multiplier">Множитель</string>
 
     <string name="date">Дата</string>
+    <string name="date_of_write">Дата записи</string>
     <string name="date_begin">Дата начала</string>
     <string name="date_end">Дата окончания</string>
 

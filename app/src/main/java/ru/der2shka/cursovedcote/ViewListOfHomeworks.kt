@@ -18,6 +18,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -32,12 +36,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.db.entity.Homework
+import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.HomeworkItem
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
 
@@ -46,13 +55,24 @@ import java.time.LocalDate
  * **/
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ViewListOfHomeworks(navHostController: NavHostController) {
+fun ViewListOfHomeworks(
+    navHostController: NavHostController,
+    database: AppDatabase
+) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val config = LocalConfiguration.current
 
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
-
     val contentVScroll = rememberScrollState(0)
+
+    val items = remember { mutableStateOf( listOf<Homework> () ) }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            items.value = database.homeworkDao().findHomeworksWithOrderingByDateOfWriteDesc()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -101,14 +121,10 @@ fun ViewListOfHomeworks(navHostController: NavHostController) {
                     .fillMaxHeight()
                     .verticalScroll( contentVScroll )
             ) {
-                HomeworkItem(
+                /*HomeworkItem(
                     navHostController = navHostController,
-                    name = "Сделать ПР9",
-                    description = "Функции и роли",
-                    studySubjectId_string = "ТРиЗБД",
-                    localDateBegin = LocalDate.of(2025, 2, 12),
-                    localDateEnd = LocalDate.of(2025, 2, 24),
-                    statusIndex = 4
+                    homework = it,
+
                 )
 
                 HomeworkItem(
@@ -130,6 +146,25 @@ fun ViewListOfHomeworks(navHostController: NavHostController) {
                     localDateEnd = LocalDate.of(2025, 2, 22),
                     statusIndex = 2
                 )
+
+                 */
+                if (items.value.size != 0) {
+                    items.value.forEach {
+                        HomeworkItem(navHostController, it, database)
+                    }
+                }
+                else {
+                    Text(
+                        text = "\\_( -_ -)_/",
+                        color = colorResource(R.color.main_text_dark_gray),
+                        textAlign = TextAlign.Center,
+                        fontSize = font_size_secondary_text,
+                        fontStyle = FontStyle.Italic,
+                        lineHeight = line_height_middle_size_text,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
             }
         }
     }
