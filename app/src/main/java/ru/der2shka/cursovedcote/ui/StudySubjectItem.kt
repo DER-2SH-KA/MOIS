@@ -29,11 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Models.GradeTypeHelper
 import ru.der2shka.cursovedcote.Models.NoteHelper
+import ru.der2shka.cursovedcote.Models.StudySubjectHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Note
+import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_middle_size_text
@@ -46,12 +48,12 @@ import java.util.Optional
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun GradeTypeItem(
+fun StudySubjectItem(
     navHostController: NavHostController,
-    gradeType: GradeType,
+    studySubject: StudySubject,
     modifier: Modifier = Modifier
 ) {
-    val gradeTypeHelper = GradeTypeHelper.getInstance()
+    val studySubjectHelper = StudySubjectHelper.getInstance()
 
     Box(
         contentAlignment = Alignment.Center,
@@ -62,15 +64,15 @@ fun GradeTypeItem(
                 shape = RoundedCornerShape(20.dp)
             )
             .clickable {
-                gradeTypeHelper.setGradeTypeValue(
-                    Optional.ofNullable( gradeType )
+                studySubjectHelper.setStudySubjectValue(
+                    Optional.ofNullable( studySubject )
                 )
 
                 current_page = "edit_grade_type"
                 navHostController.navigate(current_page)
             }
     ) {
-        // GradeType Card Item.
+        // StudySubject Card Item.
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent
@@ -92,7 +94,7 @@ fun GradeTypeItem(
                         .fillMaxWidth()
                 ) {
                     ScrollableAnimatedText(
-                        text = gradeType.name,
+                        text = studySubject.name,
                         textColor = Color.White,
                         textAlign = TextAlign.Start,
                         fontSize = font_size_main_text,
@@ -103,54 +105,6 @@ fun GradeTypeItem(
                         textModifier = Modifier.fillMaxWidth()
                     )
                 }
-                // Multiplier
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    // Multiplier Text.
-                    Box(
-                        contentAlignment = Alignment.CenterStart,
-                        modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                    ) {
-                        ScrollableAnimatedText(
-                            text = "${stringResource(R.string.multiplier)}:",
-                            textColor = Color.White,
-                            textAlign = TextAlign.Start,
-                            fontSize = font_size_middle_size_text,
-                            fontStyle = FontStyle.Italic,
-                            lineHeight = line_height_middle_size_text,
-                            textModifier = Modifier
-                                .fillMaxWidth(0.9f),
-                            containterModifier = Modifier
-                                .fillMaxWidth()
-                        )
-                    }
-
-                    // Multiplier Value.
-                    Box(
-                        contentAlignment = Alignment.CenterEnd,
-                        modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                    ) {
-                        ScrollableAnimatedText(
-                            text = gradeType.mulltiplier.toString(),
-                            textColor = Color.White,
-                            textAlign = TextAlign.End,
-                            fontSize = font_size_middle_size_text,
-                            fontStyle = FontStyle.Italic,
-                            lineHeight = line_height_middle_size_text,
-                            textModifier = Modifier
-                                .fillMaxWidth(0.9f),
-                            containterModifier = Modifier
-                                .fillMaxWidth()
-                        )
-                    }
-                }
-
             }
         }
     }

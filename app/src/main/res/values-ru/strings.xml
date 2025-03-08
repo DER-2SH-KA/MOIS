@@ -98,30 +98,17 @@
     <string name="grade_types">Типы оценок</string>
 
 
-    <!-- Add New Mark Page -->
+    <!-- Add -->
     <string name="add_grade">Добавить оценку</string>
-
-    <!-- Add New Study Subject -->
     <string name="add_subject">Добавить предмет</string>
-
-    <!-- Add New Note -->
     <string name="add_note">Добавить запись</string>
-
-    <!-- Add New Homework -->
     <string name="add_homework">Добавить домашнее задание</string>
-
-    <!-- Add New Mark Type -->
     <string name="add_grade_type">Добавить тип оценки</string>
 
     <!-- Edit Mark Page -->
     <string name="edit_grade">Редактировать оценку</string>
-
-    <!-- Edit Study Subject -->
+    <string name="edit_grade_type">Редактировать тип оценки</string>
     <string name="edit_subject">Редактировать предмет</string>
-
-    <!-- Edit Note -->
     <string name="edit_note">Редактировать запись</string>
-
-    <!-- Edit Homework -->
     <string name="edit_homework">Редактировать домашнее задание</string>
 </resources>

@@ -74,8 +74,8 @@ fun EditNotePage(
     val config = LocalConfiguration.current
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
-
     val coroutineScope = rememberCoroutineScope()
+
     val addNewNoteHelper = AddNewNoteHelper.getInstance()
     val noteHelper: NoteHelper = NoteHelper.getInstance()
     val noteFromNoteHelpert = remember { mutableStateOf( noteHelper.noteValue ) }

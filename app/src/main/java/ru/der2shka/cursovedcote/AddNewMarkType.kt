@@ -93,7 +93,7 @@ fun AddNewMarkType(
     val nameTextField = remember {
         mutableStateOf(
             TextFieldValue(
-                addNewMarkTypeHelper.nameValue
+                ""
             )
         )
     }
@@ -101,7 +101,7 @@ fun AddNewMarkType(
     val multiplierTextField = remember {
         mutableStateOf(
             TextFieldValue(
-                addNewMarkTypeHelper.multiplierValue.toString()
+                "1"
             )
         )
     }

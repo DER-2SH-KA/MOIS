@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -51,9 +52,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
 import ru.der2shka.cursovedcote.Models.AddNewMarkTypeHelper
+import ru.der2shka.cursovedcote.Models.AddNewNoteHelper
 import ru.der2shka.cursovedcote.Models.AddNewStudySubjectHelper
+import ru.der2shka.cursovedcote.Models.GradeTypeHelper
+import ru.der2shka.cursovedcote.Models.NoteHelper
+import ru.der2shka.cursovedcote.Models.StudySubjectHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.entity.GradeType
+import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
@@ -66,26 +73,27 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 import java.util.Optional
 
-// TODO: Подобрать цвета и оформить!
 /**
- * Page for adding new mark in system.
+ * Page for editing grade type in system.
  * **/
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
-fun AddNewStudySubject(
+fun EditGradeType(
     navHostController: NavHostController,
     database: AppDatabase
 ) {
     val config = LocalConfiguration.current
-    val coroutineScope = rememberCoroutineScope()
-
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val verticalMainScroll = rememberScrollState(0)
+    val coroutineScope = rememberCoroutineScope()
 
-    val addNewStudySubjectHelper = AddNewStudySubjectHelper.getInstance()
+    val addNewMarkTypeHelper = AddNewMarkTypeHelper.getInstance()
+    val gradeTypeHelper: GradeTypeHelper = GradeTypeHelper.getInstance()
+    val gradeTypeFromHelpert = remember { mutableStateOf( gradeTypeHelper.gradeTypeValue ) }
 
     // TODO: Create Singleton for it.
     // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
@@ -93,11 +101,20 @@ fun AddNewStudySubject(
     val nameTextField = remember {
         mutableStateOf(
             TextFieldValue(
-                // addNewStudySubjectHelper.nameValue
-                ""
+                gradeTypeFromHelpert.value.name
             )
         )
     }
+
+    val multiplierTextField = remember {
+        mutableStateOf(
+            TextFieldValue(
+                gradeTypeFromHelpert.value.mulltiplier.toString()
+            )
+        )
+    }
+
+    val isDeleted = remember { mutableStateOf(false) }
 
     // Transaction status
     val transactionStatusString = remember { mutableStateOf("") }
@@ -124,7 +141,7 @@ fun AddNewStudySubject(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            //.verticalScroll( verticalMainScroll )
+        //.verticalScroll( verticalMainScroll )
         ,
         contentAlignment = Alignment.Center
     ) {
@@ -149,14 +166,14 @@ fun AddNewStudySubject(
                     )
             ) {
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.add_grade_type),
+                    text = stringResource(R.string.edit_grade_type),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     fontSize = font_size_main_text,
                     lineHeight = line_height_main_text,
                     fontWeight = FontWeight.Bold,
-                    textModifier = Modifier.fillMaxWidth()
+                    containterModifier = Modifier.fillMaxWidth(0.9f)
                 )
             }
 
@@ -228,13 +245,83 @@ fun AddNewStudySubject(
                         }
                     }
 
+                    // Multiplier.
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.4f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${stringResource(R.string.multiplier)}:",
+                                textColor = colorResource(R.color.main_text_dark_gray),
+                                textAlign = TextAlign.Start,
+                                maxLines = 1,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            TextFieldCustom(
+                                value = multiplierTextField.value.text,
+                                onValueChange = {
+                                    multiplierTextField.value = TextFieldValue(it)
+                                },
+                                shape = RoundedCornerShape(5.dp),
+                                placeholder = {
+                                    Text(
+                                        text = "1",
+                                        color = colorResource(R.color.secondary_text_gray),
+                                        textAlign = TextAlign.Start,
+                                        fontSize = font_size_secondary_text,
+                                        fontStyle = FontStyle.Italic,
+                                        lineHeight = line_height_secondary_text
+                                    )
+                                },
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = null,
+                                        tint = colorResource(R.color.primary_blue),
+                                        modifier = Modifier
+                                            .clickable {
+                                                ClearTextField(multiplierTextField)
+                                            }
+                                    )
+                                },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number
+                                ),
+                                singleLine = true,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(5.dp)
+                                    )
+                            )
+
+                        }
+                    }
 
                     /*
                     // Only for testing.
                     Text(text = "Name: ${nameTextField.value.text}")
-                    Text(text = "NameH: ${addNewStudySubjectHelper.nameValue}")
-
+                    Text(text = "NameH: ${addNewMarkTypeHelper.nameValue}")
+                    Text(text = "Multiplier: ${multiplierTextField.value.text}")
+                    Text(text = "MultiplierH: ${addNewMarkTypeHelper.multiplierValue}")
                      */
+
                     // Transaction status.
                     Box(
                         contentAlignment = Alignment.Center,
@@ -255,85 +342,149 @@ fun AddNewStudySubject(
                                 .fillMaxWidth(0.9f)
                         )
                     }
-
                 }
             }
 
+            // Buttons.
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                // Button to Add.
-                Button(
-                    onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            addNewStudySubjectHelper
-                                .setNameValue(
-                                    Optional.ofNullable(nameTextField.value.text)
+                // Update and delete buttons.
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    // Button to Update.
+                    Button(
+                        onClick = {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                // Add data into Helper object.
+                                addNewMarkTypeHelper.setNameValue(
+                                    Optional.ofNullable( nameTextField.value.text )
+                                )
+                                addNewMarkTypeHelper.setMultiplierValue(
+                                    Optional.ofNullable( multiplierTextField.value.text.toInt() )
                                 )
 
-                            var newStudySubject = StudySubject(
-                                name = addNewStudySubjectHelper.nameValue,
-                                userLocalId = userId
+                                var uGradeType = GradeType(
+                                    id = gradeTypeFromHelpert.value.id,
+                                    name = addNewMarkTypeHelper.nameValue,
+                                    mulltiplier = addNewMarkTypeHelper.multiplierValue,
+                                    userLocalId = userId
+                                )
+
+                                val updatedId = database.gradeTypeDao().updateGradeType( uGradeType )
+
+                                // If note was updated.
+                                if (database.gradeTypeDao().findGradeTypeById(gradeTypeFromHelpert.value.id)
+                                        .equals( uGradeType )
+                                ) {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                } else {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
+                            }
+                        },
+
+                        enabled = !isDeleted.value,
+                        shape = RoundedCornerShape(20.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        modifier = Modifier
+                            .width( (config.screenWidthDp * 0.45f).dp )
+                            .height( (oneBlockHeight * 0.5f) )
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colorStops = arrayOf(
+                                            0.6f to colorResource(R.color.primary_blue),
+                                            1f to colorResource(R.color.secondary_cyan)
+                                        )
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ScrollableAnimatedText(
+                                text = stringResource(R.string.update),
+                                textColor = Color.White,
+                                textAlign = TextAlign.Center,
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                containterModifier = Modifier
+                                    .fillMaxWidth(0.9f),
+                                textModifier = Modifier
+                                    .fillMaxWidth()
                             )
+                        }
+                    }
 
-                            var addedId =
-                                database.studySubjectDao().insertStudySubject(newStudySubject)
+                    Spacer(
+                        modifier = Modifier.width(10.dp)
+                    )
 
-                            if (database.studySubjectDao().findStudySubjects().last().id.equals(
-                                    addedId
-                                )
-                            ) {
-                                nameTextField.value = TextFieldValue("")
+                    // Button to Delete.
+                    Button(
+                        onClick = {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                database.gradeTypeDao().deleteGradeType( gradeTypeFromHelpert.value )
+                                isDeleted.value = true
 
-                                // Show status of transaction.
+                                addNewMarkTypeHelper.setNameValue(Optional.ofNullable(""))
+                                addNewMarkTypeHelper.setMultiplierValue(Optional.ofNullable(1))
+
                                 transactionStatusString.value = "s"
                                 delay(4000L)
                                 transactionStatusString.value = ""
-                            } else {
-                                // Show status of transaction.
-                                transactionStatusString.value = "f"
-                                delay(4000L)
-                                transactionStatusString.value = ""
                             }
-                        }
-                    },
+                        },
 
-                    shape = RoundedCornerShape(20.dp),
-                    contentPadding = PaddingValues(0.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(
-                            (oneBlockHeight * 0.5f)
-                        )
-                ) {
-                    Box(
+                        enabled = !isDeleted.value,
+                        shape = RoundedCornerShape(20.dp),
+                        contentPadding = PaddingValues(0.dp),
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colorStops = arrayOf(
-                                        0.6f to colorResource(R.color.primary_blue),
-                                        1f to colorResource(R.color.secondary_cyan)
-                                    )
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
+                            .width( (config.screenWidthDp * 0.45f).dp )
+                            .height( (oneBlockHeight * 0.5f) )
                     ) {
-                        ScrollableAnimatedText(
-                            text = stringResource(R.string.add),
-                            textColor = Color.White,
-                            textAlign = TextAlign.Center,
-                            fontSize = font_size_main_text,
-                            fontWeight = FontWeight.Bold,
-                            lineHeight = line_height_main_text,
-                            containterModifier = Modifier
-                                .fillMaxWidth(0.9f),
-                            textModifier = Modifier
-                                .fillMaxWidth()
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colorStops = arrayOf(
+                                            0.6f to colorResource(R.color.primary_blue),
+                                            1f to colorResource(R.color.secondary_cyan)
+                                        )
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ScrollableAnimatedText(
+                                text = stringResource(R.string.delete),
+                                textColor = Color.White,
+                                textAlign = TextAlign.Center,
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                containterModifier = Modifier
+                                    .fillMaxWidth(0.9f),
+                                textModifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
                     }
                 }
 
@@ -344,9 +495,14 @@ fun AddNewStudySubject(
                 // Button to Back.
                 Button(
                     onClick = {
+                        clearAddNewGradeTypeHelperValues(addNewMarkTypeHelper)
+
+                        nameTextField.value = TextFieldValue( "" )
+                        multiplierTextField.value = TextFieldValue("1")
+
                         current_page = "general_app"
                         navHostController.navigate(current_page) {
-                            popUpTo("add_new_study_subject") { inclusive = true }
+                            popUpTo("edit_grade_type") { inclusive = true }
                         }
                     },
 
@@ -388,4 +544,10 @@ fun AddNewStudySubject(
             }
         }
     }
+}
+
+fun clearAddNewStudySubjectHelperValues(
+    addNewStudySubjectHelper: AddNewStudySubjectHelper
+) {
+    addNewStudySubjectHelper.setNameValue( Optional.ofNullable("") )
 }

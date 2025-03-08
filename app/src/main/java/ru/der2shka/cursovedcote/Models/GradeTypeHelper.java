@@ -29,7 +29,7 @@ public class GradeTypeHelper {
      * @param ngradeType new grade type value.
      * @return true if value was updated else false.
      * **/
-    public Boolean setNoteValue(Optional<GradeType> ngradeType) {
+    public Boolean setGradeTypeValue(Optional<GradeType> ngradeType) {
         if (ngradeType.isPresent()) {
             gradeType = ngradeType;
 
@@ -43,7 +43,7 @@ public class GradeTypeHelper {
      * Return grade type object.
      * @return grade type value if persist, else GradeType(0, "None", 1, 1)
      * **/
-    public GradeType getNoteValue() {
+    public GradeType getGradeTypeValue() {
         return gradeType.orElse(
                 new GradeType(
                         0,

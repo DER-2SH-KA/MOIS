@@ -19,7 +19,7 @@ interface GradeTypeDao {
     fun insertGradeTypes(vararg gt: GradeType)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateGradeType(gt: GradeType)
+    fun updateGradeType(gt: GradeType): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateGradeTypes(vararg gt: GradeType)

@@ -26,7 +26,7 @@ import ru.der2shka.cursovedcote.db.entity.impl.Nameable
 data class StudySubject(
     @PrimaryKey( autoGenerate = true )
     @ColumnInfo(name = "id")
-    var id: Long,
+    var id: Long = 0,
 
     @ColumnInfo(name = "name")
     override var name: String,

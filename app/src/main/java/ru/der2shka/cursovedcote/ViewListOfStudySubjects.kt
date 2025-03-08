@@ -36,9 +36,11 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.db.entity.GradeType
+import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.GradeTypeItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.StudySubjectItem
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -49,7 +51,7 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
  * **/
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ViewListOfGradeTypes(
+fun ViewListOfStudySubjects(
     navHostController: NavHostController,
     database: AppDatabase
 ) {
@@ -57,11 +59,11 @@ fun ViewListOfGradeTypes(
     val config = LocalConfiguration.current
     val coroutineScope = rememberCoroutineScope()
 
-    var gradeTypeList = remember { mutableStateOf( listOf<GradeType>() ) }
+    var studySubjectList = remember { mutableStateOf( listOf<StudySubject>() ) }
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            gradeTypeList.value = database.gradeTypeDao().findGradeTypesWithOrdering()
+            studySubjectList.value = database.studySubjectDao().findStudySubjects()
             // println()
         }
     }
@@ -100,7 +102,7 @@ fun ViewListOfGradeTypes(
             ) {
                 // Header Text.
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.grade_types),
+                    text = stringResource(R.string.study_subjects),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
@@ -118,9 +120,9 @@ fun ViewListOfGradeTypes(
                     .fillMaxHeight(0.7f)
                     .verticalScroll( contentVScroll )
             ) {
-                if (gradeTypeList.value.isNotEmpty()) {
-                    gradeTypeList.value.forEach {
-                        GradeTypeItem( navHostController, it )
+                if (studySubjectList.value.isNotEmpty()) {
+                    studySubjectList.value.forEach {
+                        StudySubjectItem(navHostController, it)
                     }
                 }
                 else {
@@ -149,7 +151,7 @@ fun ViewListOfGradeTypes(
                     onClick = {
                         current_page = "general_app"
                         navHostController.navigate(current_page) {
-                            popUpTo("view_grade_type") { inclusive = true }
+                            popUpTo("view_study_subject") { inclusive = true }
                         }
                     },
 

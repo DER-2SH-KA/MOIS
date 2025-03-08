@@ -98,10 +98,12 @@ class GeneralAppActivity : ComponentActivity() {
 
                     // Edit pages.
                     composable(route = "edit_note") { EditNotePage(navHostController, database) }
-                    composable(route = "edit_grade_type") { EditNotePage(navHostController, database) }
+                    composable(route = "edit_grade_type") { EditGradeType(navHostController, database) }
+                    composable(route = "edit_study_subject") { ViewListOfStudySubjects(navHostController, database) }
 
                     // View pages.
                     composable(route = "view_grade_type") { ViewListOfGradeTypes(navHostController, database) }
+                    composable(route = "view_study_subject") { ViewListOfStudySubjects(navHostController, database) }
                 }
 
             }

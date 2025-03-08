@@ -549,7 +549,8 @@ fun GeneralAppPage(
                     maxLines = 1,
                     onItemClick = {
                         coroutineScope.launch {
-                            pager.scrollToPage(0)
+                            current_page = "view_study_subject"
+                            navHostController.navigate(current_page)
                         }
                     },
                     onPlusClick = {

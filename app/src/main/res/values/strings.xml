@@ -97,31 +97,18 @@
     <string name="study_subjects">Study subjects</string>
     <string name="grade_types">Grade types</string>
 
-    <!-- Add New Mark Page -->
+    <!-- Add -->
     <string name="add_grade">Add grade</string>
-
-    <!-- Add New Study Subject -->
     <string name="add_subject">Add subject</string>
-
-    <!-- Add New Note -->
     <string name="add_note">Add note</string>
-
-    <!-- Add New Homework -->
     <string name="add_homework">Add homework</string>
-
-    <!-- Add New Mark Type -->
     <string name="add_grade_type">Add grade type</string>
 
-    <!-- Edit Mark Page -->
+    <!-- Edit -->
     <string name="edit_grade">Edit grade</string>
-
-    <!-- Edit Study Subject -->
+    <string name="edit_grade_type">Edit grade type</string>
     <string name="edit_subject">Edit subject</string>
-
-    <!-- Edit Note -->
     <string name="edit_note">Edit note</string>
-
-    <!-- Edit Homework -->
     <string name="edit_homework">Edit homework</string>
 
 
