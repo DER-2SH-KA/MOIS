@@ -68,7 +68,7 @@ fun StudySubjectItem(
                     Optional.ofNullable( studySubject )
                 )
 
-                current_page = "edit_grade_type"
+                current_page = "edit_study_subject"
                 navHostController.navigate(current_page)
             }
     ) {

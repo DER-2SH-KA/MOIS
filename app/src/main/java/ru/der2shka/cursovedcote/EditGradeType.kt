@@ -545,9 +545,3 @@ fun EditGradeType(
         }
     }
 }
-
-fun clearAddNewStudySubjectHelperValues(
-    addNewStudySubjectHelper: AddNewStudySubjectHelper
-) {
-    addNewStudySubjectHelper.setNameValue( Optional.ofNullable("") )
-}
