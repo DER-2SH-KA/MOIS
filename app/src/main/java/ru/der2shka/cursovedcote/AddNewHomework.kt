@@ -89,9 +89,10 @@ fun AddNewHomework(
 
             if (studySubjectsDbList.isNotEmpty()) {
                 addNewHomeworkHelper.setStudySubjectList(Optional.ofNullable(studySubjectsDbList))
-            }
+                subjectValueList.value = addNewHomeworkHelper.studySubjectList
 
-            subjectValueList.value = addNewHomeworkHelper.studySubjectList
+                selectedSubjectValue.value = subjectValueList.value.get(0)
+            }
         }
     }
 

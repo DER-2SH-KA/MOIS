@@ -109,8 +109,10 @@ fun AddNewMarkPage(
                     Optional.ofNullable( studySubjectDbList )
                 )
 
-                markTypeList.value = addNewMarkHelper.markTypeList
+                subjectValueList.value = addNewMarkHelper.studySubjectList
+                selectedSubjectValue.value = subjectValueList.value.get(0)
             }
+
         }
     }
 
