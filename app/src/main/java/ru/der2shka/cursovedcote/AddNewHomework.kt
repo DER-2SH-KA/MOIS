@@ -79,6 +79,7 @@ fun AddNewHomework(
     val verticalMainScroll = rememberScrollState(0)
 
     val addNewHomeworkHelper = AddNewHomeworkHelper.getInstance()
+    clearAddNewHomeworkHelperFields( addNewHomeworkHelper )
 
     val subjectValueList = remember { mutableStateOf(addNewHomeworkHelper.studySubjectList) }
 
@@ -86,52 +87,39 @@ fun AddNewHomework(
         mutableStateOf( addNewHomeworkHelper.studySubjectValue )
     }
 
-    LaunchedEffect(key1 = Unit) {
-        coroutineScope.launch(Dispatchers.IO) {
-            val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
-
-            if (studySubjectsDbList.isNotEmpty()) {
-                addNewHomeworkHelper.setStudySubjectList(Optional.ofNullable(studySubjectsDbList))
-                subjectValueList.value = addNewHomeworkHelper.studySubjectList
-
-                selectedSubjectValue.value = subjectValueList.value.get(0)
-            }
-        }
-    }
-
     val statusList = SomeConstantValues().getStatusList()
 
     // Name TextField.
     val nameTextFieldValue = remember {
         mutableStateOf(
-            TextFieldValue(addNewHomeworkHelper.nameValue)
+            TextFieldValue("")
         )
     }
 
     // Description TextField.
     val descriptionTextFieldValue = remember {
         mutableStateOf(
-            TextFieldValue(addNewHomeworkHelper.descriptionValue)
+            TextFieldValue("")
         )
     }
 
     // Day of write.
     val selectedDateOfWrite = remember {
-        mutableStateOf(addNewHomeworkHelper.dateOfWrite)
+        mutableStateOf( LocalDate.now() )
     }
 
     // Day begin.
     val selectedDateBegin = remember {
-        mutableStateOf(addNewHomeworkHelper.dateBegin)
+        mutableStateOf( LocalDate.now() )
     }
 
     // Day end.
     val selectedDateEnd = remember {
-        mutableStateOf(addNewHomeworkHelper.dateEnd)
+        mutableStateOf( LocalDate.now() )
     }
 
     val statusCodeMutable = remember {
-        mutableStateOf(addNewHomeworkHelper.statusCodeValue)
+        mutableStateOf( 0 )
     }
 
     // Status TextField.
@@ -168,6 +156,19 @@ fun AddNewHomework(
         "s" -> succColor
         "f" -> errColor
         else -> Color.Black
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
+
+            if (studySubjectsDbList.isNotEmpty()) {
+                addNewHomeworkHelper.setStudySubjectList(Optional.ofNullable(studySubjectsDbList))
+                subjectValueList.value = addNewHomeworkHelper.studySubjectList
+
+                selectedSubjectValue.value = subjectValueList.value.get(0)
+            }
+        }
     }
 
     Box(
@@ -656,6 +657,9 @@ fun AddNewHomework(
                             addNewHomeworkHelper.setDateEnd(
                                 Optional.ofNullable(selectedDateEnd.value)
                             )
+                            addNewHomeworkHelper.setStatusCodeValue(
+                                Optional.ofNullable( statusList.indexOf( selectedStatusItem.value.text ) )
+                            )
 
                             // Add data into DataBase.
                             var dateInMills: Long = addNewHomeworkHelper.dateOfWrite
@@ -751,6 +755,7 @@ fun AddNewHomework(
                 Button(
                     onClick = {
                         current_page = "general_app"
+
                         navHostController.navigate(current_page) {
                             popUpTo("add_new_homework") { inclusive = true }
                         }

@@ -2,6 +2,7 @@ package ru.der2shka.cursovedcote.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,8 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Models.HomeworkHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
@@ -46,6 +49,7 @@ import ru.der2shka.cursovedcote.userId
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.util.Optional
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -55,6 +59,7 @@ fun HomeworkItem(
     database: AppDatabase,
     modifier: Modifier = Modifier
 ) {
+    val homeworkHelper = HomeworkHelper.getInstance()
     val coroutineScope = rememberCoroutineScope()
     /*val dateOfWriteString = "${localDateOfWrite.dayOfMonth} " +
             "${
@@ -130,6 +135,12 @@ fun HomeworkItem(
                 color = statusColor,
                 shape = RoundedCornerShape(20.dp)
             )
+            .clickable {
+                homeworkHelper.setHomeworkValue( Optional.ofNullable( homework ) )
+
+                current_page = "edit_homework"
+                navHostController.navigate(current_page)
+            }
     ) {
         // Homework Card Item.
         Card(
