@@ -54,6 +54,7 @@ import ru.der2shka.cursovedcote.Models.AddNewMarkTypeHelper
 import ru.der2shka.cursovedcote.Models.AddNewStudySubjectHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.Service.checkMultiplierTextFieldValue
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
@@ -129,7 +130,9 @@ fun AddNewMarkType(
     }
 
     // Validation.
-    val isNameValid = remember { mutableStateOf(nameTextField.value.text != "") }
+    var isNameValid = (nameTextField.value.text != "")
+    var isMultiplierValid = checkMultiplierTextFieldValue( multiplierTextField )
+    var isValid = isNameValid && isMultiplierValid
 
     Box(
         modifier = Modifier
@@ -348,45 +351,52 @@ fun AddNewMarkType(
                 // Button to Add.
                 Button(
                     onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            // Add data into Helper object.
-                            addNewMarkTypeHelper
-                                .setNameValue(
-                                    Optional.ofNullable( nameTextField.value.text )
+                        if (isValid) {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                // Add data into Helper object.
+                                addNewMarkTypeHelper
+                                    .setNameValue(
+                                        Optional.ofNullable(nameTextField.value.text)
+                                    )
+                                addNewMarkTypeHelper
+                                    .setMultiplierValue(
+                                        Optional.ofNullable(multiplierTextField.value.text.toInt())
+                                    )
+
+                                // Add data into DataBase.
+                                var newGradeType = GradeType(
+                                    name = addNewMarkTypeHelper.nameValue,
+                                    mulltiplier = addNewMarkTypeHelper.multiplierValue,
+                                    userLocalId = userId
                                 )
-                            addNewMarkTypeHelper
-                                .setMultiplierValue(
-                                    Optional.ofNullable( multiplierTextField.value.text.toInt() )
-                                )
 
-                            // Add data into DataBase.
-                            var newGradeType = GradeType(
-                                name = addNewMarkTypeHelper.nameValue,
-                                mulltiplier = addNewMarkTypeHelper.multiplierValue,
-                                userLocalId = userId
-                            )
+                                val addedId = database.gradeTypeDao().insertGradeType(newGradeType)
 
-                            val addedId = database.gradeTypeDao().insertGradeType( newGradeType )
+                                if (database.gradeTypeDao().findGradeTypes().last().id == addedId) {
+                                    clearAddNewGradeTypeHelperValues(addNewMarkTypeHelper)
 
-                            if (database.gradeTypeDao().findGradeTypes().last().id == addedId) {
-                                clearAddNewGradeTypeHelperValues(addNewMarkTypeHelper)
+                                    nameTextField.value = TextFieldValue("")
+                                    multiplierTextField.value = TextFieldValue("1")
 
-                                nameTextField.value = TextFieldValue("")
-                                multiplierTextField.value = TextFieldValue("1")
-
-                                // Show status of transaction.
-                                transactionStatusString.value = "s"
-                                delay(4000L)
-                                transactionStatusString.value = ""
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                } else {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
                             }
-                            else {
-                                // Show status of transaction.
+                        }
+                        else {
+                            coroutineScope.launch {
                                 transactionStatusString.value = "f"
                                 delay(4000L)
                                 transactionStatusString.value = ""
                             }
                         }
-
                     },
 
                     shape = RoundedCornerShape(20.dp),
