@@ -58,6 +58,7 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Optional
@@ -170,6 +171,19 @@ fun AddNewHomework(
             }
         }
     }
+
+    var isNameValid = (nameTextFieldValue.value.text != "")
+    var isDateBeginValid = (selectedDateBegin.value
+        .atStartOfDay()
+        .atZone( ZoneId.systemDefault() )
+        .toInstant()
+        .toEpochMilli() >= 0L)
+    var isDateEndValid = (selectedDateEnd.value
+        .atStartOfDay()
+        .atZone( ZoneId.systemDefault() )
+        .toInstant()
+        .toEpochMilli() >= 0L)
+    var isValid = isNameValid && isDateBeginValid && isDateEndValid
 
     Box(
         modifier = Modifier
@@ -641,69 +655,76 @@ fun AddNewHomework(
                 // Button to Add.
                 Button(
                     onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            addNewHomeworkHelper.setNameValue(
-                                Optional.ofNullable(nameTextFieldValue.value.text)
-                            )
-                            addNewHomeworkHelper.setDescriptionValue(
-                                Optional.ofNullable(descriptionTextFieldValue.value.text)
-                            )
-                            addNewHomeworkHelper.setDateOfWrite(
-                                Optional.ofNullable(LocalDate.now())
-                            )
-                            addNewHomeworkHelper.setDateBegin(
-                                Optional.ofNullable(selectedDateBegin.value)
-                            )
-                            addNewHomeworkHelper.setDateEnd(
-                                Optional.ofNullable(selectedDateEnd.value)
-                            )
-                            addNewHomeworkHelper.setStatusCodeValue(
-                                Optional.ofNullable( statusList.indexOf( selectedStatusItem.value.text ) )
-                            )
+                        if (isValid) {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                addNewHomeworkHelper.setNameValue(
+                                    Optional.ofNullable(nameTextFieldValue.value.text)
+                                )
+                                addNewHomeworkHelper.setDescriptionValue(
+                                    Optional.ofNullable(descriptionTextFieldValue.value.text)
+                                )
+                                addNewHomeworkHelper.setDateOfWrite(
+                                    Optional.ofNullable(LocalDate.now())
+                                )
+                                addNewHomeworkHelper.setDateBegin(
+                                    Optional.ofNullable(selectedDateBegin.value)
+                                )
+                                addNewHomeworkHelper.setDateEnd(
+                                    Optional.ofNullable(selectedDateEnd.value)
+                                )
+                                addNewHomeworkHelper.setStatusCodeValue(
+                                    Optional.ofNullable(statusList.indexOf(selectedStatusItem.value.text))
+                                )
 
-                            // Add data into DataBase.
-                            var dateInMills: Long = addNewHomeworkHelper.dateOfWrite
-                                .atStartOfDay()
-                                .atZone( ZoneId.systemDefault() )
-                                .toInstant()
-                                .toEpochMilli()
+                                // Add data into DataBase.
+                                var dateInMills: Long = addNewHomeworkHelper.dateOfWrite
+                                    .atStartOfDay()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toInstant()
+                                    .toEpochMilli()
 
-                            var dateBeginInMills: Long = addNewHomeworkHelper.dateBegin
-                                .atStartOfDay()
-                                .atZone( ZoneId.systemDefault() )
-                                .toInstant()
-                                .toEpochMilli()
+                                var dateBeginInMills: Long = addNewHomeworkHelper.dateBegin
+                                    .atStartOfDay()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toInstant()
+                                    .toEpochMilli()
 
-                            var dateEndInMills: Long = addNewHomeworkHelper.dateEnd
-                                .atStartOfDay()
-                                .atZone( ZoneId.systemDefault() )
-                                .toInstant()
-                                .toEpochMilli()
+                                var dateEndInMills: Long = addNewHomeworkHelper.dateEnd
+                                    .atStartOfDay()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toInstant()
+                                    .toEpochMilli()
 
-                            var nHomeWork = Homework(
-                                name = addNewHomeworkHelper.nameValue,
-                                description = addNewHomeworkHelper.descriptionValue,
-                                dateOfWrite = dateInMills,
-                                dateBegin = dateBeginInMills,
-                                dateEnd = dateEndInMills,
-                                status = addNewHomeworkHelper.statusCodeValue,
-                                studySubjectId = addNewHomeworkHelper.studySubjectValue.id
-                            )
+                                var nHomeWork = Homework(
+                                    name = addNewHomeworkHelper.nameValue,
+                                    description = addNewHomeworkHelper.descriptionValue,
+                                    dateOfWrite = dateInMills,
+                                    dateBegin = dateBeginInMills,
+                                    dateEnd = dateEndInMills,
+                                    status = addNewHomeworkHelper.statusCodeValue,
+                                    studySubjectId = addNewHomeworkHelper.studySubjectValue.id
+                                )
 
-                            var addedId = database.homeworkDao().insertHomework( nHomeWork )
+                                var addedId = database.homeworkDao().insertHomework(nHomeWork)
 
-                            if (database.homeworkDao().findHomeworks().last().id == addedId) {
-                                clearAddNewHomeworkHelperFields( addNewHomeworkHelper )
+                                if (database.homeworkDao().findHomeworks().last().id == addedId) {
+                                    clearAddNewHomeworkHelperFields(addNewHomeworkHelper)
 
-                                nameTextFieldValue.value = TextFieldValue("")
-                                descriptionTextFieldValue.value = TextFieldValue("")
-                                // Show status of transaction.
-                                transactionStatusString.value = "s"
-                                delay(4000L)
-                                transactionStatusString.value = ""
+                                    nameTextFieldValue.value = TextFieldValue("")
+                                    descriptionTextFieldValue.value = TextFieldValue("")
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                } else {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
                             }
-                            else {
-                                // Show status of transaction.
+                        } else {
+                            coroutineScope.launch {
                                 transactionStatusString.value = "f"
                                 delay(4000L)
                                 transactionStatusString.value = ""

@@ -193,6 +193,19 @@ fun EditHomework(
 
     val isDeleted = remember { mutableStateOf(false) }
 
+    var isNameValid = (nameTextFieldValue.value.text != "")
+    var isDateBeginValid = (selectedDateBegin.value
+        .atStartOfDay()
+        .atZone( ZoneId.systemDefault() )
+        .toInstant()
+        .toEpochMilli() >= 0L)
+    var isDateEndValid = (selectedDateEnd.value
+        .atStartOfDay()
+        .atZone( ZoneId.systemDefault() )
+        .toInstant()
+        .toEpochMilli() >= 0L)
+    var isValid = isNameValid && isDateBeginValid && isDateEndValid
+
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
             val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
@@ -696,72 +709,93 @@ fun EditHomework(
                     // Button to Update.
                     Button(
                         onClick = {
-                            coroutineScope.launch(Dispatchers.IO) {
-                                // Add data into Helper object.
-                                addNewHomeworkHelper.setNameValue( Optional.ofNullable( nameTextFieldValue.value.text ) )
-                                addNewHomeworkHelper.setDescriptionValue( Optional.ofNullable( descriptionTextFieldValue.value.text ) )
-                                addNewHomeworkHelper.setDateOfWrite(
-                                    Optional.ofNullable(
-                                        selectedDateOfWrite.value
+                            if (isValid) {
+                                coroutineScope.launch(Dispatchers.IO) {
+                                    // Add data into Helper object.
+                                    addNewHomeworkHelper.setNameValue(
+                                        Optional.ofNullable(
+                                            nameTextFieldValue.value.text
+                                        )
                                     )
-                                )
-                                addNewHomeworkHelper.setDateBegin(
-                                    Optional.ofNullable(
-                                        selectedDateBegin.value
+                                    addNewHomeworkHelper.setDescriptionValue(
+                                        Optional.ofNullable(
+                                            descriptionTextFieldValue.value.text
+                                        )
                                     )
-                                )
-                                addNewHomeworkHelper.setDateEnd(
-                                    Optional.ofNullable(
-                                        selectedDateEnd.value
+                                    addNewHomeworkHelper.setDateOfWrite(
+                                        Optional.ofNullable(
+                                            selectedDateOfWrite.value
+                                        )
                                     )
-                                )
-                                addNewHomeworkHelper.setStudySubjectValue( Optional.ofNullable( selectedSubjectValue.value ) )
-                                addNewHomeworkHelper.setStatusCodeValue(
-                                    Optional.ofNullable( statusList.indexOf(selectedStatusItem.value.text) )
-                                )
+                                    addNewHomeworkHelper.setDateBegin(
+                                        Optional.ofNullable(
+                                            selectedDateBegin.value
+                                        )
+                                    )
+                                    addNewHomeworkHelper.setDateEnd(
+                                        Optional.ofNullable(
+                                            selectedDateEnd.value
+                                        )
+                                    )
+                                    addNewHomeworkHelper.setStudySubjectValue(
+                                        Optional.ofNullable(
+                                            selectedSubjectValue.value
+                                        )
+                                    )
+                                    addNewHomeworkHelper.setStatusCodeValue(
+                                        Optional.ofNullable(statusList.indexOf(selectedStatusItem.value.text))
+                                    )
 
-                                // Add data into DataBase.
-                                var dateInMills: Long = addNewHomeworkHelper.dateOfWrite
-                                    .atStartOfDay()
-                                    .atZone( ZoneId.systemDefault() )
-                                    .toInstant()
-                                    .toEpochMilli()
+                                    // Add data into DataBase.
+                                    var dateInMills: Long = addNewHomeworkHelper.dateOfWrite
+                                        .atStartOfDay()
+                                        .atZone(ZoneId.systemDefault())
+                                        .toInstant()
+                                        .toEpochMilli()
 
-                                var dateBeginInMills: Long = addNewHomeworkHelper.dateBegin
-                                    .atStartOfDay()
-                                    .atZone( ZoneId.systemDefault() )
-                                    .toInstant()
-                                    .toEpochMilli()
+                                    var dateBeginInMills: Long = addNewHomeworkHelper.dateBegin
+                                        .atStartOfDay()
+                                        .atZone(ZoneId.systemDefault())
+                                        .toInstant()
+                                        .toEpochMilli()
 
-                                var dateEndInMills: Long = addNewHomeworkHelper.dateEnd
-                                    .atStartOfDay()
-                                    .atZone( ZoneId.systemDefault() )
-                                    .toInstant()
-                                    .toEpochMilli()
+                                    var dateEndInMills: Long = addNewHomeworkHelper.dateEnd
+                                        .atStartOfDay()
+                                        .atZone(ZoneId.systemDefault())
+                                        .toInstant()
+                                        .toEpochMilli()
 
-                                var uHomeWork = Homework(
-                                    id = homeworkFromHwHelper.id,
-                                    name = addNewHomeworkHelper.nameValue,
-                                    description = addNewHomeworkHelper.descriptionValue,
-                                    dateOfWrite = dateInMills,
-                                    dateBegin = dateBeginInMills,
-                                    dateEnd = dateEndInMills,
-                                    status = addNewHomeworkHelper.statusCodeValue,
-                                    studySubjectId = addNewHomeworkHelper.studySubjectValue.id
-                                )
+                                    var uHomeWork = Homework(
+                                        id = homeworkFromHwHelper.id,
+                                        name = addNewHomeworkHelper.nameValue,
+                                        description = addNewHomeworkHelper.descriptionValue,
+                                        dateOfWrite = dateInMills,
+                                        dateBegin = dateBeginInMills,
+                                        dateEnd = dateEndInMills,
+                                        status = addNewHomeworkHelper.statusCodeValue,
+                                        studySubjectId = addNewHomeworkHelper.studySubjectValue.id
+                                    )
 
-                                database.homeworkDao().updateHomework( uHomeWork )
+                                    database.homeworkDao().updateHomework(uHomeWork)
 
-                                // If homework was updated.
-                                if (database.homeworkDao().findHomeworkById(homeworkFromHwHelper.id)
-                                        .equals( uHomeWork )
-                                ) {
-                                    // Show status of transaction.
-                                    transactionStatusString.value = "s"
-                                    delay(4000L)
-                                    transactionStatusString.value = ""
-                                } else {
-                                    // Show status of transaction.
+                                    // If homework was updated.
+                                    if (database.homeworkDao()
+                                            .findHomeworkById(homeworkFromHwHelper.id)
+                                            .equals(uHomeWork)
+                                    ) {
+                                        // Show status of transaction.
+                                        transactionStatusString.value = "s"
+                                        delay(4000L)
+                                        transactionStatusString.value = ""
+                                    } else {
+                                        // Show status of transaction.
+                                        transactionStatusString.value = "f"
+                                        delay(4000L)
+                                        transactionStatusString.value = ""
+                                    }
+                                }
+                            } else {
+                                coroutineScope.launch {
                                     transactionStatusString.value = "f"
                                     delay(4000L)
                                     transactionStatusString.value = ""
