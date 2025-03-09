@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -40,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
+import ru.der2shka.cursovedcote.ui.GradeTypeItem
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
@@ -122,11 +125,13 @@ fun ViewListOfNotes(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .fillMaxHeight()
-                    .verticalScroll( contentVScroll )
+                    // .verticalScroll( contentVScroll )
             ) {
-                if (noteList.value.size != 0) {
-                    noteList.value.forEach {
-                        NoteItem(navHostController, it)
+                if (noteList.value.isNotEmpty()) {
+                    LazyColumn() {
+                        items( noteList.value ) { note ->
+                            NoteItem(navHostController, note)
+                        }
                     }
                 }
                 else {

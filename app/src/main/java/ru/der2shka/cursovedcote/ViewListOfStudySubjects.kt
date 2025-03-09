@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -118,11 +120,13 @@ fun ViewListOfStudySubjects(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .fillMaxHeight(0.7f)
-                    .verticalScroll( contentVScroll )
+                    // .verticalScroll( contentVScroll )
             ) {
                 if (studySubjectList.value.isNotEmpty()) {
-                    studySubjectList.value.forEach {
-                        StudySubjectItem(navHostController, it)
+                    LazyColumn() {
+                        items( studySubjectList.value ) { studySubject ->
+                            StudySubjectItem(navHostController, studySubject)
+                        }
                     }
                 }
                 else {

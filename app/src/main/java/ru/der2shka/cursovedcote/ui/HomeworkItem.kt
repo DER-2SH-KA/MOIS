@@ -56,17 +56,11 @@ import java.util.Optional
 fun HomeworkItem(
     navHostController: NavHostController,
     homework: Homework,
+    subjectName: String,
     database: AppDatabase,
     modifier: Modifier = Modifier
 ) {
     val homeworkHelper = HomeworkHelper.getInstance()
-    val coroutineScope = rememberCoroutineScope()
-    /*val dateOfWriteString = "${localDateOfWrite.dayOfMonth} " +
-            "${
-                GetMonthStringResourceByLocalDate(
-                    mutableStateOf(localDateOfWrite), false
-                )} " +
-            "${localDateOfWrite.year}"*/
 
     // Date of write.
     var localDateOfWrite = Instant
@@ -117,14 +111,6 @@ fun HomeworkItem(
         3 -> colorResource(R.color.successful_green)
         4 -> colorResource(R.color.error_red)
         else -> colorResource(R.color.black)
-    }
-
-    val studySubjectName = remember { mutableStateOf( StudySubject(name = "\\_( -_ -)_/", userLocalId = userId) ) }
-
-    LaunchedEffect(key1 = Unit) {
-        coroutineScope.launch(Dispatchers.IO) {
-            studySubjectName.value = database.studySubjectDao().findStudySubjectById( homework.studySubjectId )
-        }
     }
 
     Box(
@@ -183,7 +169,7 @@ fun HomeworkItem(
                         .fillMaxWidth()
                 ) {
                     ScrollableAnimatedText(
-                        text = studySubjectName.value.name,
+                        text = subjectName,
                         textColor = Color.White,
                         textAlign = TextAlign.Start,
                         fontSize = font_size_middle_size_text,

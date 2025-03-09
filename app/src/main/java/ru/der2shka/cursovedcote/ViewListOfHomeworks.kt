@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -39,6 +41,7 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.db.entity.Homework
+import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.HomeworkItem
 import ru.der2shka.cursovedcote.ui.NoteItem
@@ -66,11 +69,25 @@ fun ViewListOfHomeworks(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val contentVScroll = rememberScrollState(0)
 
-    val items = remember { mutableStateOf( listOf<Homework> () ) }
+    val itemsHomework = remember { mutableStateOf( listOf<Homework> () ) }
+    val itemsSubjects = remember { mutableStateOf( listOf<StudySubject> () ) }
+    val itemsSubjectMap = remember { mutableStateOf( mutableMapOf<Long, String>() ) }
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            items.value = database.homeworkDao().findHomeworksWithOrderingByDateOfWriteDesc()
+            var studySubjectsDb = database.studySubjectDao().findStudySubjects()
+            var homeworksDb = database.homeworkDao().findHomeworksWithOrderingByDateOfWriteDesc()
+
+            if (homeworksDb.isNotEmpty()) {
+                itemsHomework.value = homeworksDb
+
+                if (studySubjectsDb.isNotEmpty()) {
+                    itemsSubjects.value = studySubjectsDb
+                    itemsSubjects.value.forEach { item ->
+                        itemsSubjectMap.value.put(item.id, item.name)
+                    }
+                }
+            }
         }
     }
 
@@ -119,39 +136,30 @@ fun ViewListOfHomeworks(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .fillMaxHeight()
-                    .verticalScroll( contentVScroll )
             ) {
-                /*HomeworkItem(
-                    navHostController = navHostController,
-                    homework = it,
-
-                )
-
-                HomeworkItem(
-                    navHostController = navHostController,
-                    name = "Сделать ЛР3",
-                    description = "Кореляционно-регрессионный анализ. Обязательно в Word и таблицы Excel!",
-                    studySubjectId_string = "Математическое моделирование",
-                    localDateBegin = LocalDate.of(2025, 2, 17),
-                    localDateEnd = LocalDate.of(2025, 2, 28),
-                    statusIndex = 0
-                )
-
-                HomeworkItem(
-                    navHostController = navHostController,
-                    name = "Сделать ПР 13",
-                    description = "Создание PDF документов из UI.",
-                    studySubjectId_string = "РМП",
-                    localDateBegin = LocalDate.of(2025, 2, 17),
-                    localDateEnd = LocalDate.of(2025, 2, 22),
-                    statusIndex = 2
-                )
-
-                 */
-                if (items.value.size != 0) {
-                    items.value.forEach {
-                        HomeworkItem(navHostController, it, database)
+                if (itemsHomework.value.isNotEmpty() && itemsSubjects.value.isNotEmpty()) {
+                    LazyColumn() {
+                        items( itemsHomework.value ) { homework ->
+                            HomeworkItem(
+                                navHostController,
+                                homework,
+                                itemsSubjectMap.value.get(homework.studySubjectId).toString(),
+                                database
+                            )
+                        }
                     }
+
+                    /*
+                    itemsHomework.value.forEach { homework ->
+                            HomeworkItem(
+                                navHostController,
+                                homework,
+                                itemsSubjectMap.value.get(homework.studySubjectId).toString(),
+                                database
+                            )
+                    }
+
+                     */
                 }
                 else {
                     Text(
