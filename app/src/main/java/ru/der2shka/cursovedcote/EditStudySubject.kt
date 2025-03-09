@@ -130,6 +130,8 @@ fun EditStudySubject(
         else -> Color.Black
     }
 
+    var isValid = (nameTextField.value.text != "")
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -285,30 +287,39 @@ fun EditStudySubject(
                     // Button to Update.
                     Button(
                         onClick = {
-                            coroutineScope.launch(Dispatchers.IO) {
-                                // Add data into Helper object.
-                                addNewStudySubjectHelper.setNameValue(
-                                    Optional.ofNullable( nameTextField.value.text )
-                                )
+                            if (isValid) {
+                                coroutineScope.launch(Dispatchers.IO) {
+                                    // Add data into Helper object.
+                                    addNewStudySubjectHelper.setNameValue(
+                                        Optional.ofNullable(nameTextField.value.text)
+                                    )
 
-                                var uStudySubject = StudySubject(
-                                    id = studySubjectFromHelpert.value.id,
-                                    name = addNewStudySubjectHelper.nameValue,
-                                    userLocalId = userId
-                                )
+                                    var uStudySubject = StudySubject(
+                                        id = studySubjectFromHelpert.value.id,
+                                        name = addNewStudySubjectHelper.nameValue,
+                                        userLocalId = userId
+                                    )
 
-                                database.studySubjectDao().updateStudySubjects( uStudySubject )
+                                    database.studySubjectDao().updateStudySubjects(uStudySubject)
 
-                                // If note was updated.
-                                if (database.studySubjectDao().findStudySubjectById(studySubjectFromHelpert.value.id)
-                                        .equals( uStudySubject )
-                                ) {
-                                    // Show status of transaction.
-                                    transactionStatusString.value = "s"
-                                    delay(4000L)
-                                    transactionStatusString.value = ""
-                                } else {
-                                    // Show status of transaction.
+                                    // If note was updated.
+                                    if (database.studySubjectDao()
+                                            .findStudySubjectById(studySubjectFromHelpert.value.id)
+                                            .equals(uStudySubject)
+                                    ) {
+                                        // Show status of transaction.
+                                        transactionStatusString.value = "s"
+                                        delay(4000L)
+                                        transactionStatusString.value = ""
+                                    } else {
+                                        // Show status of transaction.
+                                        transactionStatusString.value = "f"
+                                        delay(4000L)
+                                        transactionStatusString.value = ""
+                                    }
+                                }
+                            } else {
+                                coroutineScope.launch {
                                     transactionStatusString.value = "f"
                                     delay(4000L)
                                     transactionStatusString.value = ""

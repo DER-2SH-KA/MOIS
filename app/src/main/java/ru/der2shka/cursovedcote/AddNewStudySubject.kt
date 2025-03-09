@@ -121,6 +121,8 @@ fun AddNewStudySubject(
         else -> Color.Black
     }
 
+    var isValid = (nameTextField.value.text != "")
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -268,32 +270,40 @@ fun AddNewStudySubject(
                 // Button to Add.
                 Button(
                     onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            addNewStudySubjectHelper
-                                .setNameValue(
-                                    Optional.ofNullable(nameTextField.value.text)
+                        if (isValid) {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                addNewStudySubjectHelper
+                                    .setNameValue(
+                                        Optional.ofNullable(nameTextField.value.text)
+                                    )
+
+                                var newStudySubject = StudySubject(
+                                    name = addNewStudySubjectHelper.nameValue,
+                                    userLocalId = userId
                                 )
 
-                            var newStudySubject = StudySubject(
-                                name = addNewStudySubjectHelper.nameValue,
-                                userLocalId = userId
-                            )
+                                var addedId =
+                                    database.studySubjectDao().insertStudySubject(newStudySubject)
 
-                            var addedId =
-                                database.studySubjectDao().insertStudySubject(newStudySubject)
+                                if (database.studySubjectDao().findStudySubjects().last().id.equals(
+                                        addedId
+                                    )
+                                ) {
+                                    nameTextField.value = TextFieldValue("")
 
-                            if (database.studySubjectDao().findStudySubjects().last().id.equals(
-                                    addedId
-                                )
-                            ) {
-                                nameTextField.value = TextFieldValue("")
-
-                                // Show status of transaction.
-                                transactionStatusString.value = "s"
-                                delay(4000L)
-                                transactionStatusString.value = ""
-                            } else {
-                                // Show status of transaction.
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                } else {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
+                            }
+                        } else {
+                            coroutineScope.launch {
                                 transactionStatusString.value = "f"
                                 delay(4000L)
                                 transactionStatusString.value = ""
