@@ -83,7 +83,7 @@ fun GradeItem(
 
     val gradeValueColor = when (grade.gradeValue) {
         1 -> colorResource(R.color.error_red)
-        2 -> colorResource(R.color.additional_purple)
+        2 -> colorResource(R.color.error_red)
         3 -> colorResource(R.color.warning_yellow)
         4 -> colorResource(R.color.tertiary_orange)
         5 -> colorResource(R.color.successful_green)
@@ -175,12 +175,12 @@ fun GradeItem(
                         Box(
                             contentAlignment = Alignment.CenterStart,
                             modifier = Modifier
-                                .fillMaxWidth(0.5f)
+                                .fillMaxWidth()
                         ) {
                             ScrollableAnimatedText(
                                 text = grade.gradeValue.toString(),
                                 textColor = Color.White,
-                                textAlign = TextAlign.Start,
+                                textAlign = TextAlign.End,
                                 fontSize = font_size_secondary_text,
                                 fontStyle = FontStyle.Italic,
                                 lineHeight = line_height_secondary_text,
@@ -220,12 +220,12 @@ fun GradeItem(
                         Box(
                             contentAlignment = Alignment.CenterStart,
                             modifier = Modifier
-                                .fillMaxWidth(0.5f)
+                                .fillMaxWidth()
                         ) {
                             ScrollableAnimatedText(
                                 text = gradeTypeName,
                                 textColor = Color.White,
-                                textAlign = TextAlign.Start,
+                                textAlign = TextAlign.End,
                                 fontSize = font_size_secondary_text,
                                 fontStyle = FontStyle.Italic,
                                 lineHeight = line_height_secondary_text,
@@ -281,7 +281,7 @@ fun GradeItem(
                             ScrollableAnimatedText(
                                 text = dateOfWriteString,
                                 textColor = VeryLightGrayMostlyWhite,
-                                textAlign = TextAlign.Start,
+                                textAlign = TextAlign.End,
                                 fontSize = font_size_secondary_text,
                                 fontStyle = FontStyle.Italic,
                                 lineHeight = line_height_secondary_text,

@@ -220,6 +220,7 @@ public class AddNewMarkHelper {
     public void setStudySubjectList(Optional<List<StudySubject>> newStudySubjects) {
         if (newStudySubjects.isPresent()) {
             studySubjectList = newStudySubjects.get();
+            this.setCurrentStudySubject( Optional.ofNullable( studySubjectList.get(0) ) );
         }
     }
 

@@ -82,7 +82,7 @@ fun AddNewMarkPage(
     val subjectValueList = remember { mutableStateOf(addNewMarkHelper.studySubjectList) }
 
     val selectedMarkValue = remember {
-        mutableStateOf( addNewMarkHelper.currentMarkValue )
+        mutableStateOf( markValueList.get(0) )
     }
     val selectedMarkType = remember {
         mutableStateOf( addNewMarkHelper.currentMarkType )
@@ -91,7 +91,7 @@ fun AddNewMarkPage(
         mutableStateOf( addNewMarkHelper.currentStudySubject )
     }
     val selectedLocalDate = remember {
-        mutableStateOf( addNewMarkHelper.currentLocalDate )
+        mutableStateOf( LocalDate.now() )
     }
 
     // Transaction status
@@ -143,9 +143,9 @@ fun AddNewMarkPage(
                 )
 
                 subjectValueList.value = addNewMarkHelper.studySubjectList
-                selectedSubjectValue.value = subjectValueList.value.get(0)
             }
 
+            selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
         }
     }
 
@@ -314,7 +314,7 @@ fun AddNewMarkPage(
                             ,
                             onSelect = { value ->
                                 // addNewMarkHelper.setCurrentStudySubject(Optional.ofNullable(value))
-                                selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
+                                selectedSubjectValue.value = value
                             }
                         )
                     }
