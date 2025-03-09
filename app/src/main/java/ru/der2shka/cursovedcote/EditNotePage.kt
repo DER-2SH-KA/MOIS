@@ -155,9 +155,9 @@ fun EditNotePage(
     val isDeleted = remember { mutableStateOf(false) }
 
     // Validation
-    val isNameValid = remember { mutableStateOf(nameTextFieldValue.value.text.isEmpty()) }
-    val isDateValid = remember { mutableStateOf(true) }
-    val isValid = isNameValid.value && isDateValid.value
+    var isNameValid = (nameTextFieldValue.value.text != "")
+    var isDateValid = true
+    var isValid = isNameValid && isDateValid
 
     Box(
         modifier = Modifier
@@ -238,12 +238,6 @@ fun EditNotePage(
                                 value = nameTextFieldValue.value.text,
                                 onValueChange = {
                                     nameTextFieldValue.value = TextFieldValue(it)
-
-                                    if (it.isEmpty()) {
-                                        isNameValid.value = false
-                                    } else {
-                                        isNameValid.value = true
-                                    }
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -372,10 +366,10 @@ fun EditNotePage(
                                         .toEpochMilli()
 
                                     if (localDateAtMills < 0L) {
-                                        isDateValid.value = false
+                                        isDateValid = false
                                     }
                                     else {
-                                        isDateValid.value = true
+                                        isDateValid = true
                                     }
                                 }
                             )

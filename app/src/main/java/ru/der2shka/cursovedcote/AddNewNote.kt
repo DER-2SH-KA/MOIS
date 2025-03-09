@@ -141,9 +141,9 @@ fun AddNewNote(
     }
 
     // Validation
-    val isNameValid = remember { mutableStateOf(false) }
-    val isDateValid = remember { mutableStateOf(true) }
-    val isValid = isNameValid.value && isDateValid.value
+    var isNameValid = (nameTextFieldValue.value.text != "")
+    var isDateValid = true
+    var isValid = isNameValid && isDateValid
 
     Box(
         modifier = Modifier
@@ -224,12 +224,6 @@ fun AddNewNote(
                                 value = nameTextFieldValue.value.text,
                                 onValueChange = {
                                     nameTextFieldValue.value = TextFieldValue(it)
-
-                                    if (it.isEmpty()) {
-                                        isNameValid.value = false
-                                    } else {
-                                        isNameValid.value = true
-                                    }
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -244,7 +238,7 @@ fun AddNewNote(
                                             }
                                     )
                                 },
-                                isError = !isNameValid.value,
+                                isError = !isNameValid,
 
                                 modifier = Modifier
                                     .padding(5.dp)
@@ -360,10 +354,10 @@ fun AddNewNote(
                                         .toEpochMilli()
 
                                     if (localDateAtMills < 0L) {
-                                        isDateValid.value = false
+                                        isDateValid = false
                                     }
                                     else {
-                                        isDateValid.value = true
+                                        isDateValid = true
                                     }
                                 }
                             )

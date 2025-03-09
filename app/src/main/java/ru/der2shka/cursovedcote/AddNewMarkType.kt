@@ -128,6 +128,9 @@ fun AddNewMarkType(
         else -> Color.Black
     }
 
+    // Validation.
+    val isNameValid = remember { mutableStateOf(nameTextField.value.text != "") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
