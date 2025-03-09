@@ -34,13 +34,17 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.entity.Grade
+import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -50,6 +54,7 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 import java.util.Optional
 
@@ -88,6 +93,34 @@ fun AddNewMarkPage(
     val selectedLocalDate = remember {
         mutableStateOf( addNewMarkHelper.currentLocalDate )
     }
+
+    // Transaction status
+    val transactionStatusString = remember { mutableStateOf("") }
+
+    val succText = stringResource(R.string.successfully)
+    val errText = stringResource(R.string.fail)
+    var succColor = colorResource (R.color.successful_green)
+    var errColor = colorResource (R.color.error_red)
+
+    // Transaction status text.
+    val transactionText = when( transactionStatusString.value ) {
+        "s" -> succText
+        "f" -> errText
+        else -> transactionStatusString.value
+    }
+
+    // Transaction status color.
+    val transactionColor = when( transactionStatusString.value ) {
+        "s" -> succColor
+        "f" -> errColor
+        else -> Color.Black
+    }
+
+    var isDateValid = selectedLocalDate.value
+        .atStartOfDay()
+        .atZone( ZoneId.systemDefault() )
+        .toInstant()
+        .toEpochMilli() >= 0L
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
@@ -361,6 +394,27 @@ fun AddNewMarkPage(
                 )
                  */
 
+                // Transaction status.
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    ScrollableAnimatedText(
+                        text = transactionText,
+                        textColor = transactionColor,
+                        textAlign = TextAlign.Center,
+                        fontSize = font_size_main_text,
+                        fontWeight = FontWeight.Medium,
+                        lineHeight = line_height_main_text,
+                        textModifier = Modifier
+                            .fillMaxWidth()
+                        ,
+                        containterModifier = Modifier
+                            .fillMaxWidth(0.9f)
+                    )
+                }
+
             }
         }
 
@@ -372,7 +426,61 @@ fun AddNewMarkPage(
             ) {
                 // Button to Add.
                 Button(
-                    onClick = { },
+                    onClick = {
+                        if (isDateValid) {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                addNewMarkHelper.setCurrentMarkValue(
+                                    Optional.ofNullable( selectedMarkValue.value )
+                                )
+                                addNewMarkHelper.setCurrentMarkType(
+                                    Optional.ofNullable( selectedMarkType.value )
+                                )
+                                addNewMarkHelper.setCurrentStudySubject(
+                                    Optional.ofNullable( selectedSubjectValue.value )
+                                )
+                                addNewMarkHelper.setCurrentLocalDate(
+                                    Optional.ofNullable(selectedLocalDate.value)
+                                )
+
+                                // Add data into DataBase.
+                                var dateInMills: Long = addNewMarkHelper.currentLocalDate
+                                    .atStartOfDay()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toInstant()
+                                    .toEpochMilli()
+
+
+                                var nGrade = Grade(
+                                    gradeValue = addNewMarkHelper.currentMarkValue.toInt(),
+                                    gradeTypeId = addNewMarkHelper.currentMarkType.id,
+                                    subjectStudyId = addNewMarkHelper.currentStudySubject.id,
+                                    date = dateInMills
+                                )
+
+                                var addedId = database.gradeDao().insertGrade( nGrade )
+
+                                if (database.gradeDao().findGrades().last().id == addedId) {
+                                    clearAddNewMarkHelper(addNewMarkHelper)
+
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                } else {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
+                            }
+                        } else {
+                            coroutineScope.launch {
+                                transactionStatusString.value = "f"
+                                delay(4000L)
+                                transactionStatusString.value = ""
+                            }
+                        }
+                    },
 
                     shape = RoundedCornerShape(20.dp),
                     contentPadding = PaddingValues(0.dp),
@@ -461,4 +569,21 @@ fun AddNewMarkPage(
             }
         }
     }
+}
+
+fun clearAddNewMarkHelper(
+    addNewMarkHelper: AddNewMarkHelper
+) {
+    addNewMarkHelper.setCurrentMarkValue(
+        Optional.ofNullable( "5" )
+    )
+    addNewMarkHelper.setCurrentMarkType(
+        Optional.ofNullable( null )
+    )
+    addNewMarkHelper.setCurrentStudySubject(
+        Optional.ofNullable( null )
+    )
+    addNewMarkHelper.setCurrentLocalDate(
+        Optional.ofNullable( null )
+    )
 }

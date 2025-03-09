@@ -101,6 +101,7 @@ class GeneralAppActivity : ComponentActivity() {
                     composable(route = "edit_grade_type") { EditGradeType(navHostController, database) }
                     composable(route = "edit_study_subject") { EditStudySubject(navHostController, database) }
                     composable(route = "edit_homework") { EditHomework(navHostController, database) }
+                    composable(route = "edit_grade") { EditHomework(navHostController, database) }
 
                     // View pages.
                     composable(route = "view_grade_type") { ViewListOfGradeTypes(navHostController, database) }
@@ -145,7 +146,7 @@ fun GeneralAppActivityMainPage(
             ) { page ->
                 when (page) {
                     0 -> {
-                        AbobaTestPage("0")
+                        ViewListOfGrades(navHostController, database)
                     }
 
                     1 -> {
