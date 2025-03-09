@@ -70,6 +70,10 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
     kapt(libs.androidx.room.compiler)
 
+    // MPAndroidChart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // implementation("com.github.PhilJay:MPAndroidChart:-8c92fcdd2e-1")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
