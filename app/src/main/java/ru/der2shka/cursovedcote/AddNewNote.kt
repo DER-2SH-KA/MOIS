@@ -140,6 +140,11 @@ fun AddNewNote(
                 else -> Color.Black
     }
 
+    // Validation
+    val isNameValid = remember { mutableStateOf(false) }
+    val isDateValid = remember { mutableStateOf(true) }
+    val isValid = isNameValid.value && isDateValid.value
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -219,6 +224,12 @@ fun AddNewNote(
                                 value = nameTextFieldValue.value.text,
                                 onValueChange = {
                                     nameTextFieldValue.value = TextFieldValue(it)
+
+                                    if (it.isEmpty()) {
+                                        isNameValid.value = false
+                                    } else {
+                                        isNameValid.value = true
+                                    }
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -233,6 +244,7 @@ fun AddNewNote(
                                             }
                                     )
                                 },
+                                isError = !isNameValid.value,
 
                                 modifier = Modifier
                                     .padding(5.dp)
@@ -287,7 +299,8 @@ fun AddNewNote(
                                                 ClearTextField(descriptionTextFieldValue)
                                             }
                                     )
-                                               },
+                               },
+
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
@@ -339,6 +352,19 @@ fun AddNewNote(
                                 ,
                                 onSelect = { localDate ->
                                     selectedDateOfWrite.value = localDate
+
+                                    var localDateAtMills = localDate
+                                        .atStartOfDay()
+                                        .atZone( ZoneId.systemDefault() )
+                                        .toInstant()
+                                        .toEpochMilli()
+
+                                    if (localDateAtMills < 0L) {
+                                        isDateValid.value = false
+                                    }
+                                    else {
+                                        isDateValid.value = true
+                                    }
                                 }
                             )
                         }
@@ -482,53 +508,62 @@ fun AddNewNote(
                 // Button to Add.
                 Button(
                     onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            // Add data into Helper object.
-                            addNewNoteHelper.setNameValue(
-                                Optional.ofNullable(nameTextFieldValue.value.text)
-                            )
-                            addNewNoteHelper.setDescriptionValue(
-                                Optional.ofNullable(descriptionTextFieldValue.value.text)
-                            )
-                            addNewNoteHelper.setDateOfWrite(
-                                Optional.ofNullable(selectedDateOfWrite.value)
-                            )
-                            addNewNoteHelper.setStatusCodeValue(
-                                Optional.ofNullable( statusList.indexOf( selectedStatusItem.value.text ) )
-                            )
+                        if (isValid) {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                // Add data into Helper object.
+                                addNewNoteHelper.setNameValue(
+                                    Optional.ofNullable(nameTextFieldValue.value.text)
+                                )
+                                addNewNoteHelper.setDescriptionValue(
+                                    Optional.ofNullable(descriptionTextFieldValue.value.text)
+                                )
+                                addNewNoteHelper.setDateOfWrite(
+                                    Optional.ofNullable(selectedDateOfWrite.value)
+                                )
+                                addNewNoteHelper.setStatusCodeValue(
+                                    Optional.ofNullable(statusList.indexOf(selectedStatusItem.value.text))
+                                )
 
-                            // Add data into DataBase.
-                            var dateInMills: Long = selectedDateOfWrite.value
-                                .atStartOfDay()
-                                .atZone( ZoneId.systemDefault() )
-                                .toInstant()
-                                .toEpochMilli()
+                                // Add data into DataBase.
+                                var dateInMills: Long = selectedDateOfWrite.value
+                                    .atStartOfDay()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toInstant()
+                                    .toEpochMilli()
 
-                            var newNote = Note(
-                                name = addNewNoteHelper.nameValue,
-                                description = addNewNoteHelper.descriptionValue,
-                                date = dateInMills,
-                                status = addNewNoteHelper.statusCodeValue,
-                                userId = userId
-                            )
+                                var newNote = Note(
+                                    name = addNewNoteHelper.nameValue,
+                                    description = addNewNoteHelper.descriptionValue,
+                                    date = dateInMills,
+                                    status = addNewNoteHelper.statusCodeValue,
+                                    userId = userId
+                                )
 
-                            val addedId = database.noteDao().insertNote( newNote )
+                                val addedId = database.noteDao().insertNote(newNote)
 
-                            // If note was added.
-                            if ( database.noteDao().findNotes().last().id == addedId ) {
-                                clearAddNewNoteHelperFields(addNewNoteHelper)
+                                // If note was added.
+                                if (database.noteDao().findNotes().last().id == addedId) {
+                                    clearAddNewNoteHelperFields(addNewNoteHelper)
 
-                                nameTextFieldValue.value = TextFieldValue( "" )
-                                descriptionTextFieldValue.value = TextFieldValue( "" )
-                                statusCodeMutable.value = addNewNoteHelper.statusCodeValue
-                                selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
+                                    nameTextFieldValue.value = TextFieldValue("")
+                                    descriptionTextFieldValue.value = TextFieldValue("")
+                                    statusCodeMutable.value = addNewNoteHelper.statusCodeValue
+                                    selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
 
-                                // Show status of transaction.
-                                transactionStatusString.value = "s"
-                                delay(4000L)
-                                transactionStatusString.value = ""
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                } else {
+                                    // Show status of transaction.
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
                             }
-                            else {
+                        }
+                        else {
+                            coroutineScope.launch {
                                 // Show status of transaction.
                                 transactionStatusString.value = "f"
                                 delay(4000L)
