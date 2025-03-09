@@ -124,7 +124,7 @@ fun ViewListOfStudySubjects(
             ) {
                 if (studySubjectList.value.isNotEmpty()) {
                     LazyColumn() {
-                        items( studySubjectList.value ) { studySubject ->
+                        items( studySubjectList.value, key = { item -> item.id } ) { studySubject ->
                             StudySubjectItem(navHostController, studySubject)
                         }
                     }

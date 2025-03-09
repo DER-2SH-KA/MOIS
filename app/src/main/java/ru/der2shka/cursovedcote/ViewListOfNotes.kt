@@ -129,7 +129,7 @@ fun ViewListOfNotes(
             ) {
                 if (noteList.value.isNotEmpty()) {
                     LazyColumn() {
-                        items( noteList.value ) { note ->
+                        items( noteList.value, key = { item -> item.id } ) { note ->
                             NoteItem(navHostController, note)
                         }
                     }

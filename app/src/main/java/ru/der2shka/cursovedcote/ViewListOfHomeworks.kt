@@ -139,7 +139,7 @@ fun ViewListOfHomeworks(
             ) {
                 if (itemsHomework.value.isNotEmpty() && itemsSubjects.value.isNotEmpty()) {
                     LazyColumn() {
-                        items( itemsHomework.value ) { homework ->
+                        items( itemsHomework.value, key = { item -> item.id } ) { homework ->
                             HomeworkItem(
                                 navHostController,
                                 homework,

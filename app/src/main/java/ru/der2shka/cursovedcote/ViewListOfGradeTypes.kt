@@ -122,7 +122,7 @@ fun ViewListOfGradeTypes(
             ) {
                 if (gradeTypeList.value.isNotEmpty()) {
                     LazyColumn() {
-                        items( gradeTypeList.value ) { gt ->
+                        items( gradeTypeList.value, key = { item -> item.id } ) { gt ->
                             GradeTypeItem(navHostController, gt)
                         }
                     }
