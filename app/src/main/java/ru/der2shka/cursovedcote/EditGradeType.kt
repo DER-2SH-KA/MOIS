@@ -237,6 +237,9 @@ fun EditGradeType(
                                             }
                                     )
                                 },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Text
+                                ),
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .fillMaxWidth()
