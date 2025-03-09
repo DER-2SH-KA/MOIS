@@ -45,6 +45,7 @@ import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
+import ru.der2shka.cursovedcote.ui.GradeChart
 import ru.der2shka.cursovedcote.ui.GradeItem
 import ru.der2shka.cursovedcote.ui.HomeworkItem
 import ru.der2shka.cursovedcote.ui.NoteItem
@@ -151,6 +152,24 @@ fun ViewListOfGrades(
                     .fillMaxHeight()
             ) {
                 if (itemsGrades.value.isNotEmpty() && itemsSubjects.value.isNotEmpty() && itemsGradeTypes.value.isNotEmpty()) {
+
+                    // Chart.
+                    if (itemsGrades.value.size > 1) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            GradeChart(
+                                gradeData = itemsGrades.value,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(
+                                        (config.screenHeightDp * 0.4f).dp
+                                    )
+                            )
+                        }
+                    }
+
                     LazyColumn() {
                         items( itemsGrades.value, key = { item -> item.id } ) { grade ->
                             GradeItem(
