@@ -218,6 +218,7 @@ fun ViewListOfGrades(
                                     GradeChart(
                                         gradeData = itemsGrades.value,
                                         gradeTypes = itemsGradeTypes.value,
+                                        interval = 0,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .height(

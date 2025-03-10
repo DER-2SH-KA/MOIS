@@ -44,7 +44,7 @@ fun CalculateAverageGradeByDay(
         gradeTypesMap.put( it.id, it )
     }
 
-    var wasMonthYearList = mutableListOf<Pair<Int, Int>>()
+    var wasMonthYearList = mutableListOf<LocalDate>()
 
     val scale = Math.pow(10.0, 3.0)
 
@@ -56,7 +56,7 @@ fun CalculateAverageGradeByDay(
 
         if ( !wasMonthYearList
                 .contains(
-                    Pair(localDate.month.value, localDate.year)
+                    localDate
                 )
         ) {
             var sum = 0f
@@ -80,7 +80,7 @@ fun CalculateAverageGradeByDay(
 
             result.add( Pair(localDate, average) )
             wasMonthYearList.add(
-                Pair(localDate.month.value, localDate.year)
+                localDate
             )
         }
     }

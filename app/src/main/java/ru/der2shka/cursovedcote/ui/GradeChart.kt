@@ -52,7 +52,7 @@ fun GradeChart(
     var profitData = mutableListOf<Pair<LocalDate, Float>>()
 
     val dateFormatter = when (interval) {
-        0 -> { DateTimeFormatter.ofPattern("d MMM") }
+        0 -> { DateTimeFormatter.ofPattern("d MMM yyyy") }
         1 -> {  DateTimeFormatter.ofPattern("MMM yyyy") }
         2 -> {  DateTimeFormatter.ofPattern("yyyy") }
         else -> {  DateTimeFormatter.ofPattern("dd MMM yyyy") }
@@ -80,91 +80,97 @@ fun GradeChart(
         Entry(index.toFloat(), profit.toFloat())
     }
 
-    AndroidView(
-        modifier = modifier,
-        factory = { context ->
-            LineChart(context).apply {
-                // Настройка данных
-                val dataSet = LineDataSet(entries, "").apply {
-                    color = secondaryColor
-                    valueTextColor = mainTextColor
-                    valueTextSize = font_size_secondary_text.value * 0.6f
-                    lineWidth = 2f
+    if (entries.isNotEmpty()) {
+        AndroidView(
+            modifier = modifier,
+            factory = { context ->
+                LineChart(context).apply {
+                    // Настройка данных
+                    val dataSet = LineDataSet(entries, "").apply {
+                        color = secondaryColor
+                        valueTextColor = mainTextColor
+                        valueTextSize = font_size_secondary_text.value * 0.6f
+                        lineWidth = 2f
 
-                    setCircleColor(tetriaryColor)
-                    circleRadius = 4f
+                        setCircleColor(tetriaryColor)
+                        circleRadius = 4f
 
-                    setDrawValues(true)
+                        setDrawValues(true)
 
-                    setDrawFilled(true)
-                    fillColor = secondaryColor
-                    fillAlpha = 150
-                }
-                val lineData = LineData(listOf(dataSet))
-                this.data = lineData
-
-                // Настройка оси X
-                xAxis.apply {
-                    position = XAxis.XAxisPosition.BOTTOM
-                    valueFormatter = object : ValueFormatter() {
-                        override fun getFormattedValue(value: Float): String {
-                            // Преобразуем индекс в дату
-                            val date = profitData[value.toInt()].first
-                            return date.format(dateFormatter)
-                        }
+                        setDrawFilled(true)
+                        fillColor = secondaryColor
+                        fillAlpha = 150
                     }
-                    granularity = 1f // Минимальный шаг между значениями
-                    textSize = font_size_secondary_text .value * 0.6f
-                    textColor = mainTextColor
+                    val lineData = LineData(listOf(dataSet))
+                    this.data = lineData
 
-                    setDrawGridLines(true)
-                    axisLineWidth = 2f
-                    axisLineColor = primaryColor
+                    // Настройка оси X
+                    xAxis.apply {
+                        position = XAxis.XAxisPosition.BOTTOM
+                        valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                try {
+                                    // Преобразуем индекс в дату
+                                    val date = profitData[value.toInt()].first
+                                    return date.format(dateFormatter)
+                                }
+                                catch (ex: Exception) {}
+                                return LocalDate.now().format(dateFormatter)
+                            }
+                        }
+                        granularity = 1f // Минимальный шаг между значениями
+                        textSize = font_size_secondary_text.value * 0.6f
+                        textColor = mainTextColor
 
-                    gridColor = primaryColor
-                    gridLineWidth = 1f
+                        setDrawGridLines(true)
+                        axisLineWidth = 2f
+                        axisLineColor = primaryColor
+
+                        gridColor = primaryColor
+                        gridLineWidth = 1f
+                    }
+
+                    // Настройка левой оси Y.
+                    axisLeft.isEnabled = true
+                    axisLeft.apply {
+                        setDrawGridLines(true)
+                        axisMinimum = 1f
+                        axisMaximum = 5f
+                        axisLineWidth = 2f
+                        axisLineColor = primaryColor
+                        setLabelCount(5, true)
+
+                        textColor = primaryColor
+                        textSize = font_size_secondary_text.value
+                        gridColor = primaryColor
+                        gridLineWidth = 1f
+                    }
+
+                    // Настройка правой оси Y.
+                    axisRight.isEnabled = true
+                    axisRight.apply {
+                        setDrawGridLines(false)
+                        axisMinimum = 1f
+                        axisMaximum = 5f
+                        axisLineWidth = 2f
+                        axisLineColor = primaryColor
+                        setLabelCount(5, true)
+
+                        textColor = primaryColor
+                        textSize = font_size_secondary_text.value
+                    }
+
+                    // Дополнительные настройки
+                    description.isEnabled = false // Отключаем описание
+
+                    setTouchEnabled(true) // Включаем возможность взаимодействия с графиком
+                    isDragEnabled = true // Включаем перетаскивание
+                    setScaleEnabled(true) // Включаем масштабирование
+                    setPinchZoom(true) // Включаем масштабирование щипком
+                    animateXY(500, 500) // Анимация по оси X
+                    // setVisibleXRangeMaximum(4f)
                 }
-
-                // Настройка левой оси Y.
-                axisLeft.isEnabled = true
-                axisLeft.apply {
-                    setDrawGridLines(true)
-                    axisMinimum = 1f
-                    axisMaximum = 5f
-                    axisLineWidth = 2f
-                    axisLineColor = primaryColor
-                    setLabelCount(5, true)
-
-                    textColor = primaryColor
-                    textSize = font_size_secondary_text.value
-                    gridColor = primaryColor
-                    gridLineWidth = 1f
-                }
-
-                // Настройка правой оси Y.
-                axisRight.isEnabled = true
-                axisRight.apply {
-                    setDrawGridLines(false)
-                    axisMinimum = 1f
-                    axisMaximum = 5f
-                    axisLineWidth = 2f
-                    axisLineColor = primaryColor
-                    setLabelCount(5, true)
-
-                    textColor = primaryColor
-                    textSize = font_size_secondary_text.value
-                }
-
-                // Дополнительные настройки
-                description.isEnabled = false // Отключаем описание
-
-                setTouchEnabled(true) // Включаем возможность взаимодействия с графиком
-                isDragEnabled = true // Включаем перетаскивание
-                setScaleEnabled(true) // Включаем масштабирование
-                setPinchZoom(true) // Включаем масштабирование щипком
-                animateXY(500, 500) // Анимация по оси X
-                // setVisibleXRangeMaximum(4f)
             }
-        }
-    )
+        )
+    }
 }
