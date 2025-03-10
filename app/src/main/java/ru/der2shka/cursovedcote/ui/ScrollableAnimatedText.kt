@@ -190,7 +190,6 @@ fun ScrollableAnimatedText(
         // Scrollable Text.
         Box(
             modifier = containterModifier
-                .fillMaxWidth()
                 .clipToBounds()
                 // .background(Color.Magenta)
                 .onSizeChanged {

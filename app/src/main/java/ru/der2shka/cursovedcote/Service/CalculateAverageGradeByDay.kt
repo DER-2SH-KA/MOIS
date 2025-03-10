@@ -1,30 +1,24 @@
 package ru.der2shka.cursovedcote.Service
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.db.entity.Grade
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.StudySubject
-import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Optional
 
 // TODO: Сделать учёт множителей.
-// @Composable
-fun CalculateAverageGradeByMonth(
+fun CalculateAverageGradeByDay(
     gradeData: List<Grade>,
     studySubject: Optional<StudySubject> = Optional.empty(),
     gradeTypes: List<GradeType>,
     localDataFrom: LocalDate,
     localDateTo: LocalDate
 ) : MutableList<Pair<LocalDate, Float>> {
+
     var result = mutableListOf<Pair<LocalDate, Float>>()
+
     var gradeDateFromToAndSubject = when ( studySubject.isPresent ) {
         true -> {
             gradeData.stream().filter { x ->
@@ -55,6 +49,7 @@ fun CalculateAverageGradeByMonth(
     val scale = Math.pow(10.0, 3.0)
 
     gradeDateFromToAndSubject.forEach { grade ->
+
         var localDate = Instant.ofEpochMilli( grade.date )
             .atZone( ZoneId.systemDefault() )
             .toLocalDate()
@@ -69,15 +64,12 @@ fun CalculateAverageGradeByMonth(
             var average = 0f
 
             gradeData.stream().filter { x ->
-                // By month.
-                (Instant.ofEpochMilli(x.date )
+                var xDate = Instant.ofEpochMilli(x.date )
                     .atZone( ZoneId.systemDefault() )
-                    .toLocalDate().monthValue ==
-                        localDate.monthValue) &&
-                        // By year.
-                        (Instant.ofEpochMilli(x.date )
-                            .atZone( ZoneId.systemDefault() )
-                            .toLocalDate().year == localDate.year)
+                    .toLocalDate()
+                // By full local date.
+                xDate == localDate
+
             }.forEach { x ->
                 sum += x.gradeValue.toFloat() * gradeTypesMap.get(x.gradeTypeId)!!.mulltiplier
                 count += gradeTypesMap.get(x.gradeTypeId)!!.mulltiplier

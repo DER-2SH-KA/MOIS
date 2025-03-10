@@ -2,6 +2,7 @@ package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +55,7 @@ import ru.der2shka.cursovedcote.ui.HomeworkItem
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
+import ru.der2shka.cursovedcote.ui.theme.font_size_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
@@ -72,6 +77,7 @@ fun ViewListOfGrades(
 
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val contentVScroll = rememberScrollState(0)
+    val isExpandChart = remember { mutableStateOf(false) }
 
     val itemsGrades = remember { mutableStateOf( listOf<Grade> () ) }
     val itemsSubjects = remember { mutableStateOf( listOf<StudySubject>() ) }
@@ -152,21 +158,88 @@ fun ViewListOfGrades(
                     .fillMaxHeight()
             ) {
                 if (itemsGrades.value.isNotEmpty() && itemsSubjects.value.isNotEmpty() && itemsGradeTypes.value.isNotEmpty()) {
-
                     // Chart.
-                    if (itemsGrades.value.size > 1) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxWidth()
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .padding(0.dp, 10.dp)
+                            .fillMaxWidth()
+                            .clickable {
+                                isExpandChart.value = !isExpandChart.value
+                            }
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = colorResource(R.color.primary_blue),
+                                    shape = RoundedCornerShape(10.dp)
+                                )
                         ) {
-                            GradeChart(
-                                gradeData = itemsGrades.value,
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.fillMaxWidth(0.5f)
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = stringResource(R.string.chart),
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_middle_size_text,
+                                    fontWeight = FontWeight.Medium,
+                                    lineHeight = line_height_middle_size_text,
+                                    containterModifier = Modifier
+                                        .fillMaxWidth(),
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f)
+                                        .padding(10.dp)
+                                )
+                            }
+
+                            Icon(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = null,
+                                tint = Color.White,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(
-                                        (config.screenHeightDp * 0.4f).dp
-                                    )
+                                    .clickable {
+                                        isExpandChart.value = !isExpandChart.value
+                                    }
                             )
+                        }
+
+                        if (isExpandChart.value) {
+                            if (itemsGrades.value.size > 1) {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    GradeChart(
+                                        gradeData = itemsGrades.value,
+                                        gradeTypes = itemsGradeTypes.value,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(
+                                                (config.screenHeightDp * 0.4f).dp
+                                            )
+                                    )
+                                }
+                            } else {
+                                ScrollableAnimatedText(
+                                    text = stringResource(R.string.not_enough_data),
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.Center,
+                                    fontSize = font_size_middle_size_text,
+                                    fontWeight = FontWeight.Medium,
+                                    lineHeight = line_height_middle_size_text,
+                                    containterModifier = Modifier
+                                        .fillMaxWidth(0.9f)
+                                        .height(
+                                            (config.screenHeightDp * 0.4f).dp
+                                        )
+                                )
+                            }
                         }
                     }
 

@@ -17,7 +17,7 @@ import java.util.Optional
 
 // TODO: Сделать учёт множителей.
 // @Composable
-fun CalculateAverageGradeByMonth(
+fun CalculateAverageGradeByYear(
     gradeData: List<Grade>,
     studySubject: Optional<StudySubject> = Optional.empty(),
     gradeTypes: List<GradeType>,
@@ -69,15 +69,12 @@ fun CalculateAverageGradeByMonth(
             var average = 0f
 
             gradeData.stream().filter { x ->
-                // By month.
+
+                // By year.
                 (Instant.ofEpochMilli(x.date )
                     .atZone( ZoneId.systemDefault() )
-                    .toLocalDate().monthValue ==
-                        localDate.monthValue) &&
-                        // By year.
-                        (Instant.ofEpochMilli(x.date )
-                            .atZone( ZoneId.systemDefault() )
-                            .toLocalDate().year == localDate.year)
+                    .toLocalDate().year == localDate.year)
+
             }.forEach { x ->
                 sum += x.gradeValue.toFloat() * gradeTypesMap.get(x.gradeTypeId)!!.mulltiplier
                 count += gradeTypesMap.get(x.gradeTypeId)!!.mulltiplier

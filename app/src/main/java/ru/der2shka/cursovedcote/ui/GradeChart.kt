@@ -18,18 +18,30 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import ru.der2shka.cursovedcote.R
-import ru.der2shka.cursovedcote.Service.CalculateAverageMarkByMonth
+import ru.der2shka.cursovedcote.Service.CalculateAverageGradeByDay
+import ru.der2shka.cursovedcote.Service.CalculateAverageGradeByMonth
+import ru.der2shka.cursovedcote.Service.CalculateAverageGradeByYear
 import ru.der2shka.cursovedcote.db.entity.Grade
+import ru.der2shka.cursovedcote.db.entity.GradeType
+import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.theme.font_size_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import java.time.Instant
 import java.time.ZoneId
+import java.util.Optional
 
 @Composable
 fun GradeChart(
     // database: AppDatabase,
     gradeData: List<Grade>,
+    studySubject: Optional<StudySubject> = Optional.empty(),
+    gradeTypes: List<GradeType>,
+    interval: Int = 0,
+    from: LocalDate = Instant.ofEpochMilli( Long.MIN_VALUE )
+        .atZone( ZoneId.systemDefault() ).toLocalDate(),
+    to: LocalDate = Instant.ofEpochMilli( Long.MAX_VALUE )
+        .atZone( ZoneId.systemDefault() ).toLocalDate(),
     modifier: Modifier = Modifier
 ) {
     val primaryColor = colorResource(R.color.primary_blue).toArgb()
@@ -37,31 +49,32 @@ fun GradeChart(
     val tetriaryColor = colorResource(R.color.tertiary_orange).toArgb()
     val mainTextColor = colorResource(R.color.main_text_dark_gray).toArgb()
 
-    /*val profitData = listOf(
-        Pair(LocalDate.of(2024, 1, 1), 2.5f),
-        Pair(LocalDate.of(2024, 1, 7), 3.5f),
-        Pair(LocalDate.of(2024, 1, 14), 4.48f),
-        Pair(LocalDate.of(2024, 1, 21), 4.3f),
-        Pair(LocalDate.of(2024, 1, 28), 4.75f),
-        Pair(LocalDate.of(2025, 2, 4), 4.63f),
-    )*/
+    var profitData = mutableListOf<Pair<LocalDate, Float>>()
 
+    val dateFormatter = when (interval) {
+        0 -> { DateTimeFormatter.ofPattern("d MMM") }
+        1 -> {  DateTimeFormatter.ofPattern("MMM yyyy") }
+        2 -> {  DateTimeFormatter.ofPattern("yyyy") }
+        else -> {  DateTimeFormatter.ofPattern("dd MMM yyyy") }
+    }
 
-    var profitData = CalculateAverageMarkByMonth( gradeData )
-    profitData.reverse()
+    profitData = when (interval) {
+        0 -> {
+            CalculateAverageGradeByDay( gradeData, studySubject,  gradeTypes, from, to )
+        }
 
-    /*gradeData.forEach { item ->
-        profitData.add(
-            Pair(
-                Instant.ofEpochMilli( item.date )
-                    .atZone( ZoneId.systemDefault() )
-                    .toLocalDate(),
-                item.gradeValue.toFloat()
-            )
-        )
-    }*/
+        1 -> {
+            CalculateAverageGradeByMonth(gradeData, studySubject, gradeTypes, from, to)
+        }
 
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
+        2 -> {
+            CalculateAverageGradeByYear(gradeData, studySubject, gradeTypes, from, to)
+        }
+
+        else -> {
+            CalculateAverageGradeByDay( gradeData, studySubject,  gradeTypes, from, to )
+        }
+    }
 
     val entries = profitData.mapIndexed { index, (date, profit) ->
         Entry(index.toFloat(), profit.toFloat())
@@ -87,7 +100,7 @@ fun GradeChart(
                     fillColor = secondaryColor
                     fillAlpha = 150
                 }
-                val lineData = LineData(dataSet)
+                val lineData = LineData(listOf(dataSet))
                 this.data = lineData
 
                 // Настройка оси X

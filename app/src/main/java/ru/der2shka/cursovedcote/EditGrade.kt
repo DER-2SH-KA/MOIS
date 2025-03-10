@@ -207,7 +207,7 @@ fun EditGrade(
                     )
             ) {
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.add_grade),
+                    text = stringResource(R.string.edit_grade),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
