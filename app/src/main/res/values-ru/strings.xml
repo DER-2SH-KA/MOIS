@@ -37,11 +37,13 @@
     <string name="subject">Предмет</string>
     <string name="multiplier">Множитель</string>
 
+    <!-- Dates -->
     <string name="date">Дата</string>
     <string name="date_of_write">Дата записи</string>
     <string name="date_begin">Дата начала</string>
     <string name="date_end">Дата окончания</string>
 
+    <!-- Statuses -->
     <string name="created">Создано</string>
     <string name="in_processing">В процессе</string>
     <string name="finished">Выполнено</string>
@@ -112,4 +114,19 @@
     <string name="edit_subject">Редактировать предмет</string>
     <string name="edit_note">Редактировать запись</string>
     <string name="edit_homework">Редактировать домашнее задание</string>
+
+    <!-- Chart -->
+    <string name="chart">График</string>
+    <string name="all">Все</string>
+    <string name="not_enough_data">Не хватает данных</string>
+    <string name="interval">Интервал</string>
+    <string name="for_">За</string>
+    <string name="day">День</string>
+    <string name="month">Месяц</string>
+    <string name="year">Год</string>
+    <string name="from">От</string>
+    <string name="to">До</string>
+    <string name="show">Показать</string>
+    <string name="average_grade">Средняя оценка</string>
+
 </resources>

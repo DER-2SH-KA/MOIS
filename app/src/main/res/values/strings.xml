@@ -37,11 +37,13 @@
     <string name="subject">Subject</string>
     <string name="multiplier">Multiplier</string>
 
+    <!-- Dates -->
     <string name="date">Date</string>
     <string name="date_of_write">Date of write</string>
     <string name="date_begin">Date begin</string>
     <string name="date_end">Date end</string>
 
+    <!-- Statuses -->
     <string name="created">Created</string>
     <string name="in_processing">In processing</string>
     <string name="finished">Finished</string>
@@ -112,5 +114,18 @@
     <string name="edit_note">Edit note</string>
     <string name="edit_homework">Edit homework</string>
 
+    <!-- Chart -->
+    <string name="chart">Chart</string>
+    <string name="all">All</string>
+    <string name="not_enough_data">Not enough data</string>
+    <string name="interval">Interval</string>
+    <string name="for_">For</string>
+    <string name="day">Day</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="show">Show</string>
+    <string name="average_grade">Average grade</string>
 
 </resources>
