@@ -151,7 +151,7 @@ fun AddNewStudySubject(
                     )
             ) {
                 ScrollableAnimatedText(
-                    text = stringResource(R.string.add_grade_type),
+                    text = stringResource(R.string.add_subject),
                     textColor = Color.White,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
