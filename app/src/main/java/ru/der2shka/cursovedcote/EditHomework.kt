@@ -51,6 +51,7 @@ import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.entity.Note
+import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -193,6 +194,28 @@ fun EditHomework(
 
     val isDeleted = remember { mutableStateOf(false) }
 
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
+            val studySubjectHomeworkFromHwHelper = database.studySubjectDao().findStudySubjectById(
+                homeworkFromHwHelper.studySubjectId
+            )
+
+            if (studySubjectsDbList.isNotEmpty()) {
+                addNewHomeworkHelper.setStudySubjectList(Optional.ofNullable(studySubjectsDbList))
+            } else {
+                addNewHomeworkHelper.setStudySubjectList( Optional.ofNullable(listOf(StudySubject( -1, "\\_( -_ -)_/", userId) )) )
+            }
+
+            subjectValueList.value = addNewHomeworkHelper.studySubjectList
+            selectedSubjectValue.value = subjectValueList.value.get(0)
+
+            if (studySubjectHomeworkFromHwHelper != null) {
+                selectedSubjectValue.value = studySubjectHomeworkFromHwHelper
+            }
+        }
+    }
+
     var isNameValid = (nameTextFieldValue.value.text != "")
     var isDateBeginValid = (selectedDateBegin.value
         .atStartOfDay()
@@ -204,27 +227,8 @@ fun EditHomework(
         .atZone( ZoneId.systemDefault() )
         .toInstant()
         .toEpochMilli() >= 0L)
-    var isValid = isNameValid && isDateBeginValid && isDateEndValid
-
-    LaunchedEffect(key1 = Unit) {
-        coroutineScope.launch(Dispatchers.IO) {
-            val studySubjectsDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
-            val studySubjectHomeworkFromHwHelper = database.studySubjectDao().findStudySubjectById(
-                homeworkFromHwHelper.studySubjectId
-            )
-
-            if (studySubjectsDbList.isNotEmpty()) {
-                addNewHomeworkHelper.setStudySubjectList(Optional.ofNullable(studySubjectsDbList))
-                subjectValueList.value = addNewHomeworkHelper.studySubjectList
-
-                selectedSubjectValue.value = subjectValueList.value.get(0)
-            }
-
-            if (studySubjectHomeworkFromHwHelper != null) {
-                selectedSubjectValue.value = studySubjectHomeworkFromHwHelper
-            }
-        }
-    }
+    var isStudySubjectValid = (selectedSubjectValue.value.id != -1L)
+    var isValid = isNameValid && isDateBeginValid && isDateEndValid && isStudySubjectValid
 
     Box(
         modifier = Modifier

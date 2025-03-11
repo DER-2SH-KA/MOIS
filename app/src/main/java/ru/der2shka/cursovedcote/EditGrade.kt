@@ -48,7 +48,9 @@ import ru.der2shka.cursovedcote.Models.GradeHelper
 import ru.der2shka.cursovedcote.Models.HomeworkHelper
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.db.entity.Grade
+import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Homework
+import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -136,16 +138,21 @@ fun EditGrade(
 
     var isDeleted = remember { mutableStateOf(false) }
 
-    var isValid = selectedLocalDate.value
-        .atStartOfDay()
-        .atZone( ZoneId.systemDefault() )
-        .toInstant()
-        .toEpochMilli() >= 0L
-
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
             val gradeTypeDbList = database.gradeTypeDao().findGradeTypesWithOrdering()
             val studySubjectDbList = database.studySubjectDao().findStudySubjectsWithOrdering()
+
+            if (gradeTypeDbList.isNotEmpty() ) {
+                addNewMarkHelper.setMarkTypeList(
+                    Optional.ofNullable( gradeTypeDbList )
+                )
+            }
+            else {
+                addNewMarkHelper.setMarkTypeList(
+                    Optional.ofNullable( listOf(GradeType(-1, "\\_( -_ -)_/", 0, userId)) )
+                )
+            }
 
             if (gradeTypeDbList.isNotEmpty() ) {
                 addNewMarkHelper.setMarkTypeList(
@@ -159,6 +166,13 @@ fun EditGrade(
                 addNewMarkHelper.setCurrentMarkType(
                     Optional.ofNullable( gradeTypeFromGradeHelper )
                 )
+                selectedMarkType.value = addNewMarkHelper.currentMarkType
+            } else {
+                addNewMarkHelper.setMarkTypeList(
+                    Optional.ofNullable( listOf(GradeType(-1, "\\_( -_ -)_/", 0, userId)) )
+                )
+
+                markTypeList.value = addNewMarkHelper.markTypeList
                 selectedMarkType.value = addNewMarkHelper.currentMarkType
             }
 
@@ -175,10 +189,26 @@ fun EditGrade(
                     Optional.ofNullable( ssFromGradeHelper )
                 )
                 selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
+            } else {
+                addNewMarkHelper.setStudySubjectList(
+                    Optional.ofNullable( listOf(StudySubject(-1, "\\_( -_ -)_/", userId)) )
+                )
+
+                subjectValueList.value = addNewMarkHelper.studySubjectList
+                selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
             }
 
         }
     }
+
+    var isGradeTypeValid = selectedMarkType.value.id != -1L
+    var isStudySubjectValid = selectedSubjectValue.value.id != -1L
+    var isDateValid = selectedLocalDate.value
+        .atStartOfDay()
+        .atZone( ZoneId.systemDefault() )
+        .toInstant()
+        .toEpochMilli() >= 0L
+    var isValid = isDateValid && isGradeTypeValid && isStudySubjectValid
 
     Box(
         modifier = Modifier

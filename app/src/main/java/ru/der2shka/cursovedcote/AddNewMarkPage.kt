@@ -44,7 +44,9 @@ import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.AddNewMarkHelper
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
 import ru.der2shka.cursovedcote.db.entity.Grade
+import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Homework
+import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
 import ru.der2shka.cursovedcote.ui.DatePickerBox
@@ -116,12 +118,6 @@ fun AddNewMarkPage(
         else -> Color.Black
     }
 
-    var isDateValid = selectedLocalDate.value
-        .atStartOfDay()
-        .atZone( ZoneId.systemDefault() )
-        .toInstant()
-        .toEpochMilli() >= 0L
-
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
             val gradeTypeDbList = database.gradeTypeDao().findGradeTypesWithOrdering()
@@ -131,23 +127,35 @@ fun AddNewMarkPage(
                 addNewMarkHelper.setMarkTypeList(
                     Optional.ofNullable( gradeTypeDbList )
                 )
-
-                markTypeList.value = addNewMarkHelper.markTypeList
+            }
+            else {
+                addNewMarkHelper.setMarkTypeList(
+                    Optional.ofNullable( listOf(GradeType(-1, "\\_( -_ -)_/", 0, userId)) )
+                )
             }
 
+            markTypeList.value = addNewMarkHelper.markTypeList
             selectedMarkType.value = addNewMarkHelper.currentMarkType
 
-            if (studySubjectDbList.isNotEmpty() ) {
-                addNewMarkHelper.setStudySubjectList(
-                    Optional.ofNullable( studySubjectDbList )
-                )
-
-                subjectValueList.value = addNewMarkHelper.studySubjectList
+            if (studySubjectDbList.isNotEmpty()) {
+                addNewMarkHelper.setStudySubjectList(Optional.ofNullable(studySubjectDbList))
+            } else {
+                addNewMarkHelper.setStudySubjectList( Optional.ofNullable(listOf(StudySubject( -1, "\\_( -_ -)_/", userId) )) )
             }
 
+            subjectValueList.value = addNewMarkHelper.studySubjectList
             selectedSubjectValue.value = addNewMarkHelper.currentStudySubject
         }
     }
+
+    var isGradeTypeValid = selectedMarkType.value.id != -1L
+    var isStudySubjectValid = selectedSubjectValue.value.id != -1L
+    var isDateValid = selectedLocalDate.value
+        .atStartOfDay()
+        .atZone( ZoneId.systemDefault() )
+        .toInstant()
+        .toEpochMilli() >= 0L
+    var isValid = isDateValid && isGradeTypeValid && isStudySubjectValid
 
     Box(
         modifier = Modifier
@@ -427,7 +435,7 @@ fun AddNewMarkPage(
                 // Button to Add.
                 Button(
                     onClick = {
-                        if (isDateValid) {
+                        if (isValid) {
                             coroutineScope.launch(Dispatchers.IO) {
                                 addNewMarkHelper.setCurrentMarkValue(
                                     Optional.ofNullable( selectedMarkValue.value )
