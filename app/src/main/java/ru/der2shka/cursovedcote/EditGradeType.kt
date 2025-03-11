@@ -149,9 +149,9 @@ fun EditGradeType(
     }
 
     // Validation.
-    var isNameValid = (nameTextField.value.text.trim() != "" &&
+    var isNameValid = (nameTextField.value.text != "" &&
             existsGradeTypeList.value.stream().filter { x ->
-                x.name.equals(nameTextField.value.text.trim())
+                x.name.equals(nameTextField.value.text)
             }.toArray().isEmpty())
     var isMultiplierValid = checkMultiplierTextFieldValue( multiplierTextField )
     var isValid = isNameValid && isMultiplierValid
@@ -235,7 +235,7 @@ fun EditGradeType(
                             TextFieldCustom(
                                 value = nameTextField.value.text,
                                 onValueChange = {
-                                    nameTextField.value = TextFieldValue(it)
+                                    nameTextField.value = TextFieldValue(it.trim())
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -408,6 +408,8 @@ fun EditGradeType(
                                             .findGradeTypeById(gradeTypeFromHelpert.value.id)
                                             .equals(uGradeType)
                                     ) {
+                                        existsGradeTypeList.value = database.gradeTypeDao().findGradeTypes()
+
                                         // Show status of transaction.
                                         transactionStatusString.value = "s"
                                         delay(4000L)

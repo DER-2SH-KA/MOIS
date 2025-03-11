@@ -133,9 +133,9 @@ fun AddNewMarkType(
     var existsGradeTypeList = remember { mutableStateOf(listOf<GradeType>()) }
 
     // Validation.
-    var isNameValid = (nameTextField.value.text.trim() != "" &&
+    var isNameValid = (nameTextField.value.text != "" &&
             existsGradeTypeList.value.stream().filter { x ->
-                x.name.equals(nameTextField.value.text.trim())
+                x.name.equals(nameTextField.value.text)
             }.toArray().isEmpty())
     var isMultiplierValid = checkMultiplierTextFieldValue( multiplierTextField )
     var isValid = isNameValid && isMultiplierValid
@@ -225,7 +225,7 @@ fun AddNewMarkType(
                             TextFieldCustom(
                                 value = nameTextField.value.text,
                                 onValueChange = {
-                                    nameTextField.value = TextFieldValue(it)
+                                    nameTextField.value = TextFieldValue(it.trim())
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -392,6 +392,8 @@ fun AddNewMarkType(
 
                                     nameTextField.value = TextFieldValue("")
                                     multiplierTextField.value = TextFieldValue("1")
+
+                                    existsGradeTypeList.value = database.gradeTypeDao().findGradeTypes()
 
                                     // Show status of transaction.
                                     transactionStatusString.value = "s"

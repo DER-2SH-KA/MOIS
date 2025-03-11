@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -130,7 +131,18 @@ fun EditStudySubject(
         else -> Color.Black
     }
 
-    var isValid = (nameTextField.value.text != "")
+    var existsStudySubjectList = remember { mutableStateOf(listOf<StudySubject>()) }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            existsStudySubjectList.value = database.studySubjectDao().findStudySubjects()
+        }
+    }
+
+    var isValid = (nameTextField.value.text != "" &&
+            existsStudySubjectList.value.stream().filter { x ->
+                x.name.equals(nameTextField.value.text)
+            }.toArray().isEmpty())
 
     Box(
         modifier = Modifier
@@ -307,6 +319,8 @@ fun EditStudySubject(
                                             .findStudySubjectById(studySubjectFromHelpert.value.id)
                                             .equals(uStudySubject)
                                     ) {
+                                        existsStudySubjectList.value = database.studySubjectDao().findStudySubjects()
+
                                         // Show status of transaction.
                                         transactionStatusString.value = "s"
                                         delay(4000L)

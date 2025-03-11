@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +55,7 @@ import ru.der2shka.cursovedcote.Models.AddNewMarkTypeHelper
 import ru.der2shka.cursovedcote.Models.AddNewStudySubjectHelper
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
@@ -121,7 +123,18 @@ fun AddNewStudySubject(
         else -> Color.Black
     }
 
-    var isValid = (nameTextField.value.text != "")
+    var existsStudySubjectList = remember { mutableStateOf(listOf<StudySubject>()) }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            existsStudySubjectList.value = database.studySubjectDao().findStudySubjects()
+        }
+    }
+
+    var isValid = (nameTextField.value.text != "" &&
+            existsStudySubjectList.value.stream().filter { x ->
+                x.name.equals(nameTextField.value.text)
+            }.toArray().isEmpty())
 
     Box(
         modifier = Modifier
@@ -202,7 +215,7 @@ fun AddNewStudySubject(
                             TextFieldCustom(
                                 value = nameTextField.value.text,
                                 onValueChange = {
-                                    nameTextField.value = TextFieldValue(it)
+                                    nameTextField.value = TextFieldValue(it.trim())
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -290,6 +303,7 @@ fun AddNewStudySubject(
                                     )
                                 ) {
                                     nameTextField.value = TextFieldValue("")
+                                    existsStudySubjectList.value = database.studySubjectDao().findStudySubjects()
 
                                     // Show status of transaction.
                                     transactionStatusString.value = "s"
