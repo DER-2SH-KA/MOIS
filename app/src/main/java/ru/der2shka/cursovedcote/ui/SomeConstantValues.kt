@@ -20,4 +20,13 @@ class SomeConstantValues {
     fun getGradeValueList(): List<String> {
         return listOf("5", "4", "3", "2", "1")
     }
+
+    @Composable
+    fun getIntervalList(): List<String> {
+        return listOf(
+            stringResource(R.string.day),
+            stringResource(R.string.month),
+            stringResource(R.string.year)
+        )
+    }
 }
