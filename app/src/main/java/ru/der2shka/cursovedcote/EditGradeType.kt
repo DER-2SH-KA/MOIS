@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -139,7 +140,19 @@ fun EditGradeType(
         else -> Color.Black
     }
 
-    var isNameValid = (nameTextField.value.text != "")
+    var existsGradeTypeList = remember { mutableStateOf(listOf<GradeType>()) }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            existsGradeTypeList.value = database.gradeTypeDao().findGradeTypes()
+        }
+    }
+
+    // Validation.
+    var isNameValid = (nameTextField.value.text.trim() != "" &&
+            existsGradeTypeList.value.stream().filter { x ->
+                x.name.equals(nameTextField.value.text.trim())
+            }.toArray().isEmpty())
     var isMultiplierValid = checkMultiplierTextFieldValue( multiplierTextField )
     var isValid = isNameValid && isMultiplierValid
 
