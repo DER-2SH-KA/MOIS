@@ -27,21 +27,21 @@ fun CalculateAverageGradeByYear(
     var result = mutableListOf<Pair<LocalDate, Float>>()
     var gradeDateFromToAndSubject = when ( studySubject.isPresent ) {
         true -> {
-            gradeData.stream().filter { x ->
+            gradeData.filter { x ->
                 var xDate = Instant.ofEpochMilli(x.date )
                     .atZone( ZoneId.systemDefault() )
                     .toLocalDate()
                 (localDataFrom <= xDate) && (xDate <= localDateTo)
                         && (x.subjectStudyId == studySubject.get().id)
-            }
+            }.toList()
         }
         false -> {
-            gradeData.stream().filter { x ->
+            gradeData.filter { x ->
                 var xDate = Instant.ofEpochMilli(x.date )
                     .atZone( ZoneId.systemDefault() )
                     .toLocalDate()
                 (localDataFrom <= xDate) && (xDate <= localDateTo)
-            }
+            }.toList()
         }
     }
 
@@ -68,7 +68,7 @@ fun CalculateAverageGradeByYear(
             var count = 0
             var average = 0f
 
-            gradeData.stream().filter { x ->
+            gradeDateFromToAndSubject.stream().filter { x ->
 
                 // By year.
                 (Instant.ofEpochMilli(x.date )

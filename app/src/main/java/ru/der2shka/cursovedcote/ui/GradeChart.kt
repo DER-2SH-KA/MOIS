@@ -2,9 +2,14 @@ package ru.der2shka.cursovedcote.ui
 
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.colorResource
@@ -35,58 +40,73 @@ import java.util.Optional
 fun GradeChart(
     // database: AppDatabase,
     gradeData: List<Grade>,
-    studySubject: Optional<StudySubject> = Optional.empty(),
+    studySubject: MutableState<Optional<StudySubject>> = mutableStateOf(Optional.empty()),
     gradeTypes: List<GradeType>,
-    interval: Int = 0,
-    from: LocalDate = Instant.ofEpochMilli( Long.MIN_VALUE )
-        .atZone( ZoneId.systemDefault() ).toLocalDate(),
-    to: LocalDate = Instant.ofEpochMilli( Long.MAX_VALUE )
-        .atZone( ZoneId.systemDefault() ).toLocalDate(),
+    interval: MutableState<Int> = mutableStateOf(0),
+    from: MutableState<LocalDate> = mutableStateOf(Instant.ofEpochMilli( Long.MIN_VALUE )
+        .atZone( ZoneId.systemDefault() ).toLocalDate()),
+    to: MutableState<LocalDate> = mutableStateOf(Instant.ofEpochMilli( Long.MAX_VALUE )
+        .atZone( ZoneId.systemDefault() ).toLocalDate()),
     modifier: Modifier = Modifier
 ) {
+    Log.d("StateUpdate", "selectedSubject: ${studySubject.value.get().name}")
+    Log.d("StateUpdate", "selectedInterval: ${interval.value}")
+    Log.d("StateUpdate", "selectedLocalDateFrom: ${from.value}")
+    Log.d("StateUpdate", "selectedLocalDateTo: ${to.value}")
+
     val primaryColor = colorResource(R.color.primary_blue).toArgb()
     val secondaryColor = colorResource(R.color.secondary_cyan).toArgb()
     val tetriaryColor = colorResource(R.color.tertiary_orange).toArgb()
     val mainTextColor = colorResource(R.color.main_text_dark_gray).toArgb()
 
-    var profitData = mutableListOf<Pair<LocalDate, Float>>()
+    var profitData = remember(studySubject.value.get() , interval.value, from.value, to.value) { mutableStateOf(mutableListOf<Pair<LocalDate, Float>>()) }
 
-    val dateFormatter = when (interval) {
-        0 -> { DateTimeFormatter.ofPattern("d MMM yyyy") }
-        1 -> {  DateTimeFormatter.ofPattern("MMM yyyy") }
-        2 -> {  DateTimeFormatter.ofPattern("yyyy") }
-        else -> {  DateTimeFormatter.ofPattern("dd MMM yyyy") }
+    val dateFormatter = remember {
+        mutableStateOf(
+            when (interval.value) {
+                0 -> { DateTimeFormatter.ofPattern("d MMM yyyy") }
+                1 -> {  DateTimeFormatter.ofPattern("MMM yyyy") }
+                2 -> {  DateTimeFormatter.ofPattern("yyyy") }
+                else -> {  DateTimeFormatter.ofPattern("dd MMM yyyy") }
+            }
+        )
     }
 
-    profitData = when (interval) {
-        0 -> {
-            CalculateAverageGradeByDay( gradeData, studySubject,  gradeTypes, from, to )
-        }
+    profitData = remember(studySubject.value.get() , interval.value, from.value, to.value) {
+        mutableStateOf(
+        when (interval.value) {
+            0 -> {
+                CalculateAverageGradeByDay(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+            }
 
-        1 -> {
-            CalculateAverageGradeByMonth(gradeData, studySubject, gradeTypes, from, to)
-        }
+            1 -> {
+                CalculateAverageGradeByMonth(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+            }
 
-        2 -> {
-            CalculateAverageGradeByYear(gradeData, studySubject, gradeTypes, from, to)
-        }
+            2 -> {
+                CalculateAverageGradeByYear(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+            }
 
-        else -> {
-            CalculateAverageGradeByDay( gradeData, studySubject,  gradeTypes, from, to )
+            else -> {
+                CalculateAverageGradeByDay(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+            }
         }
+        )
     }
 
-    val entries = profitData.mapIndexed { index, (date, profit) ->
-        Entry(index.toFloat(), profit.toFloat())
+    val entries =  remember(profitData.value) { mutableStateOf(profitData.value.mapIndexed { index, (date, profit) ->
+                Entry(index.toFloat(), profit.toFloat())
+            }
+        )
     }
 
-    if (entries.isNotEmpty()) {
+    if (entries.value.isNotEmpty()) {
         AndroidView(
             modifier = modifier,
             factory = { context ->
                 LineChart(context).apply {
                     // Настройка данных
-                    val dataSet = LineDataSet(entries, "").apply {
+                    val dataSet = LineDataSet(entries.value, "").apply {
                         color = secondaryColor
                         valueTextColor = mainTextColor
                         valueTextSize = font_size_secondary_text.value * 0.6f
@@ -111,11 +131,11 @@ fun GradeChart(
                             override fun getFormattedValue(value: Float): String {
                                 try {
                                     // Преобразуем индекс в дату
-                                    val date = profitData[value.toInt()].first
-                                    return date.format(dateFormatter)
+                                    val date = profitData.value [value.toInt()].first
+                                    return date.format(dateFormatter.value)
                                 }
                                 catch (ex: Exception) {}
-                                return LocalDate.now().format(dateFormatter)
+                                return LocalDate.now().format(dateFormatter.value)
                             }
                         }
                         granularity = 1f // Минимальный шаг между значениями
@@ -170,6 +190,81 @@ fun GradeChart(
                     animateXY(500, 500) // Анимация по оси X
                     // setVisibleXRangeMaximum(4f)
                 }
+            },
+            update = { lineChart ->
+
+                dateFormatter.value = when (interval.value) {
+                    0 -> {
+                        DateTimeFormatter.ofPattern("d MMM yyyy")
+                    }
+
+                    1 -> {
+                        DateTimeFormatter.ofPattern("MMM yyyy")
+                    }
+
+                    2 -> {
+                        DateTimeFormatter.ofPattern("yyyy")
+                    }
+
+                    else -> {
+                        DateTimeFormatter.ofPattern("dd MMM yyyy")
+                    }
+                }
+
+                profitData.value = when (interval.value) {
+                    0 -> {
+                        CalculateAverageGradeByDay(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+                    }
+
+                    1 -> {
+                        CalculateAverageGradeByMonth(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+                    }
+
+                    2 -> {
+                        CalculateAverageGradeByYear(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+                    }
+
+                    else -> {
+                        CalculateAverageGradeByDay(gradeData, studySubject.value, gradeTypes, from.value, to.value)
+                    }
+                }
+
+                entries.value = profitData.value.mapIndexed { index, (date, profit) ->
+                    Entry(index.toFloat(), profit.toFloat())
+                }
+
+                // Обновляем данные графика
+                val dataSet = LineDataSet(entries.value, "").apply {
+                    color = secondaryColor
+                    valueTextColor = mainTextColor
+                    valueTextSize = font_size_secondary_text.value * 0.6f
+                    lineWidth = 2f
+
+                    setCircleColor(tetriaryColor)
+                    circleRadius = 4f
+
+                    setDrawValues(true)
+
+                    setDrawFilled(true)
+                    fillColor = secondaryColor
+                    fillAlpha = 150
+                }
+                val lineData = LineData(listOf(dataSet))
+                lineChart.data = lineData
+
+                // Обновляем формат оси X
+                lineChart.xAxis.valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        try {
+                            val date = profitData.value [value.toInt()].first
+                            return date.format(dateFormatter.value)
+                        } catch (ex: Exception) {}
+                        return LocalDate.now().format(dateFormatter.value)
+                    }
+                }
+
+                // Перерисовываем график
+                lineChart.invalidate()
             }
         )
     }

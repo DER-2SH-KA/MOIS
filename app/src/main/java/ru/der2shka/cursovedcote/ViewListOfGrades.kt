@@ -1,7 +1,9 @@
 package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,11 +52,14 @@ import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
+import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
+import ru.der2shka.cursovedcote.ui.DatePickerBox
 import ru.der2shka.cursovedcote.ui.GradeChart
 import ru.der2shka.cursovedcote.ui.GradeItem
 import ru.der2shka.cursovedcote.ui.HomeworkItem
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.SomeConstantValues
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
@@ -61,6 +67,7 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
+import java.util.Optional
 
 /**
  * View list of saved notes.
@@ -85,10 +92,31 @@ fun ViewListOfGrades(
     val itemsGradeTypes = remember { mutableStateOf( listOf<GradeType>() ) }
     val itemsGradeTypesMap = remember { mutableStateOf( mutableMapOf<Long, String>() ) }
 
+    // Chart filter fields.
+    val selectedStudySubject = remember {
+        mutableStateOf<StudySubject>(
+            StudySubject(
+            -1,
+            "\\_( -_ -)_/",
+            0
+            )
+        )
+    }
+    val interavList = SomeConstantValues().getIntervalList()
+    val selectedInterval = remember { mutableStateOf(interavList.get(0)) }
+    val selectedIntervalId = remember(selectedInterval.value) { mutableStateOf(interavList.indexOf( selectedInterval.value )) }
+    val selectedLocalDateFrom = remember {
+        mutableStateOf( LocalDate.now() )
+    }
+    val selectedLocalDateTo = remember {
+        mutableStateOf( LocalDate.now() )
+    }
+
+
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            var studySubjectsDb = database.studySubjectDao().findStudySubjects()
-            var gradeTypesDb = database.gradeTypeDao().findGradeTypes()
+            var studySubjectsDb = database.studySubjectDao().findStudySubjectsWithOrdering()
+            var gradeTypesDb = database.gradeTypeDao().findGradeTypesWithOrdering()
             var gradesDb = database.gradeDao().findGradesWithOrderingByDate()
 
             if (gradesDb.isNotEmpty()) {
@@ -99,6 +127,8 @@ fun ViewListOfGrades(
                     itemsSubjects.value.forEach { item ->
                         itemsSubjectMap.value.put(item.id, item.name)
                     }
+
+                    selectedStudySubject.value = itemsSubjects.value.get(0)
                 }
 
                 if (gradeTypesDb.isNotEmpty()) {
@@ -158,7 +188,6 @@ fun ViewListOfGrades(
                     .fillMaxHeight()
             ) {
                 if (itemsGrades.value.isNotEmpty() && itemsSubjects.value.isNotEmpty() && itemsGradeTypes.value.isNotEmpty()) {
-                    // Chart.
                     Column(
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -214,17 +243,194 @@ fun ViewListOfGrades(
                                 Column(
                                     verticalArrangement = Arrangement.Top,
                                     horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .verticalScroll( contentVScroll )
                                 ) {
+                                    // Chart filters.
+                                    Column() {
+                                        // Choice of study subject.
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(0.4f)
+                                            ) {
+                                                ScrollableAnimatedText(
+                                                    text = "${stringResource(R.string.subject)}:",
+                                                    textColor = colorResource(R.color.main_text_dark_gray),
+                                                    textAlign = TextAlign.Start,
+                                                    maxLines = 1,
+                                                    fontSize = font_size_secondary_text,
+                                                    lineHeight = line_height_secondary_text,
+                                                )
+                                            }
+
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                            ) {
+                                                ComboBoxPseudo(
+                                                    items = itemsSubjects.value,
+                                                    selectedItem = selectedStudySubject,
+                                                    modifier = Modifier
+                                                        .padding(5.dp)
+                                                        .fillMaxWidth()
+                                                    ,
+                                                    onSelect = { value ->
+                                                        selectedStudySubject.value = value
+                                                    }
+                                                )
+                                            }
+                                        }
+
+                                        // Choice of interval.
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(0.4f)
+                                            ) {
+                                                ScrollableAnimatedText(
+                                                    text = "${stringResource(R.string.interval)}:",
+                                                    textColor = colorResource(R.color.main_text_dark_gray),
+                                                    textAlign = TextAlign.Start,
+                                                    maxLines = 1,
+                                                    fontSize = font_size_secondary_text,
+                                                    lineHeight = line_height_secondary_text,
+                                                )
+                                            }
+
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                            ) {
+                                                ComboBoxPseudo(
+                                                    items = interavList,
+                                                    selectedItem = selectedInterval,
+                                                    modifier = Modifier
+                                                        .padding(5.dp)
+                                                        .fillMaxWidth()
+                                                    ,
+                                                    onSelect = { value ->
+                                                        selectedInterval.value = value
+                                                    }
+                                                )
+                                            }
+                                        }
+
+                                        // Date from.
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(0.4f)
+                                            ) {
+                                                ScrollableAnimatedText(
+                                                    text = "${stringResource(R.string.from)}:",
+                                                    textColor = colorResource(R.color.main_text_dark_gray),
+                                                    textAlign = TextAlign.Start,
+                                                    maxLines = 1,
+                                                    fontSize = font_size_secondary_text,
+                                                    lineHeight = line_height_secondary_text,
+                                                )
+                                            }
+
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                            ) {
+                                                DatePickerBox(
+                                                    selectedLocalDate = selectedLocalDateFrom,
+                                                    modifier = Modifier
+                                                        .padding(5.dp)
+                                                        .fillMaxWidth()
+                                                        .border(
+                                                            width = 2.dp,
+                                                            color = colorResource(R.color.primary_blue),
+                                                            shape = RoundedCornerShape(5.dp)
+                                                        )
+                                                    ,
+                                                    onSelect = { localDate ->
+                                                        selectedLocalDateFrom.value = localDate
+                                                    }
+                                                )
+                                            }
+                                        }
+
+                                        // Date to.
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(0.4f)
+                                            ) {
+                                                ScrollableAnimatedText(
+                                                    text = "${stringResource(R.string.to)}:",
+                                                    textColor = colorResource(R.color.main_text_dark_gray),
+                                                    textAlign = TextAlign.Start,
+                                                    maxLines = 1,
+                                                    fontSize = font_size_secondary_text,
+                                                    lineHeight = line_height_secondary_text,
+                                                )
+                                            }
+
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                            ) {
+                                                DatePickerBox(
+                                                    selectedLocalDate = selectedLocalDateTo,
+                                                    modifier = Modifier
+                                                        .padding(5.dp)
+                                                        .fillMaxWidth()
+                                                        .border(
+                                                            width = 2.dp,
+                                                            color = colorResource(R.color.primary_blue),
+                                                            shape = RoundedCornerShape(5.dp)
+                                                        )
+                                                    ,
+                                                    onSelect = { localDate ->
+                                                        selectedLocalDateTo.value = localDate
+                                                    }
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                    Log.d("StateUpdate", "selectedSubject: ${selectedStudySubject.value.name}")
+                                    Log.d("StateUpdate", "selectedInterval: ${selectedInterval.value}")
+                                    Log.d("StateUpdate", "selectedLocalDateFrom: ${selectedLocalDateFrom.value}")
+                                    Log.d("StateUpdate", "selectedLocalDateTo: ${selectedLocalDateTo.value}")
+
                                     GradeChart(
                                         gradeData = itemsGrades.value,
                                         gradeTypes = itemsGradeTypes.value,
-                                        interval = 0,
+                                        studySubject = mutableStateOf(Optional.ofNullable( selectedStudySubject.value )),
+                                        interval = selectedIntervalId,
+                                        from = selectedLocalDateFrom,
+                                        to = selectedLocalDateTo,
                                         modifier = Modifier
                                             .padding(0.dp, 10.dp, 0.dp, 0.dp)
                                             .fillMaxWidth()
                                             .height(
-                                                (config.screenHeightDp * 0.4f).dp
+                                                (config.screenHeightDp * 0.3f).dp
                                             )
                                     )
                                 }
