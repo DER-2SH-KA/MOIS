@@ -24,6 +24,7 @@
     <string name="choose">Выбрать</string>
     <string name="skip">Пропустить</string>
     <string name="finish">Завершить</string>
+    <string name="search">Поиск</string>
 
     <string name="successfully">Успешно</string>
     <string name="fail">Ошибка</string>

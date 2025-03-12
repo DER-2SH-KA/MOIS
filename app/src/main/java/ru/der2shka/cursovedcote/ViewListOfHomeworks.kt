@@ -160,6 +160,7 @@ fun ViewListOfHomeworks(
                     .fillMaxWidth(0.9f)
                     .fillMaxHeight()
             ) {
+                // Search box.
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
@@ -175,7 +176,7 @@ fun ViewListOfHomeworks(
                         shape = RoundedCornerShape(5.dp),
                         placeholder = {
                             Text(
-                                text = stringResource(R.string.show),
+                                text = "${stringResource(R.string.search)}...",
                                 color = colorResource(R.color.secondary_text_gray),
                                 textAlign = TextAlign.Start,
                                 fontSize = font_size_secondary_text,
