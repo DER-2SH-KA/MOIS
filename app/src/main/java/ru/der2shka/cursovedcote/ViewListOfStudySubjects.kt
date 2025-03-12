@@ -2,6 +2,8 @@ package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,12 +12,16 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,21 +38,25 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.GradeTypeItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.StudySubjectItem
+import ru.der2shka.cursovedcote.ui.TextFieldCustom
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
+import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 
 /**
  * View list of saved grade types.
@@ -62,6 +72,19 @@ fun ViewListOfStudySubjects(
     val coroutineScope = rememberCoroutineScope()
 
     var studySubjectList = remember { mutableStateOf( listOf<StudySubject>() ) }
+    val filterTextField = remember { mutableStateOf(TextFieldValue("")) }
+    val itemsStSuFiltered = remember(studySubjectList.value, filterTextField.value) {
+        if (filterTextField.value.text == "" || filterTextField.value.text.isEmpty()) {
+            mutableStateOf(studySubjectList.value)
+        }
+        else {
+            mutableStateOf(
+                studySubjectList.value.filter { hw ->
+                    hw.name.contains( filterTextField.value.text.trim(), true )
+                }.toList()
+            )
+        }
+    }
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
@@ -122,9 +145,55 @@ fun ViewListOfStudySubjects(
                     .fillMaxHeight(0.7f)
                     // .verticalScroll( contentVScroll )
             ) {
-                if (studySubjectList.value.isNotEmpty()) {
+                // Search box.
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(0.dp, 10.dp)
+                ) {
+                    TextFieldCustom(
+                        value = filterTextField.value.text,
+                        onValueChange = {
+                            filterTextField.value = TextFieldValue( it )
+                        },
+                        singleLine = true,
+                        shape = RoundedCornerShape(5.dp),
+                        placeholder = {
+                            Text(
+                                text = "${stringResource(R.string.search)}...",
+                                color = colorResource(R.color.secondary_text_gray),
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                fontStyle = FontStyle.Italic,
+                                lineHeight = line_height_secondary_text
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = null,
+                                tint = colorResource(R.color.primary_blue),
+                                modifier = Modifier
+                                    .clickable {
+                                        ClearTextField(filterTextField)
+                                    }
+                            )
+                        },
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth()
+                            .border(
+                                width = 2.dp,
+                                color = colorResource(R.color.primary_blue),
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                    )
+                }
+
+                if (itemsStSuFiltered.value.isNotEmpty()) {
                     LazyColumn() {
-                        items( studySubjectList.value, key = { item -> item.id } ) { studySubject ->
+                        items( itemsStSuFiltered.value, key = { item -> item.id } ) { studySubject ->
                             StudySubjectItem(navHostController, studySubject)
                         }
                     }
