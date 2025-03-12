@@ -2,6 +2,8 @@ package ru.der2shka.cursovedcote
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,11 +18,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,18 +40,21 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.HomeworkItem
 import ru.der2shka.cursovedcote.ui.NoteItem
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
+import ru.der2shka.cursovedcote.ui.TextFieldCustom
 import ru.der2shka.cursovedcote.ui.theme.font_size_main_text
 import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
@@ -69,7 +78,21 @@ fun ViewListOfHomeworks(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val contentVScroll = rememberScrollState(0)
 
-    val itemsHomework = remember { mutableStateOf( listOf<Homework> () ) }
+    val filterTextField = remember { mutableStateOf(TextFieldValue("")) }
+    var itemsHomework = remember { mutableStateOf(listOf<Homework>()) }
+    val itemsHomeworkFiltered = remember(itemsHomework.value, filterTextField.value) {
+        if (filterTextField.value.text == "" || filterTextField.value.text.isEmpty()) {
+            mutableStateOf(itemsHomework.value)
+        }
+        else {
+            mutableStateOf(
+                itemsHomework.value.filter { hw ->
+                    hw.name.contains( filterTextField.value.text, true ) ||
+                        hw.description.contains( filterTextField.value.text )
+                }.toList()
+            )
+        }
+    }
     val itemsSubjects = remember { mutableStateOf( listOf<StudySubject> () ) }
     val itemsSubjectMap = remember { mutableStateOf( mutableMapOf<Long, String>() ) }
 
@@ -137,9 +160,54 @@ fun ViewListOfHomeworks(
                     .fillMaxWidth(0.9f)
                     .fillMaxHeight()
             ) {
-                if (itemsHomework.value.isNotEmpty() && itemsSubjects.value.isNotEmpty()) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(0.dp, 10.dp)
+                ) {
+                    TextFieldCustom(
+                        value = filterTextField.value.text,
+                        onValueChange = {
+                            filterTextField.value = TextFieldValue( it.trim() )
+                        },
+                        singleLine = true,
+                        shape = RoundedCornerShape(5.dp),
+                        placeholder = {
+                            Text(
+                                text = stringResource(R.string.show),
+                                color = colorResource(R.color.secondary_text_gray),
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                fontStyle = FontStyle.Italic,
+                                lineHeight = line_height_secondary_text
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = null,
+                                tint = colorResource(R.color.primary_blue),
+                                modifier = Modifier
+                                    .clickable {
+                                        ClearTextField(filterTextField)
+                                    }
+                            )
+                        },
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth()
+                            .border(
+                                width = 2.dp,
+                                color = colorResource(R.color.primary_blue),
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                    )
+                }
+
+                if (itemsHomeworkFiltered.value.isNotEmpty() && itemsSubjects.value.isNotEmpty()) {
                     LazyColumn() {
-                        items( itemsHomework.value, key = { item -> item.id } ) { homework ->
+                        items( itemsHomeworkFiltered.value, key = { item -> item.id } ) { homework ->
                             HomeworkItem(
                                 navHostController,
                                 homework,
@@ -148,18 +216,6 @@ fun ViewListOfHomeworks(
                             )
                         }
                     }
-
-                    /*
-                    itemsHomework.value.forEach { homework ->
-                            HomeworkItem(
-                                navHostController,
-                                homework,
-                                itemsSubjectMap.value.get(homework.studySubjectId).toString(),
-                                database
-                            )
-                    }
-
-                     */
                 }
                 else {
                     Text(
