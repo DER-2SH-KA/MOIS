@@ -211,8 +211,9 @@ fun ViewListOfGrades(
 
                         if (isExpandChart.value) {
                             if (itemsGrades.value.size > 1) {
-                                Box(
-                                    contentAlignment = Alignment.Center,
+                                Column(
+                                    verticalArrangement = Arrangement.Top,
+                                    horizontalAlignment = Alignment.CenterHorizontally,
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     GradeChart(
@@ -220,6 +221,7 @@ fun ViewListOfGrades(
                                         gradeTypes = itemsGradeTypes.value,
                                         interval = 0,
                                         modifier = Modifier
+                                            .padding(0.dp, 10.dp, 0.dp, 0.dp)
                                             .fillMaxWidth()
                                             .height(
                                                 (config.screenHeightDp * 0.4f).dp
@@ -227,8 +229,9 @@ fun ViewListOfGrades(
                                     )
                                 }
                             } else {
-                                Box(
-                                    contentAlignment = Alignment.Center,
+                                Column(
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(
