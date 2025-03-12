@@ -175,7 +175,7 @@ fun AddNewHomework(
         }
     }
 
-    var isNameValid = (nameTextFieldValue.value.text != "")
+    var isNameValid = (nameTextFieldValue.value.text.trim() != "")
     var isDateBeginValid = (selectedDateBegin.value
         .atStartOfDay()
         .atZone( ZoneId.systemDefault() )
@@ -265,7 +265,7 @@ fun AddNewHomework(
                             TextFieldCustom(
                                 value = nameTextFieldValue.value.text,
                                 onValueChange = {
-                                    nameTextFieldValue.value = TextFieldValue(it.trim())
+                                    nameTextFieldValue.value = TextFieldValue(it)
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -662,7 +662,7 @@ fun AddNewHomework(
                         if (isValid) {
                             coroutineScope.launch(Dispatchers.IO) {
                                 addNewHomeworkHelper.setNameValue(
-                                    Optional.ofNullable(nameTextFieldValue.value.text)
+                                    Optional.ofNullable(nameTextFieldValue.value.text.trim())
                                 )
                                 addNewHomeworkHelper.setDescriptionValue(
                                     Optional.ofNullable(descriptionTextFieldValue.value.text)

@@ -216,7 +216,7 @@ fun EditHomework(
         }
     }
 
-    var isNameValid = (nameTextFieldValue.value.text != "")
+    var isNameValid = (nameTextFieldValue.value.text.trim() != "")
     var isDateBeginValid = (selectedDateBegin.value
         .atStartOfDay()
         .atZone( ZoneId.systemDefault() )
@@ -306,7 +306,7 @@ fun EditHomework(
                             TextFieldCustom(
                                 value = nameTextFieldValue.value.text,
                                 onValueChange = {
-                                    nameTextFieldValue.value = TextFieldValue(it.trim())
+                                    nameTextFieldValue.value = TextFieldValue(it)
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -718,7 +718,7 @@ fun EditHomework(
                                     // Add data into Helper object.
                                     addNewHomeworkHelper.setNameValue(
                                         Optional.ofNullable(
-                                            nameTextFieldValue.value.text
+                                            nameTextFieldValue.value.text.trim()
                                         )
                                     )
                                     addNewHomeworkHelper.setDescriptionValue(

@@ -141,7 +141,7 @@ fun AddNewNote(
     }
 
     // Validation
-    var isNameValid = (nameTextFieldValue.value.text != "")
+    var isNameValid = (nameTextFieldValue.value.text.trim() != "")
     var isDateValid = true
     var isValid = isNameValid && isDateValid
 
@@ -223,7 +223,7 @@ fun AddNewNote(
                             TextFieldCustom(
                                 value = nameTextFieldValue.value.text,
                                 onValueChange = {
-                                    nameTextFieldValue.value = TextFieldValue(it.trim())
+                                    nameTextFieldValue.value = TextFieldValue(it)
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -506,7 +506,7 @@ fun AddNewNote(
                             coroutineScope.launch(Dispatchers.IO) {
                                 // Add data into Helper object.
                                 addNewNoteHelper.setNameValue(
-                                    Optional.ofNullable(nameTextFieldValue.value.text)
+                                    Optional.ofNullable(nameTextFieldValue.value.text.trim())
                                 )
                                 addNewNoteHelper.setDescriptionValue(
                                     Optional.ofNullable(descriptionTextFieldValue.value.text)

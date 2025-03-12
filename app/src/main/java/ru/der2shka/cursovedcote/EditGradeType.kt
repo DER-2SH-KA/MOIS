@@ -149,9 +149,9 @@ fun EditGradeType(
     }
 
     // Validation.
-    var isNameValid = (nameTextField.value.text != "" &&
+    var isNameValid = (nameTextField.value.text.trim() != "" &&
             existsGradeTypeList.value.stream().filter { x ->
-                x.name.equals(nameTextField.value.text)
+                x.name.equals(nameTextField.value.text.trim())
             }.toArray().isEmpty())
     var isMultiplierValid = checkMultiplierTextFieldValue( multiplierTextField )
     var isValid = isNameValid && isMultiplierValid
@@ -235,7 +235,7 @@ fun EditGradeType(
                             TextFieldCustom(
                                 value = nameTextField.value.text,
                                 onValueChange = {
-                                    nameTextField.value = TextFieldValue(it.trim())
+                                    nameTextField.value = TextFieldValue(it)
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -387,7 +387,7 @@ fun EditGradeType(
                                 coroutineScope.launch(Dispatchers.IO) {
                                     // Add data into Helper object.
                                     addNewMarkTypeHelper.setNameValue(
-                                        Optional.ofNullable(nameTextField.value.text)
+                                        Optional.ofNullable(nameTextField.value.text.trim())
                                     )
                                     addNewMarkTypeHelper.setMultiplierValue(
                                         Optional.ofNullable(multiplierTextField.value.text.toInt())

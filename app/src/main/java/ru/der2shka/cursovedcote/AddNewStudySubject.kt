@@ -131,9 +131,9 @@ fun AddNewStudySubject(
         }
     }
 
-    var isValid = (nameTextField.value.text != "" &&
+    var isValid = (nameTextField.value.text.trim() != "" &&
             existsStudySubjectList.value.stream().filter { x ->
-                x.name.equals(nameTextField.value.text)
+                x.name.equals(nameTextField.value.text.trim())
             }.toArray().isEmpty())
 
     Box(
@@ -215,7 +215,7 @@ fun AddNewStudySubject(
                             TextFieldCustom(
                                 value = nameTextField.value.text,
                                 onValueChange = {
-                                    nameTextField.value = TextFieldValue(it.trim())
+                                    nameTextField.value = TextFieldValue(it)
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
@@ -287,7 +287,7 @@ fun AddNewStudySubject(
                             coroutineScope.launch(Dispatchers.IO) {
                                 addNewStudySubjectHelper
                                     .setNameValue(
-                                        Optional.ofNullable(nameTextField.value.text)
+                                        Optional.ofNullable(nameTextField.value.text.trim())
                                     )
 
                                 var newStudySubject = StudySubject(

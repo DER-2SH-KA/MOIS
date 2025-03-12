@@ -87,8 +87,8 @@ fun ViewListOfHomeworks(
         else {
             mutableStateOf(
                 itemsHomework.value.filter { hw ->
-                    hw.name.contains( filterTextField.value.text, true ) ||
-                        hw.description.contains( filterTextField.value.text )
+                    hw.name.contains( filterTextField.value.text.trim(), true ) ||
+                        hw.description.contains( filterTextField.value.text.trim(), true )
                 }.toList()
             )
         }
@@ -170,7 +170,7 @@ fun ViewListOfHomeworks(
                     TextFieldCustom(
                         value = filterTextField.value.text,
                         onValueChange = {
-                            filterTextField.value = TextFieldValue( it.trim() )
+                            filterTextField.value = TextFieldValue( it )
                         },
                         singleLine = true,
                         shape = RoundedCornerShape(5.dp),
