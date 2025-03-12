@@ -294,7 +294,7 @@ fun EditGradeType(
                             TextFieldCustom(
                                 value = multiplierTextField.value.text,
                                 onValueChange = {
-                                    multiplierTextField.value = TextFieldValue(it)
+                                    multiplierTextField.value = TextFieldValue(it.trim())
                                 },
                                 shape = RoundedCornerShape(5.dp),
                                 placeholder = {

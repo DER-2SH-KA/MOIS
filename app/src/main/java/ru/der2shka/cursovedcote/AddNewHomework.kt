@@ -265,7 +265,7 @@ fun AddNewHomework(
                             TextFieldCustom(
                                 value = nameTextFieldValue.value.text,
                                 onValueChange = {
-                                    nameTextFieldValue.value = TextFieldValue(it)
+                                    nameTextFieldValue.value = TextFieldValue(it.trim())
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),

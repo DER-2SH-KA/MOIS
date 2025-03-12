@@ -223,7 +223,7 @@ fun EditStudySubject(
                             TextFieldCustom(
                                 value = nameTextField.value.text,
                                 onValueChange = {
-                                    nameTextField.value = TextFieldValue(it)
+                                    nameTextField.value = TextFieldValue(it.trim())
                                 },
                                 singleLine = true,
                                 shape = RoundedCornerShape(5.dp),
