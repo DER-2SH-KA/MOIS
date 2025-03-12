@@ -227,19 +227,29 @@ fun ViewListOfGrades(
                                     )
                                 }
                             } else {
-                                ScrollableAnimatedText(
-                                    text = stringResource(R.string.not_enough_data),
-                                    textColor = Color.White,
-                                    textAlign = TextAlign.Center,
-                                    fontSize = font_size_middle_size_text,
-                                    fontWeight = FontWeight.Medium,
-                                    lineHeight = line_height_middle_size_text,
-                                    containterModifier = Modifier
-                                        .fillMaxWidth(0.9f)
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
                                         .height(
-                                            (config.screenHeightDp * 0.4f).dp
+                                            (config.screenHeightDp * 0.2f).dp
                                         )
-                                )
+                                        .background(
+                                            color = colorResource(R.color.primary_blue),
+                                            shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)
+                                        )
+                                ) {
+                                    ScrollableAnimatedText(
+                                        text = stringResource(R.string.not_enough_data),
+                                        textColor = Color.White,
+                                        textAlign = TextAlign.Center,
+                                        fontSize = font_size_middle_size_text,
+                                        fontWeight = FontWeight.Medium,
+                                        lineHeight = line_height_middle_size_text,
+                                        containterModifier = Modifier
+                                            .fillMaxWidth(0.9f)
+                                    )
+                                }
                             }
                         }
                     }
