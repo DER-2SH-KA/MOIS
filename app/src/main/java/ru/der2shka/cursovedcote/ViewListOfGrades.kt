@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -44,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -183,307 +186,383 @@ fun ViewListOfGrades(
             }
 
             Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
+                    .padding(0.dp, 10.dp)
                     .fillMaxWidth(0.9f)
                     .fillMaxHeight()
             ) {
-                if (itemsGrades.value.isNotEmpty() && itemsSubjects.value.isNotEmpty() && itemsGradeTypes.value.isNotEmpty()) {
-                    Column(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .padding(0.dp, 10.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                isExpandChart.value = !isExpandChart.value
-                            }
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                    if (itemsGrades.value.isNotEmpty() && itemsSubjects.value.isNotEmpty() && itemsGradeTypes.value.isNotEmpty()) {
+                        Column(
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
+                                .padding(0.dp, 10.dp)
                                 .fillMaxWidth()
-                                .background(
-                                    color = colorResource(R.color.primary_blue),
-                                    shape = RoundedCornerShape(10.dp)
-                                )
-                        ) {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier.fillMaxWidth(0.5f)
-                            ) {
-                                ScrollableAnimatedText(
-                                    text = stringResource(R.string.chart),
-                                    textColor = Color.White,
-                                    textAlign = TextAlign.Start,
-                                    fontSize = font_size_middle_size_text,
-                                    fontWeight = FontWeight.Medium,
-                                    lineHeight = line_height_middle_size_text,
-                                    containterModifier = Modifier
-                                        .fillMaxWidth(),
-                                    textModifier = Modifier
-                                        .fillMaxWidth(0.9f)
-                                        .padding(10.dp)
-                                )
-                            }
-
-                            Icon(
-                                imageVector = Icons.Default.ArrowDropDown,
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier
-                                    .clickable {
-                                        isExpandChart.value = !isExpandChart.value
-                                    }
-                            )
-                        }
-
-                        if (isExpandChart.value) {
-                            if (itemsGrades.value.size > 1) {
-                                Column(
-                                    verticalArrangement = Arrangement.Top,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .verticalScroll( contentVScroll )
-                                ) {
-                                    // Chart filters.
-                                    Column() {
-                                        // Choice of study subject.
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.SpaceBetween
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth(0.4f)
-                                            ) {
-                                                ScrollableAnimatedText(
-                                                    text = "${stringResource(R.string.subject)}:",
-                                                    textColor = colorResource(R.color.main_text_dark_gray),
-                                                    textAlign = TextAlign.Start,
-                                                    maxLines = 1,
-                                                    fontSize = font_size_secondary_text,
-                                                    lineHeight = line_height_secondary_text,
-                                                )
-                                            }
-
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                            ) {
-                                                ComboBoxPseudo(
-                                                    items = itemsSubjects.value,
-                                                    selectedItem = selectedStudySubject,
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                        .fillMaxWidth()
-                                                    ,
-                                                    onSelect = { value ->
-                                                        selectedStudySubject.value = value
-                                                    }
-                                                )
-                                            }
-                                        }
-
-                                        // Choice of interval.
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.SpaceBetween
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth(0.4f)
-                                            ) {
-                                                ScrollableAnimatedText(
-                                                    text = "${stringResource(R.string.interval)}:",
-                                                    textColor = colorResource(R.color.main_text_dark_gray),
-                                                    textAlign = TextAlign.Start,
-                                                    maxLines = 1,
-                                                    fontSize = font_size_secondary_text,
-                                                    lineHeight = line_height_secondary_text,
-                                                )
-                                            }
-
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                            ) {
-                                                ComboBoxPseudo(
-                                                    items = interavList,
-                                                    selectedItem = selectedInterval,
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                        .fillMaxWidth()
-                                                    ,
-                                                    onSelect = { value ->
-                                                        selectedInterval.value = value
-                                                    }
-                                                )
-                                            }
-                                        }
-
-                                        // Date from.
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.SpaceBetween
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth(0.4f)
-                                            ) {
-                                                ScrollableAnimatedText(
-                                                    text = "${stringResource(R.string.from)}:",
-                                                    textColor = colorResource(R.color.main_text_dark_gray),
-                                                    textAlign = TextAlign.Start,
-                                                    maxLines = 1,
-                                                    fontSize = font_size_secondary_text,
-                                                    lineHeight = line_height_secondary_text,
-                                                )
-                                            }
-
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                            ) {
-                                                DatePickerBox(
-                                                    selectedLocalDate = selectedLocalDateFrom,
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                        .fillMaxWidth()
-                                                        .border(
-                                                            width = 2.dp,
-                                                            color = colorResource(R.color.primary_blue),
-                                                            shape = RoundedCornerShape(5.dp)
-                                                        )
-                                                    ,
-                                                    onSelect = { localDate ->
-                                                        selectedLocalDateFrom.value = localDate
-                                                    }
-                                                )
-                                            }
-                                        }
-
-                                        // Date to.
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.SpaceBetween
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth(0.4f)
-                                            ) {
-                                                ScrollableAnimatedText(
-                                                    text = "${stringResource(R.string.to)}:",
-                                                    textColor = colorResource(R.color.main_text_dark_gray),
-                                                    textAlign = TextAlign.Start,
-                                                    maxLines = 1,
-                                                    fontSize = font_size_secondary_text,
-                                                    lineHeight = line_height_secondary_text,
-                                                )
-                                            }
-
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                            ) {
-                                                DatePickerBox(
-                                                    selectedLocalDate = selectedLocalDateTo,
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                        .fillMaxWidth()
-                                                        .border(
-                                                            width = 2.dp,
-                                                            color = colorResource(R.color.primary_blue),
-                                                            shape = RoundedCornerShape(5.dp)
-                                                        )
-                                                    ,
-                                                    onSelect = { localDate ->
-                                                        selectedLocalDateTo.value = localDate
-                                                    }
-                                                )
-                                            }
-                                        }
-                                    }
-
-                                    Log.d("StateUpdate", "selectedSubject: ${selectedStudySubject.value.name}")
-                                    Log.d("StateUpdate", "selectedInterval: ${selectedInterval.value}")
-                                    Log.d("StateUpdate", "selectedLocalDateFrom: ${selectedLocalDateFrom.value}")
-                                    Log.d("StateUpdate", "selectedLocalDateTo: ${selectedLocalDateTo.value}")
-
-                                    GradeChart(
-                                        gradeData = itemsGrades.value,
-                                        gradeTypes = itemsGradeTypes.value,
-                                        studySubject = mutableStateOf(Optional.ofNullable( selectedStudySubject.value )),
-                                        interval = selectedIntervalId,
-                                        from = selectedLocalDateFrom,
-                                        to = selectedLocalDateTo,
-                                        modifier = Modifier
-                                            .padding(0.dp, 10.dp, 0.dp, 0.dp)
-                                            .fillMaxWidth()
-                                            .height(
-                                                (config.screenHeightDp * 0.3f).dp
-                                            )
-                                    )
+                                .clickable {
+                                    isExpandChart.value = !isExpandChart.value
                                 }
-                            } else {
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(
-                                            (config.screenHeightDp * 0.2f).dp
-                                        )
-                                        .background(
-                                            color = colorResource(R.color.primary_blue),
-                                            shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)
-                                        )
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(
+                                        color = colorResource(R.color.primary_blue),
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier.fillMaxWidth(0.5f)
                                 ) {
                                     ScrollableAnimatedText(
-                                        text = stringResource(R.string.not_enough_data),
+                                        text = stringResource(R.string.chart),
                                         textColor = Color.White,
-                                        textAlign = TextAlign.Center,
+                                        textAlign = TextAlign.Start,
                                         fontSize = font_size_middle_size_text,
                                         fontWeight = FontWeight.Medium,
                                         lineHeight = line_height_middle_size_text,
                                         containterModifier = Modifier
+                                            .fillMaxWidth(),
+                                        textModifier = Modifier
                                             .fillMaxWidth(0.9f)
+                                            .padding(10.dp)
                                     )
+                                }
+
+                                Icon(
+                                    imageVector = Icons.Default.ArrowDropDown,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier
+                                        .clickable {
+                                            isExpandChart.value = !isExpandChart.value
+                                        }
+                                )
+                            }
+
+                            if (isExpandChart.value) {
+                                if (itemsGrades.value.size > 1) {
+                                    Column(
+                                        verticalArrangement = Arrangement.Top,
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .verticalScroll(contentVScroll)
+                                    ) {
+                                        // Chart filters.
+                                        Column() {
+                                            // Choice of study subject.
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth(0.4f)
+                                                ) {
+                                                    ScrollableAnimatedText(
+                                                        text = "${stringResource(R.string.subject)}:",
+                                                        textColor = colorResource(R.color.main_text_dark_gray),
+                                                        textAlign = TextAlign.Start,
+                                                        maxLines = 1,
+                                                        fontSize = font_size_secondary_text,
+                                                        lineHeight = line_height_secondary_text,
+                                                    )
+                                                }
+
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                ) {
+                                                    ComboBoxPseudo(
+                                                        items = itemsSubjects.value,
+                                                        selectedItem = selectedStudySubject,
+                                                        modifier = Modifier
+                                                            .padding(5.dp)
+                                                            .fillMaxWidth(),
+                                                        onSelect = { value ->
+                                                            selectedStudySubject.value = value
+                                                        }
+                                                    )
+                                                }
+                                            }
+
+                                            // Choice of interval.
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth(0.4f)
+                                                ) {
+                                                    ScrollableAnimatedText(
+                                                        text = "${stringResource(R.string.interval)}:",
+                                                        textColor = colorResource(R.color.main_text_dark_gray),
+                                                        textAlign = TextAlign.Start,
+                                                        maxLines = 1,
+                                                        fontSize = font_size_secondary_text,
+                                                        lineHeight = line_height_secondary_text,
+                                                    )
+                                                }
+
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                ) {
+                                                    ComboBoxPseudo(
+                                                        items = interavList,
+                                                        selectedItem = selectedInterval,
+                                                        modifier = Modifier
+                                                            .padding(5.dp)
+                                                            .fillMaxWidth(),
+                                                        onSelect = { value ->
+                                                            selectedInterval.value = value
+                                                        }
+                                                    )
+                                                }
+                                            }
+
+                                            // Date from.
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth(0.4f)
+                                                ) {
+                                                    ScrollableAnimatedText(
+                                                        text = "${stringResource(R.string.from)}:",
+                                                        textColor = colorResource(R.color.main_text_dark_gray),
+                                                        textAlign = TextAlign.Start,
+                                                        maxLines = 1,
+                                                        fontSize = font_size_secondary_text,
+                                                        lineHeight = line_height_secondary_text,
+                                                    )
+                                                }
+
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                ) {
+                                                    DatePickerBox(
+                                                        selectedLocalDate = selectedLocalDateFrom,
+                                                        modifier = Modifier
+                                                            .padding(5.dp)
+                                                            .fillMaxWidth()
+                                                            .border(
+                                                                width = 2.dp,
+                                                                color = colorResource(R.color.primary_blue),
+                                                                shape = RoundedCornerShape(5.dp)
+                                                            ),
+                                                        onSelect = { localDate ->
+                                                            selectedLocalDateFrom.value =
+                                                                localDate
+                                                        }
+                                                    )
+                                                }
+                                            }
+
+                                            // Date to.
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth(0.4f)
+                                                ) {
+                                                    ScrollableAnimatedText(
+                                                        text = "${stringResource(R.string.to)}:",
+                                                        textColor = colorResource(R.color.main_text_dark_gray),
+                                                        textAlign = TextAlign.Start,
+                                                        maxLines = 1,
+                                                        fontSize = font_size_secondary_text,
+                                                        lineHeight = line_height_secondary_text,
+                                                    )
+                                                }
+
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                ) {
+                                                    DatePickerBox(
+                                                        selectedLocalDate = selectedLocalDateTo,
+                                                        modifier = Modifier
+                                                            .padding(5.dp)
+                                                            .fillMaxWidth()
+                                                            .border(
+                                                                width = 2.dp,
+                                                                color = colorResource(R.color.primary_blue),
+                                                                shape = RoundedCornerShape(5.dp)
+                                                            ),
+                                                        onSelect = { localDate ->
+                                                            selectedLocalDateTo.value =
+                                                                localDate
+                                                        }
+                                                    )
+                                                }
+                                            }
+                                        }
+
+                                        /*
+                                    Log.d(
+                                        "StateUpdate",
+                                        "selectedSubject: ${selectedStudySubject.value.name}"
+                                    )
+                                    Log.d(
+                                        "StateUpdate",
+                                        "selectedInterval: ${selectedInterval.value}"
+                                    )
+                                    Log.d(
+                                        "StateUpdate",
+                                        "selectedLocalDateFrom: ${selectedLocalDateFrom.value}"
+                                    )
+                                    Log.d(
+                                        "StateUpdate",
+                                        "selectedLocalDateTo: ${selectedLocalDateTo.value}"
+                                    )*/
+
+                                        GradeChart(
+                                            gradeData = itemsGrades.value,
+                                            gradeTypes = itemsGradeTypes.value,
+                                            studySubject = mutableStateOf(
+                                                Optional.ofNullable(
+                                                    selectedStudySubject.value
+                                                )
+                                            ),
+                                            interval = selectedIntervalId,
+                                            from = selectedLocalDateFrom,
+                                            to = selectedLocalDateTo,
+                                            modifier = Modifier
+                                                .padding(0.dp, 10.dp, 0.dp, 0.dp)
+                                                .fillMaxWidth()
+                                                .height(
+                                                    (config.screenHeightDp * 0.3f).dp
+                                                )
+                                        )
+
+                                    }
+                                } else {
+                                    Popup {
+                                        Column(
+                                            verticalArrangement = Arrangement.Center,
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(
+                                                    (config.screenHeightDp * 0.2f).dp
+                                                )
+                                                .background(
+                                                    color = colorResource(R.color.primary_blue),
+                                                    shape = RoundedCornerShape(
+                                                        0.dp,
+                                                        0.dp,
+                                                        10.dp,
+                                                        10.dp
+                                                    )
+                                                )
+                                        ) {
+                                            ScrollableAnimatedText(
+                                                text = stringResource(R.string.not_enough_data),
+                                                textColor = Color.White,
+                                                textAlign = TextAlign.Center,
+                                                fontSize = font_size_middle_size_text,
+                                                fontWeight = FontWeight.Medium,
+                                                lineHeight = line_height_middle_size_text,
+                                                containterModifier = Modifier
+                                                    .fillMaxWidth(0.9f)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    LazyColumn() {
-                        items( itemsGrades.value, key = { item -> item.id } ) { grade ->
-                            GradeItem(
-                                navHostController,
-                                grade,
-                                itemsSubjectMap.value.get(grade.subjectStudyId).toString(),
-                                itemsGradeTypesMap.value.get( grade.gradeTypeId ).toString(),
-                                database
-                            )
+                        LazyColumn() {
+                            items(itemsGrades.value, key = { item -> item.id }) { grade ->
+                                GradeItem(
+                                    navHostController,
+                                    grade,
+                                    itemsSubjectMap.value.get(grade.subjectStudyId).toString(),
+                                    itemsGradeTypesMap.value.get(grade.gradeTypeId).toString(),
+                                    database
+                                )
+                            }
                         }
+                    } else {
+                        Text(
+                            text = "\\_( -_ -)_/",
+                            color = colorResource(R.color.main_text_dark_gray),
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_secondary_text,
+                            fontStyle = FontStyle.Italic,
+                            lineHeight = line_height_middle_size_text,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
                     }
-                }
-                else {
-                    Text(
-                        text = "\\_( -_ -)_/",
-                        color = colorResource(R.color.main_text_dark_gray),
+            }
+        }
+
+        Box(
+            contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .padding(10.dp, 10.dp)
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) {
+            // Button to Add.
+            Button(
+                onClick = {
+                    current_page = "add_new_grade"
+                    navHostController.navigate(current_page)
+                },
+
+                shape = RoundedCornerShape(20.dp),
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(
+                        (oneBlockHeight * 0.5f)
+                    )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colorStops = arrayOf(
+                                    0.6f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan)
+                                )
+                            )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ScrollableAnimatedText(
+                        text = stringResource(R.string.add_grade),
+                        textColor = Color.White,
                         textAlign = TextAlign.Center,
-                        fontSize = font_size_secondary_text,
-                        fontStyle = FontStyle.Italic,
-                        lineHeight = line_height_middle_size_text,
-                        modifier = Modifier
+                        fontSize = font_size_main_text,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = line_height_main_text,
+                        containterModifier = Modifier
+                            .fillMaxWidth(0.9f),
+                        textModifier = Modifier
                             .fillMaxWidth()
                     )
                 }
