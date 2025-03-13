@@ -11,7 +11,7 @@ fun checkMultiplierTextFieldValue(
 
     try {
         var m = multiplierTextField.value.text.toInt()
-        result = true
+        result = m > 0
     }
     catch (ex: NumberFormatException) {
         result = false
