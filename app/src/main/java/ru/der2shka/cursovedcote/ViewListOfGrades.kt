@@ -554,7 +554,7 @@ fun ViewListOfGrades(
                     contentAlignment = Alignment.Center
                 ) {
                     ScrollableAnimatedText(
-                        text = stringResource(R.string.add_grade),
+                        text = stringResource(R.string.add),
                         textColor = Color.White,
                         textAlign = TextAlign.Center,
                         fontSize = font_size_main_text,
