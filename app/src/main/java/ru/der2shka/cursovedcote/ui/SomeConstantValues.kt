@@ -29,4 +29,20 @@ class SomeConstantValues {
             stringResource(R.string.year)
         )
     }
+
+    @Composable
+    fun getLanguageList(): List<String> {
+        return listOf(
+            stringResource(R.string.english),
+            stringResource(R.string.russian_ru),
+        )
+    }
+
+    @Composable
+    fun getThemeList(): List<String> {
+        return listOf(
+            stringResource(R.string.dark),
+            stringResource(R.string.light),
+        )
+    }
 }

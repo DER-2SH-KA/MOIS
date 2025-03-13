@@ -130,4 +130,12 @@
     <string name="show">Показать</string>
     <string name="average_grade">Средняя оценка</string>
 
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="language">Язык</string>
+    <string name="theme">Тема</string>
+    <string name="english">English</string>
+    <string name="russian_ru">Русский (RU)</string>
+    <string name="dark">Тёмная</string>
+    <string name="light">Светлая</string>
 </resources>
