@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -227,6 +229,57 @@ fun ViewListOfHomeworks(
                         fontStyle = FontStyle.Italic,
                         lineHeight = line_height_middle_size_text,
                         modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
+            }
+        }
+
+        Box(
+            contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .padding(10.dp, 10.dp)
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) {
+            // Button to Add.
+            Button(
+                onClick = {
+                    current_page = "add_new_homework"
+                    navHostController.navigate(current_page)
+                },
+
+                shape = RoundedCornerShape(20.dp),
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(
+                        (oneBlockHeight * 0.5f)
+                    )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colorStops = arrayOf(
+                                    0.6f to colorResource(R.color.primary_blue),
+                                    1f to colorResource(R.color.secondary_cyan)
+                                )
+                            )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ScrollableAnimatedText(
+                        text = stringResource(R.string.add_homework),
+                        textColor = Color.White,
+                        textAlign = TextAlign.Center,
+                        fontSize = font_size_main_text,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = line_height_main_text,
+                        containterModifier = Modifier
+                            .fillMaxWidth(0.9f),
+                        textModifier = Modifier
                             .fillMaxWidth()
                     )
                 }
