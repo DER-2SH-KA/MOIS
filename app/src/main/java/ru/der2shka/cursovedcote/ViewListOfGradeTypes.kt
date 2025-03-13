@@ -217,6 +217,50 @@ fun ViewListOfGradeTypes(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
+                // Button to Add.
+                Button(
+                    onClick = {
+                        current_page = "add_new_grade_type"
+                        navHostController.navigate(current_page)
+                    },
+
+                    shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier
+                        .padding(10.dp, 5.dp)
+                        .fillMaxWidth()
+                        .height(
+                            (oneBlockHeight * 0.5f)
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colorStops = arrayOf(
+                                        0.6f to colorResource(R.color.primary_blue),
+                                        1f to colorResource(R.color.secondary_cyan)
+                                    )
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ScrollableAnimatedText(
+                            text = stringResource(R.string.add_grade_type),
+                            textColor = Color.White,
+                            textAlign = TextAlign.Center,
+                            fontSize = font_size_main_text,
+                            fontWeight = FontWeight.Bold,
+                            lineHeight = line_height_main_text,
+                            containterModifier = Modifier
+                                .fillMaxWidth(0.9f),
+                            textModifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+
                 // Button to Back.
                 Button(
                     onClick = {
@@ -229,6 +273,7 @@ fun ViewListOfGradeTypes(
                     shape = RoundedCornerShape(20.dp),
                     contentPadding = PaddingValues(0.dp),
                     modifier = Modifier
+                        .padding(10.dp, 5.dp)
                         .fillMaxWidth()
                         .height(
                             (oneBlockHeight * 0.5f)
@@ -262,6 +307,16 @@ fun ViewListOfGradeTypes(
                     }
                 }
             }
+        }
+
+        Box(
+            contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .padding(10.dp, 10.dp)
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) {
+
         }
     }
 }
