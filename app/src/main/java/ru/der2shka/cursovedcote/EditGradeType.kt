@@ -534,7 +534,7 @@ fun EditGradeType(
                         nameTextField.value = TextFieldValue( "" )
                         multiplierTextField.value = TextFieldValue("1")
 
-                        current_page = "general_app"
+                        current_page = "view_grade_type"
                         navHostController.navigate(current_page) {
                             popUpTo("edit_grade_type") { inclusive = true }
                         }

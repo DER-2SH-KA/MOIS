@@ -529,6 +529,8 @@ fun ViewListOfGrades(
                 // Button to Add.
                 Button(
                     onClick = {
+                        curr_page = 0
+
                         current_page = "add_new_grade"
                         navHostController.navigate(current_page)
                     },

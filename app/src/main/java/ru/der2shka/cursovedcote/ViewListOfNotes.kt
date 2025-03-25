@@ -230,6 +230,8 @@ fun ViewListOfNotes(
             // Button to Add.
             Button(
                 onClick = {
+                    curr_page = 3
+
                     current_page = "add_new_note"
                     navHostController.navigate(current_page)
                 },

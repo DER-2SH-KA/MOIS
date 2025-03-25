@@ -31,6 +31,7 @@ import ru.der2shka.cursovedcote.Models.GradeTypeHelper
 import ru.der2shka.cursovedcote.Models.NoteHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.curr_page
 import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Note
@@ -65,6 +66,8 @@ fun GradeTypeItem(
                 gradeTypeHelper.setGradeTypeValue(
                     Optional.ofNullable( gradeType )
                 )
+
+                curr_page = -1
 
                 current_page = "edit_grade_type"
                 navHostController.navigate(current_page)

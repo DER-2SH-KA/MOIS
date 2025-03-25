@@ -220,6 +220,8 @@ fun ViewListOfGradeTypes(
                 // Button to Add.
                 Button(
                     onClick = {
+                        curr_page = -1
+
                         current_page = "add_new_grade_type"
                         navHostController.navigate(current_page)
                     },

@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import ru.der2shka.cursovedcote.Models.NoteHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.curr_page
 import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.ui.theme.VeryLightGrayMostlyWhite
@@ -86,6 +87,8 @@ fun NoteItem(
                 noteHelper.setNoteValue(
                     Optional.ofNullable(note)
                 )
+
+                curr_page = 3
 
                 current_page = "edit_note"
                 navHostController.navigate(current_page)

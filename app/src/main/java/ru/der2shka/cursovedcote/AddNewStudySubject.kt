@@ -368,7 +368,7 @@ fun AddNewStudySubject(
                 // Button to Back.
                 Button(
                     onClick = {
-                        current_page = "general_app"
+                        current_page = "view_study_subject"
                         navHostController.navigate(current_page) {
                             popUpTo("add_new_study_subject") { inclusive = true }
                         }

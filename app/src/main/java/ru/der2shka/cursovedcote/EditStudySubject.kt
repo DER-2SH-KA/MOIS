@@ -442,7 +442,7 @@ fun EditStudySubject(
 
                         nameTextField.value = TextFieldValue( "" )
 
-                        current_page = "general_app"
+                        current_page = "view_study_subject"
                         navHostController.navigate(current_page) {
                             popUpTo("edit_study_subject") { inclusive = true }
                         }

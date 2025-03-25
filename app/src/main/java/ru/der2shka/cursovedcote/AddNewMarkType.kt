@@ -459,7 +459,7 @@ fun AddNewMarkType(
                 // Button to Back.
                 Button(
                     onClick = {
-                        current_page = "general_app"
+                        current_page = "view_grade_type"
                         navHostController.navigate(current_page) {
                             popUpTo("add_new_grade_type") { inclusive = true }
                         }

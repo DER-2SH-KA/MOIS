@@ -32,6 +32,7 @@ import ru.der2shka.cursovedcote.Models.NoteHelper
 import ru.der2shka.cursovedcote.Models.StudySubjectHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.curr_page
 import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Note
@@ -67,6 +68,8 @@ fun StudySubjectItem(
                 studySubjectHelper.setStudySubjectValue(
                     Optional.ofNullable( studySubject )
                 )
+
+                curr_page = -1
 
                 current_page = "edit_study_subject"
                 navHostController.navigate(current_page)

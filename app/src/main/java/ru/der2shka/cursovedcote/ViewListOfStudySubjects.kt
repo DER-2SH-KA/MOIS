@@ -222,6 +222,8 @@ fun ViewListOfStudySubjects(
                 // Button to Add.
                 Button(
                     onClick = {
+                        curr_page = -1
+
                         current_page = "add_new_study_subject"
                         navHostController.navigate(current_page)
                     },

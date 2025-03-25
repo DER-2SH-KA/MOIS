@@ -38,6 +38,8 @@ import ru.der2shka.cursovedcote.ui.theme.CursovedCotETheme
 
 var userId: Long = 0
 
+var curr_page = -1
+
 /**
  * General Activity for App with actions.
  * **/
@@ -120,6 +122,15 @@ fun GeneralAppActivityMainPage(
     database: AppDatabase
 ) {
     val horizontalPager = rememberPagerState(initialPage = 2, pageCount = { 5 })
+    val coroutineScope = rememberCoroutineScope()
+
+    if (curr_page > -1) {
+        LaunchedEffect(key1= Unit) {
+            coroutineScope.launch {
+                horizontalPager.scrollToPage( curr_page )
+            }
+        }
+    }
 
     Box(
         modifier = Modifier

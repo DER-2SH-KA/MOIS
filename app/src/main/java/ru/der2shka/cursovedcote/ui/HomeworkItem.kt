@@ -34,6 +34,7 @@ import kotlinx.coroutines.launch
 import ru.der2shka.cursovedcote.Models.HomeworkHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.curr_page
 import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.entity.StudySubject
@@ -123,6 +124,8 @@ fun HomeworkItem(
             )
             .clickable {
                 homeworkHelper.setHomeworkValue( Optional.ofNullable( homework ) )
+
+                curr_page = 1
 
                 current_page = "edit_homework"
                 navHostController.navigate(current_page)

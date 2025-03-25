@@ -35,6 +35,7 @@ import ru.der2shka.cursovedcote.Models.GradeHelper
 import ru.der2shka.cursovedcote.Models.HomeworkHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
+import ru.der2shka.cursovedcote.curr_page
 import ru.der2shka.cursovedcote.current_page
 import ru.der2shka.cursovedcote.db.entity.Grade
 import ru.der2shka.cursovedcote.db.entity.Homework
@@ -100,6 +101,7 @@ fun GradeItem(
             )
             .clickable {
                 gradeHelper.setGradeValue( Optional.ofNullable( grade ) )
+                curr_page = 0
 
                 current_page = "edit_grade"
                 navHostController.navigate(current_page)
