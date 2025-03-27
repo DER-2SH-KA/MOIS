@@ -77,7 +77,7 @@ fun SplashScreenPage(
         contentAlignment = Alignment.Center
     ) {
         val visibleIconState = remember { mutableStateOf(false) }
-        val animationDuration: Int = 1000
+        val animationDuration: Int = 750
 
         // Animation of show the app white icon.
         AnimatedVisibility(
@@ -115,7 +115,7 @@ fun SplashScreenPage(
         LaunchedEffect(key1 = Unit) {
             delay(500)
             visibleIconState.value = true
-            delay(animationDuration.toLong() + 700)
+            delay(animationDuration.toLong() + 500)
             visibleIconState.value = false
             delay(400)
 

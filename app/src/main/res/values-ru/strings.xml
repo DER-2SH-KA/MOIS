@@ -138,4 +138,13 @@
     <string name="russian_ru">Русский (RU)</string>
     <string name="dark">Тёмная</string>
     <string name="light">Светлая</string>
+
+    <!-- Alerts -->
+    <string name="warning">Предупреждение</string>
+    <string name="warning_delete_text">
+        После подтверждения информация
+        будет безвозвратно удалена.
+        Вы уверены, что хотите продолжить?
+    </string>
+
 </resources>

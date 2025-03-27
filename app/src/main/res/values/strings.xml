@@ -138,4 +138,12 @@
     <string name="dark">Dark</string>
     <string name="light">Light</string>
 
+    <!-- Alerts -->
+    <string name="warning">Warning</string>
+    <string name="warning_delete_text">
+        After confirmation,
+        the information will be permanently deleted.
+        Are you sure you want to continue?
+    </string>
+
 </resources>

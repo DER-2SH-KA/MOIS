@@ -54,6 +54,7 @@ import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.entity.StudySubject
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
 import ru.der2shka.cursovedcote.ui.ComboBoxPseudo
+import ru.der2shka.cursovedcote.ui.CustomAlertDialogOnDelete
 import ru.der2shka.cursovedcote.ui.DatePickerBox
 import ru.der2shka.cursovedcote.ui.ScrollableAnimatedText
 import ru.der2shka.cursovedcote.ui.SomeConstantValues
@@ -191,6 +192,9 @@ fun EditHomework(
         "f" -> errColor
         else -> Color.Black
     }
+
+    val isDeleteModalOpened = remember { mutableStateOf(false) }
+    val isCanBeDeleted = remember { mutableStateOf(false) }
 
     val isDeleted = remember { mutableStateOf(false) }
 
@@ -693,6 +697,14 @@ fun EditHomework(
                                 .fillMaxWidth(0.9f)
                         )
                     }
+
+                    // Alert.
+                    CustomAlertDialogOnDelete(
+                        onDismissRequest = {},
+                        modifier = Modifier,
+                        openDialog = isDeleteModalOpened,
+                        isConfirmAction = isCanBeDeleted
+                        )
                 }
             }
 
@@ -849,16 +861,25 @@ fun EditHomework(
                     // Button to Delete.
                     Button(
                         onClick = {
-                            coroutineScope.launch(Dispatchers.IO) {
-                                database.homeworkDao().deleteHomework( homeworkFromHwHelper )
-                                isDeleted.value = true
+                            // isDeleteModalOpened.value = true
+                            // if (isCanBeDeleted.value) {
+                                coroutineScope.launch(Dispatchers.IO) {
+                                    database.homeworkDao().deleteHomework(homeworkFromHwHelper)
+                                    isDeleted.value = true
 
-                                clearAddNewHomeworkHelperFields(addNewHomeworkHelper)
+                                    clearAddNewHomeworkHelperFields(addNewHomeworkHelper)
 
-                                transactionStatusString.value = "s"
-                                delay(4000L)
-                                transactionStatusString.value = ""
-                            }
+                                    transactionStatusString.value = "s"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                }
+                            /*} else {
+                                coroutineScope.launch {
+                                    transactionStatusString.value = "f"
+                                    delay(4000L)
+                                    transactionStatusString.value = ""
+                                    }
+                            }*/
                         },
 
                         enabled = !isDeleted.value,

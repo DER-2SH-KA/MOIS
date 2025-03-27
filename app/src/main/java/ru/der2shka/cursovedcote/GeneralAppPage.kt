@@ -466,6 +466,8 @@ fun GeneralAppPage(
                         }
                     },
                     onPlusClick = {
+                        curr_page = -1
+
                         current_page = "add_new_homework"
                         navHostController.navigate(current_page)
                     },
@@ -495,6 +497,8 @@ fun GeneralAppPage(
                         }
                     },
                     onPlusClick = {
+                        curr_page = -1
+
                         current_page = "add_new_note"
                         navHostController.navigate(current_page)
                     },
@@ -524,6 +528,8 @@ fun GeneralAppPage(
                         }
                     },
                     onPlusClick = {
+                        curr_page = -1
+
                         current_page = "add_new_grade"
                         navHostController.navigate(current_page)
                     },
