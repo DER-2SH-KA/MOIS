@@ -186,7 +186,7 @@ fun ViewListOfGrades(
             }
 
             Column(
-                verticalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .padding(0.dp, 10.dp)
@@ -195,7 +195,7 @@ fun ViewListOfGrades(
             ) {
                     if (itemsGrades.value.isNotEmpty() && itemsSubjects.value.isNotEmpty() && itemsGradeTypes.value.isNotEmpty()) {
                         Column(
-                            verticalArrangement = Arrangement.Top,
+                            verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
                                 .padding(0.dp, 10.dp)
@@ -457,7 +457,6 @@ fun ViewListOfGrades(
 
                                     }
                                 } else {
-                                    Popup {
                                         Column(
                                             verticalArrangement = Arrangement.Center,
                                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -487,7 +486,6 @@ fun ViewListOfGrades(
                                                     .fillMaxWidth(0.9f)
                                             )
                                         }
-                                    }
                                 }
                             }
                         }
