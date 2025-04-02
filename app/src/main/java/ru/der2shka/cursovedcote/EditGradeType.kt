@@ -151,7 +151,7 @@ fun EditGradeType(
     // Validation.
     var isNameValid = (nameTextField.value.text.trim() != "" &&
             existsGradeTypeList.value.stream().filter { x ->
-                x.name.equals(nameTextField.value.text.trim())
+                x.name.equals(nameTextField.value.text.trim()) && x.id != gradeTypeFromHelpert.value.id
             }.toArray().isEmpty())
     var isMultiplierValid = checkMultiplierTextFieldValue( multiplierTextField )
     var isValid = isNameValid && isMultiplierValid
