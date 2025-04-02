@@ -4,9 +4,6 @@ import android.util.Log;
 
 import java.util.Optional;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  *  Class for remember filter fields values
  *  in searching bars.

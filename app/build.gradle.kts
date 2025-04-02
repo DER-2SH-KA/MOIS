@@ -76,7 +76,8 @@ dependencies {
 
     // Lombok.
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    implementation("org.projectlombok:lombok:1.16.12")
+    // implementation("org.projectlombok:lombok:1.16.12")
+    // compileOnly("org.projectlombok:lombok:1.16.12")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

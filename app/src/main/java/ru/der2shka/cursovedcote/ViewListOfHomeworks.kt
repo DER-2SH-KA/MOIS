@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Models.FilterFieldsValues
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.db.entity.Homework
 import ru.der2shka.cursovedcote.db.entity.StudySubject
@@ -63,6 +64,7 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.LocalDate
+import java.util.Optional
 
 /**
  * View list of saved notes.
@@ -80,7 +82,9 @@ fun ViewListOfHomeworks(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val contentVScroll = rememberScrollState(0)
 
-    val filterTextField = remember { mutableStateOf(TextFieldValue("")) }
+    val filterFieldsValues = FilterFieldsValues.getInstance()
+
+    val filterTextField = remember { mutableStateOf( TextFieldValue(filterFieldsValues.homeWorkSearchString) ) }
     var itemsHomework = remember { mutableStateOf(listOf<Homework>()) }
     val itemsHomeworkFiltered = remember(itemsHomework.value, filterTextField.value) {
         if (filterTextField.value.text == "" || filterTextField.value.text.isEmpty()) {
@@ -172,7 +176,8 @@ fun ViewListOfHomeworks(
                     TextFieldCustom(
                         value = filterTextField.value.text,
                         onValueChange = {
-                            filterTextField.value = TextFieldValue( it )
+                            filterFieldsValues.setHomeWorkSearchString( Optional.ofNullable( it ) )
+                            filterTextField.value = TextFieldValue(filterFieldsValues.homeWorkSearchString)
                         },
                         singleLine = true,
                         shape = RoundedCornerShape(5.dp),

@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Models.FilterFieldsValues
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.db.entity.Note
 import ru.der2shka.cursovedcote.db.helper.AppDatabase
@@ -64,6 +65,7 @@ import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.util.Optional
 
 /**
  * View list of saved notes.
@@ -78,7 +80,9 @@ fun ViewListOfNotes(
     val config = LocalConfiguration.current
     val coroutineScope = rememberCoroutineScope()
 
-    val filterTextField = remember { mutableStateOf(TextFieldValue("")) }
+    val filterFieldsValues = FilterFieldsValues.getInstance()
+
+    val filterTextField = remember { mutableStateOf( TextFieldValue(filterFieldsValues.noteSearchString) ) }
     var noteList = remember { mutableStateOf( listOf<Note>() ) }
     val itemsNoteFiltered = remember(noteList.value, filterTextField.value) {
         if (filterTextField.value.text == "" || filterTextField.value.text.isEmpty()) {
@@ -162,7 +166,8 @@ fun ViewListOfNotes(
                     TextFieldCustom(
                         value = filterTextField.value.text,
                         onValueChange = {
-                            filterTextField.value = TextFieldValue( it )
+                            filterFieldsValues.setNoteSearchString( Optional.ofNullable( it ) )
+                            filterTextField.value = TextFieldValue(filterFieldsValues.noteSearchString)
                         },
                         singleLine = true,
                         shape = RoundedCornerShape(5.dp),

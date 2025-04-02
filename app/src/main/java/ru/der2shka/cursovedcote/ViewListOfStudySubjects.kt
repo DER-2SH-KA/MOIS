@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Models.FilterFieldsValues
 import ru.der2shka.cursovedcote.Service.ClearTextField
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.StudySubject
@@ -57,6 +58,7 @@ import ru.der2shka.cursovedcote.ui.theme.font_size_secondary_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_main_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_middle_size_text
 import ru.der2shka.cursovedcote.ui.theme.line_height_secondary_text
+import java.util.Optional
 
 /**
  * View list of saved grade types.
@@ -72,7 +74,10 @@ fun ViewListOfStudySubjects(
     val coroutineScope = rememberCoroutineScope()
 
     var studySubjectList = remember { mutableStateOf( listOf<StudySubject>() ) }
-    val filterTextField = remember { mutableStateOf(TextFieldValue("")) }
+
+    val filterFieldsValues = FilterFieldsValues.getInstance()
+
+    val filterTextField = remember { mutableStateOf( TextFieldValue(filterFieldsValues.studySubjectString) ) }
     val itemsStSuFiltered = remember(studySubjectList.value, filterTextField.value) {
         if (filterTextField.value.text == "" || filterTextField.value.text.isEmpty()) {
             mutableStateOf(studySubjectList.value)
@@ -155,7 +160,8 @@ fun ViewListOfStudySubjects(
                     TextFieldCustom(
                         value = filterTextField.value.text,
                         onValueChange = {
-                            filterTextField.value = TextFieldValue( it )
+                            filterFieldsValues.setStudySubjectSearchString( Optional.ofNullable( it ) )
+                            filterTextField.value = TextFieldValue(filterFieldsValues.studySubjectString)
                         },
                         singleLine = true,
                         shape = RoundedCornerShape(5.dp),
