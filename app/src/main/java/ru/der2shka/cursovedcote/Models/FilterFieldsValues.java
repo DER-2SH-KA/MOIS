@@ -2,7 +2,10 @@ package ru.der2shka.cursovedcote.Models;
 
 import android.util.Log;
 
+import java.time.LocalDate;
 import java.util.Optional;
+
+import ru.der2shka.cursovedcote.db.entity.StudySubject;
 
 /**
  *  Class for remember filter fields values
@@ -16,6 +19,13 @@ public class FilterFieldsValues {
     private Optional<String> noteSearchString = Optional.empty(); // For Note Search Text.
     private Optional<String> gradeTypeSearchString = Optional.empty(); // For Grade Type Search Text.
     private Optional<String> studySubjectSearchString = Optional.empty(); // For Study Subject Search Text.
+
+    // For Chart's filters.
+    private Optional<StudySubject> studySubjectChartParam = Optional.empty();
+    private Optional<Integer> intervalChartParam = Optional.empty();
+    private Optional<LocalDate> fromChartParam = Optional.empty();
+    private Optional<LocalDate> toChartParam = Optional.empty();
+
 
     private FilterFieldsValues() {}
 
@@ -129,6 +139,110 @@ public class FilterFieldsValues {
      * **/
     public String getStudySubjectString() {
         return this.studySubjectSearchString.orElse( "" );
+    }
+
+    /**
+     *  Set chart subject value.
+     * @return was updated or not.
+     * **/
+    public boolean setStudySubjectChartParam( Optional<StudySubject> item) {
+        if (item.isPresent()) {
+            try {
+                this.studySubjectChartParam = item;
+                return true;
+            }
+            catch (Exception ex) {
+                Log.e( "e", "Error to update studySubjectChartParam" );
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return subject chart param if exists else new StudySubject(-1, "\_( -_ -)_/", 0).
+     * **/
+    public StudySubject getStudySubjectChartParam() {
+        return this.studySubjectChartParam.orElse( new StudySubject(
+                -1,
+                "\\_( -_ -)_/",
+                0
+        ) );
+    }
+
+    /**
+     *  Set chart interval value.
+     * @return was updated or not.
+     * **/
+    public boolean setIntervalChartParam( Optional<Integer> item) {
+        if (item.isPresent()) {
+            try {
+                this.intervalChartParam = item;
+                return true;
+            }
+            catch (Exception ex) {
+                Log.e( "e", "Error to update intervalChartParam" );
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return interval chart param.
+     * **/
+    public Integer getIntervalChartParam() {
+        return this.intervalChartParam.orElse( 0 );
+    }
+
+    /**
+     *  Set chart from date value.
+     * @return was updated or not.
+     * **/
+    public boolean setFromDateChartParam( Optional<LocalDate> item) {
+        if (item.isPresent()) {
+            try {
+                this.fromChartParam = item;
+                return true;
+            }
+            catch (Exception ex) {
+                Log.e( "e", "Error to update fromChartParam" );
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return from date chart param.
+     * **/
+    public LocalDate getFromDateChartParam() {
+        return this.fromChartParam.orElse(  LocalDate.now() );
+    }
+
+    /**
+     *  Set chart to date value.
+     * @return was updated or not.
+     * **/
+    public boolean setToDateChartParam( Optional<LocalDate> item) {
+        if (item.isPresent()) {
+            try {
+                this.toChartParam = item;
+                return true;
+            }
+            catch (Exception ex) {
+                Log.e( "e", "Error to update toChartParam" );
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return to date chart param.
+     * **/
+    public LocalDate getToDateChartParam() {
+        return this.toChartParam.orElse(  LocalDate.now() );
     }
 
 }

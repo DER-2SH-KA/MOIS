@@ -50,6 +50,7 @@ import androidx.compose.ui.window.Popup
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.der2shka.cursovedcote.Models.FilterFieldsValues
 import ru.der2shka.cursovedcote.db.entity.Grade
 import ru.der2shka.cursovedcote.db.entity.GradeType
 import ru.der2shka.cursovedcote.db.entity.Homework
@@ -89,6 +90,8 @@ fun ViewListOfGrades(
     val contentVScroll = rememberScrollState(0)
     val isExpandChart = remember { mutableStateOf(false) }
 
+    val filterFieldsValues = FilterFieldsValues.getInstance()
+
     val itemsGrades = remember { mutableStateOf( listOf<Grade> () ) }
     val itemsSubjects = remember { mutableStateOf( listOf<StudySubject>() ) }
     val itemsSubjectMap = remember { mutableStateOf( mutableMapOf<Long, String>() ) }
@@ -98,21 +101,17 @@ fun ViewListOfGrades(
     // Chart filter fields.
     val selectedStudySubject = remember {
         mutableStateOf<StudySubject>(
-            StudySubject(
-            -1,
-            "\\_( -_ -)_/",
-            0
-            )
+            filterFieldsValues.studySubjectChartParam
         )
     }
     val interavList = SomeConstantValues().getIntervalList()
-    val selectedInterval = remember { mutableStateOf(interavList.get(0)) }
+    val selectedInterval = remember { mutableStateOf(interavList.get( filterFieldsValues.intervalChartParam )) }
     val selectedIntervalId = remember(selectedInterval.value) { mutableStateOf(interavList.indexOf( selectedInterval.value )) }
     val selectedLocalDateFrom = remember {
-        mutableStateOf( LocalDate.now() )
+        mutableStateOf( filterFieldsValues.fromDateChartParam )
     }
     val selectedLocalDateTo = remember {
-        mutableStateOf( LocalDate.now() )
+        mutableStateOf( filterFieldsValues.toDateChartParam )
     }
 
 
@@ -131,7 +130,10 @@ fun ViewListOfGrades(
                         itemsSubjectMap.value.put(item.id, item.name)
                     }
 
-                    selectedStudySubject.value = itemsSubjects.value.get(0)
+                    if (selectedStudySubject.value.id == -1L) {
+                        filterFieldsValues.setStudySubjectChartParam( Optional.ofNullable(itemsSubjects.value[0]) )
+                    }
+                    selectedStudySubject.value = filterFieldsValues.studySubjectChartParam
                 }
 
                 if (gradeTypesDb.isNotEmpty()) {
@@ -287,7 +289,8 @@ fun ViewListOfGrades(
                                                             .padding(5.dp)
                                                             .fillMaxWidth(),
                                                         onSelect = { value ->
-                                                            selectedStudySubject.value = value
+                                                            filterFieldsValues.setStudySubjectChartParam( Optional.ofNullable( value ) )
+                                                            selectedStudySubject.value = filterFieldsValues.studySubjectChartParam
                                                         }
                                                     )
                                                 }
@@ -325,7 +328,8 @@ fun ViewListOfGrades(
                                                             .padding(5.dp)
                                                             .fillMaxWidth(),
                                                         onSelect = { value ->
-                                                            selectedInterval.value = value
+                                                            filterFieldsValues.setIntervalChartParam( Optional.ofNullable( interavList.indexOf(  value) ) )
+                                                            selectedInterval.value = interavList[ filterFieldsValues.intervalChartParam ]
                                                         }
                                                     )
                                                 }
@@ -358,6 +362,7 @@ fun ViewListOfGrades(
                                                 ) {
                                                     DatePickerBox(
                                                         selectedLocalDate = selectedLocalDateFrom,
+                                                        startValueOfDatePicker = selectedLocalDateFrom.value,
                                                         modifier = Modifier
                                                             .padding(5.dp)
                                                             .fillMaxWidth()
@@ -367,8 +372,9 @@ fun ViewListOfGrades(
                                                                 shape = RoundedCornerShape(5.dp)
                                                             ),
                                                         onSelect = { localDate ->
+                                                            filterFieldsValues.setFromDateChartParam( Optional.ofNullable( localDate ) )
                                                             selectedLocalDateFrom.value =
-                                                                localDate
+                                                                filterFieldsValues.fromDateChartParam
                                                         }
                                                     )
                                                 }
@@ -401,6 +407,7 @@ fun ViewListOfGrades(
                                                 ) {
                                                     DatePickerBox(
                                                         selectedLocalDate = selectedLocalDateTo,
+                                                        startValueOfDatePicker = selectedLocalDateTo.value,
                                                         modifier = Modifier
                                                             .padding(5.dp)
                                                             .fillMaxWidth()
@@ -410,8 +417,9 @@ fun ViewListOfGrades(
                                                                 shape = RoundedCornerShape(5.dp)
                                                             ),
                                                         onSelect = { localDate ->
+                                                            filterFieldsValues.setToDateChartParam( Optional.ofNullable( localDate ) )
                                                             selectedLocalDateTo.value =
-                                                                localDate
+                                                                filterFieldsValues.toDateChartParam
                                                         }
                                                     )
                                                 }
