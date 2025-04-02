@@ -13,7 +13,7 @@ android {
         minSdk = 31
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -73,6 +73,10 @@ dependencies {
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // implementation("com.github.PhilJay:MPAndroidChart:-8c92fcdd2e-1")
+
+    // Lombok.
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    implementation("org.projectlombok:lombok:1.16.12")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
