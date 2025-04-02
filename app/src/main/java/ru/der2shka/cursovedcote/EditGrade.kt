@@ -65,11 +65,9 @@ import java.time.ZoneId
 import java.util.Date
 import java.util.Optional
 
-// TODO: Подобрать цвета и оформить!
 /**
  * Page for adding new mark in system.
  * **/
-@RequiresApi(35)
 @SuppressLint("ResourceAsColor", "UnrememberedMutableState")
 @Composable
 fun EditGrade(

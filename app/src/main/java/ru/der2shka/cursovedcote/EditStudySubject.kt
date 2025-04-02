@@ -96,7 +96,6 @@ fun EditStudySubject(
     val studySubjectHelper: StudySubjectHelper = StudySubjectHelper.getInstance()
     val studySubjectFromHelpert = remember { mutableStateOf( studySubjectHelper.studySubjectValue ) }
 
-    // TODO: Create Singleton for it.
     // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
     val nameTextField = remember {

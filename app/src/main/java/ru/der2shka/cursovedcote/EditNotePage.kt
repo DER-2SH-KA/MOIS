@@ -61,7 +61,6 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Optional
 
-// TODO: Подобрать цвета и оформить!
 /**
  * Page for adding new mark in system.
  * **/

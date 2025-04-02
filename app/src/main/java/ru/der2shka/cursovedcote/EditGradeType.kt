@@ -97,7 +97,6 @@ fun EditGradeType(
     val gradeTypeHelper: GradeTypeHelper = GradeTypeHelper.getInstance()
     val gradeTypeFromHelpert = remember { mutableStateOf( gradeTypeHelper.gradeTypeValue ) }
 
-    // TODO: Create Singleton for it.
     // val addNewMarkHelper: AddNewMarkHelper = AddNewMarkHelper.getInstance()
 
     val nameTextField = remember {
