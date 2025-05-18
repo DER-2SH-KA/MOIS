@@ -460,9 +460,10 @@ fun AddNewMarkType(
                 Button(
                     onClick = {
                         current_page = "view_grade_type"
-                        navHostController.navigate(current_page) {
+                        /*navHostController.navigate(current_page) {
                             popUpTo("add_new_grade_type") { inclusive = true }
-                        }
+                        }*/
+                        navHostController.navigateUp()
                     },
 
                     shape = RoundedCornerShape(20.dp),

@@ -534,9 +534,10 @@ fun EditGradeType(
                         multiplierTextField.value = TextFieldValue("1")
 
                         current_page = "view_grade_type"
-                        navHostController.navigate(current_page) {
+                        /*navHostController.navigate(current_page) {
                             popUpTo("edit_grade_type") { inclusive = true }
-                        }
+                        }*/
+                        navHostController.navigateUp()
                     },
 
                     shape = RoundedCornerShape(20.dp),

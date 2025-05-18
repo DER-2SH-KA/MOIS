@@ -935,9 +935,10 @@ fun EditHomework(
                         selectedSubjectValue.value = subjectValueList.value.get(0)
 
                         current_page = "general_app"
-                        navHostController.navigate(current_page) {
+                        /*navHostController.navigate(current_page) {
                             popUpTo("edit_homework") { inclusive = true }
-                        }
+                        }*/
+                        navHostController.navigateUp()
                     },
 
                     shape = RoundedCornerShape(20.dp),

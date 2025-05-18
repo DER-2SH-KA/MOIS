@@ -442,9 +442,10 @@ fun EditStudySubject(
                         nameTextField.value = TextFieldValue( "" )
 
                         current_page = "view_study_subject"
-                        navHostController.navigate(current_page) {
+                        /*navHostController.navigate(current_page) {
                             popUpTo("edit_study_subject") { inclusive = true }
-                        }
+                        }*/
+                        navHostController.navigateUp()
                     },
 
                     shape = RoundedCornerShape(20.dp),

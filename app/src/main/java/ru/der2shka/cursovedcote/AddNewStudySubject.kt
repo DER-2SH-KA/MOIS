@@ -369,9 +369,10 @@ fun AddNewStudySubject(
                 Button(
                     onClick = {
                         current_page = "view_study_subject"
-                        navHostController.navigate(current_page) {
+                        /*navHostController.navigate(current_page) {
                             popUpTo("add_new_study_subject") { inclusive = true }
-                        }
+                        }*/
+                        navHostController.navigateUp()
                     },
 
                     shape = RoundedCornerShape(20.dp),

@@ -690,9 +690,10 @@ fun EditNotePage(
                         selectedDateOfWrite.value = addNewNoteHelper.dateOfWrite
 
                         current_page = "general_app"
-                        navHostController.navigate(current_page) {
+                        /*navHostController.navigate(current_page) {
                             popUpTo("edit_note") { inclusive = true }
-                        }
+                        }*/
+                        navHostController.navigateUp()
                     },
 
                     shape = RoundedCornerShape(20.dp),
