@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -62,6 +66,7 @@ fun HomeworkItem(
     modifier: Modifier = Modifier
 ) {
     val homeworkHelper = HomeworkHelper.getInstance()
+    val showFullCard = remember { mutableStateOf(false) }
 
     // Date of write.
     var localDateOfWrite = Instant
@@ -139,236 +144,368 @@ fun HomeworkItem(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(20.dp)
-            ) {
-                // Name.
-                Box(
-                    contentAlignment = Alignment.TopStart,
-                    modifier = Modifier
-                        .padding(20.dp, 0.dp, 0.dp, 0.dp)
-                        .fillMaxWidth()
-                ) {
-                    ScrollableAnimatedText(
-                        text = homework.name,
-                        textColor = Color.White,
-                        textAlign = TextAlign.Start,
-                        fontSize = font_size_main_text,
-                        fontWeight = FontWeight.Bold,
-                        lineHeight = line_height_main_text,
-                        maxLines = 1,
-                        containterModifier = Modifier.fillMaxWidth(),
-                        textModifier = Modifier.fillMaxWidth()
-                    )
-                }
 
-                // Study subject.
-                Box(
-                    contentAlignment = Alignment.CenterStart,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    ScrollableAnimatedText(
-                        text = subjectName,
-                        textColor = Color.White,
-                        textAlign = TextAlign.Start,
-                        fontSize = font_size_middle_size_text,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Medium,
-                        lineHeight = line_height_middle_size_text,
-                        containterModifier = Modifier
-                            .padding(10.dp, 0.dp, 0.dp, 0.dp)
-                            .fillMaxWidth(),
-                        textModifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
+            if (showFullCard.value) {
 
-                // Description.
-                Text(
-                    text = homework.description,
-                    color = Color.White,
-                    textAlign = TextAlign.Start,
-                    fontSize = font_size_secondary_text,
-                    lineHeight = line_height_secondary_text,
-                    maxLines = 3,
-                    softWrap = true,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(20.dp, 20.dp, 0.dp, 20.dp)
-                        .fillMaxWidth()
-                )
-                // Dates.
                 Column(
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        //.background(Color.Red)
+                        .padding(20.dp)
                 ) {
-                    // Date of Write.
+                    // Name and button.
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
+                        // Name.
                         Box(
-                            contentAlignment = Alignment.CenterStart,
+                            contentAlignment = Alignment.TopStart,
                             modifier = Modifier
-                                .fillMaxWidth(0.5f)
+                                .padding(20.dp, 0.dp, 0.dp, 0.dp)
+                                .fillMaxWidth(0.8f)
                         ) {
                             ScrollableAnimatedText(
-                                text = "${stringResource(R.string.date_of_write)}:",
+                                text = homework.name,
                                 textColor = Color.White,
                                 textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
-                                    .fillMaxWidth()
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier.fillMaxWidth()
                             )
                         }
 
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
+                        // Button.
+                        Icon(
+                            imageVector = if (showFullCard.value)
+                                    Icons.Default.KeyboardArrowUp
+                                else
+                                    Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = Color.White,
                             modifier = Modifier
                                 .fillMaxWidth()
-                            // .background( Color.Red )
-                        ) {
-                            ScrollableAnimatedText(
-                                text = dateOfWriteString,
-                                textColor = VeryLightGrayMostlyWhite,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                maxLines = 1,
-                                containterModifier = Modifier.fillMaxWidth(),
-                                textModifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                                .clickable {
+                                    showFullCard.value = !showFullCard.value
+                                }
+                        )
                     }
 
-                    // Date Begin.
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(2.dp)
-                    ) {
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                        ) {
-                            ScrollableAnimatedText(
-                                text = "${stringResource(R.string.date_begin)}:",
-                                textColor = Color.White,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                        }
-
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                            // .background( Color.Red )
-                        ) {
-                            ScrollableAnimatedText(
-                                text = dateBeginString,
-                                textColor = VeryLightGrayMostlyWhite,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                maxLines = 1,
-                                containterModifier = Modifier.fillMaxWidth(),
-                                textModifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                    }
-
-                    // Date End.
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                            // .background( Color.Red )
-                        ) {
-                            ScrollableAnimatedText(
-                                text = "${stringResource(R.string.date_end)}:",
-                                textColor = VeryLightGrayMostlyWhite,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                maxLines = 1,
-                                containterModifier = Modifier.fillMaxWidth(),
-                                textModifier = Modifier.fillMaxWidth()
-                            )
-                        }
-
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                            // .background( Color.Red )
-                        ) {
-                            ScrollableAnimatedText(
-                                text = dateEndString,
-                                textColor = VeryLightGrayMostlyWhite,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                maxLines = 1,
-                                containterModifier = Modifier.fillMaxWidth(),
-                                textModifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                    }
-
-                    // Status.
+                    // Study subject.
                     Box(
                         contentAlignment = Alignment.CenterStart,
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
                         ScrollableAnimatedText(
-                            text = "${statusList.get(homework.status)}",
+                            text = subjectName,
                             textColor = Color.White,
-                            textAlign = TextAlign.End,
-                            fontSize = font_size_secondary_text,
-                            lineHeight = line_height_secondary_text,
-                            maxLines = 1,
-                            containterModifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start,
+                            fontSize = font_size_middle_size_text,
+                            fontStyle = FontStyle.Italic,
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = line_height_middle_size_text,
+                            containterModifier = Modifier
+                                .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                                .fillMaxWidth(),
                             textModifier = Modifier
                                 .fillMaxWidth()
-                                .padding(5.dp)
                         )
                     }
+
+                    if ( homework.description != null &&  !homework.description.equals("") ) {
+                    // Description.
+                    Text(
+                        text = homework.description,
+                        color = Color.White,
+                        textAlign = TextAlign.Start,
+                        fontSize = font_size_secondary_text,
+                        lineHeight = line_height_secondary_text,
+                        maxLines = 3,
+                        softWrap = true,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .padding(20.dp, 20.dp, 0.dp, 20.dp)
+                            .fillMaxWidth()
+                    )
+                        }
+
+                    // Dates.
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                        //.background(Color.Red)
+                    ) {
+                        // Date of Write.
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = "${stringResource(R.string.date_of_write)}:",
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f),
+                                    containterModifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                // .background( Color.Red )
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = dateOfWriteString,
+                                    textColor = VeryLightGrayMostlyWhite,
+                                    textAlign = TextAlign.End,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    maxLines = 1,
+                                    containterModifier = Modifier.fillMaxWidth(),
+                                    textModifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+
+                        // Date Begin.
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(2.dp)
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = "${stringResource(R.string.date_begin)}:",
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f),
+                                    containterModifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                // .background( Color.Red )
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = dateBeginString,
+                                    textColor = VeryLightGrayMostlyWhite,
+                                    textAlign = TextAlign.End,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    maxLines = 1,
+                                    containterModifier = Modifier.fillMaxWidth(),
+                                    textModifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+
+                        // Date End.
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                                // .background( Color.Red )
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = "${stringResource(R.string.date_end)}:",
+                                    textColor = VeryLightGrayMostlyWhite,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    maxLines = 1,
+                                    containterModifier = Modifier.fillMaxWidth(),
+                                    textModifier = Modifier.fillMaxWidth()
+                                )
+                            }
+
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                // .background( Color.Red )
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = dateEndString,
+                                    textColor = VeryLightGrayMostlyWhite,
+                                    textAlign = TextAlign.End,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    maxLines = 1,
+                                    containterModifier = Modifier.fillMaxWidth(),
+                                    textModifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+
+                        // Status.
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${statusList.get(homework.status)}",
+                                textColor = Color.White,
+                                textAlign = TextAlign.End,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp)
+                            )
+                        }
+                    }
                 }
+
             }
+            else {
+
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .padding(20.dp)
+                ) {
+                    // Name and button.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        // Name.
+                        Box(
+                            contentAlignment = Alignment.TopStart,
+                            modifier = Modifier
+                                .padding(20.dp, 0.dp, 0.dp, 0.dp)
+                                .fillMaxWidth(0.8f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = homework.name,
+                                textColor = Color.White,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
+                        // Button.
+                        Icon(
+                            imageVector = if (showFullCard.value)
+                                Icons.Default.KeyboardArrowUp
+                            else
+                                Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    showFullCard.value = !showFullCard.value
+                                }
+                        )
+                    }
+
+                    // Study subject.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = subjectName,
+                                textColor = Color.White,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_middle_size_text,
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Medium,
+                                lineHeight = line_height_middle_size_text,
+                                containterModifier = Modifier
+                                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                                    .fillMaxWidth(),
+                                textModifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
+
+                        // Status.
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            ScrollableAnimatedText(
+                                text = "${statusList.get(homework.status)}",
+                                textColor = Color.White,
+                                textAlign = TextAlign.End,
+                                fontSize = font_size_secondary_text,
+                                lineHeight = line_height_secondary_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp)
+                            )
+                        }
+                    }
+                }
+
+            }
+
         }
     }
 }
