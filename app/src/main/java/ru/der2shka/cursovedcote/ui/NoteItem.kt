@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import okio.ByteString.Companion.encode
 import ru.der2shka.cursovedcote.Models.NoteHelper
 import ru.der2shka.cursovedcote.R
 import ru.der2shka.cursovedcote.Service.GetMonthStringResourceByLocalDate
@@ -163,20 +164,22 @@ fun NoteItem(
                         )
                     }
 
-                    // Description.
-                    Text(
-                        text = "\t\t" + note.description,
-                        color = Color.White,
-                        textAlign = TextAlign.Start,
-                        fontSize = font_size_secondary_text,
-                        lineHeight = line_height_secondary_text,
-                        maxLines = 3,
-                        softWrap = true,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .padding(20.dp, 20.dp, 0.dp, 20.dp)
-                            .fillMaxWidth()
-                    )
+                    if ( note.description != null && !note.description.equals("") ) {
+                        // Description.
+                        Text(
+                            text = "\t\t" + note.description,
+                            color = Color.White,
+                            textAlign = TextAlign.Start,
+                            fontSize = font_size_secondary_text,
+                            lineHeight = line_height_secondary_text,
+                            maxLines = 3,
+                            softWrap = true,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .padding(20.dp, 20.dp, 0.dp, 20.dp)
+                                .fillMaxWidth()
+                        )
+                    }
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -229,6 +232,7 @@ fun NoteItem(
 
             }
             else {
+
                 Column(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
@@ -263,21 +267,50 @@ fun NoteItem(
                             )
                         }
 
-                        // Button.
-                        Icon(
-                            imageVector = if (showFullCard.value)
-                                Icons.Default.KeyboardArrowUp
-                            else
-                                Icons.Default.KeyboardArrowDown,
-                            contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    showFullCard.value = !showFullCard.value
-                                }
-                        )
+                        if ( note.description != null && !note.description.equals("") ) {
+                            // Button.
+                            Icon(
+                                imageVector = if (showFullCard.value)
+                                    Icons.Default.KeyboardArrowUp
+                                else
+                                    Icons.Default.KeyboardArrowDown,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        showFullCard.value = !showFullCard.value
+                                    }
+                            )
+                        }
                     }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                        // .background( Color.Green )
+                    ) {
+                        // Date.
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                            // .background( Color.Red )
+                        ) {
+                            ScrollableAnimatedText(
+                                text = dateString,
+                                textColor = VeryLightGrayMostlyWhite,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_secondary_text,
+                                fontStyle = FontStyle.Italic,
+                                lineHeight = line_height_secondary_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
                         // Status.
                         Box(
                             contentAlignment = Alignment.CenterStart,
@@ -298,9 +331,10 @@ fun NoteItem(
                             )
                         }
                     }
-
                 }
 
             }
+
         }
     }
+}
