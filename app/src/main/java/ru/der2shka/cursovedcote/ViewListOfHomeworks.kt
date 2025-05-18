@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -214,14 +215,27 @@ fun ViewListOfHomeworks(
                 }
 
                 if (itemsHomeworkFiltered.value.isNotEmpty() && itemsSubjects.value.isNotEmpty()) {
-                    LazyColumn() {
-                        items( itemsHomeworkFiltered.value, key = { item -> item.id } ) { homework ->
-                            HomeworkItem(
-                                navHostController,
-                                homework,
-                                itemsSubjectMap.value.get(homework.studySubjectId).toString(),
-                                database
-                            )
+                    Box(
+                        contentAlignment = Alignment.TopCenter,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.8f)
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                //.background(Color.Red)
+                        ) {
+                            items(
+                                itemsHomeworkFiltered.value,
+                                key = { item -> item.id }) { homework ->
+                                HomeworkItem(
+                                    navHostController,
+                                    homework,
+                                    itemsSubjectMap.value.get(homework.studySubjectId).toString(),
+                                    database
+                                )
+                            }
                         }
                     }
                 }
