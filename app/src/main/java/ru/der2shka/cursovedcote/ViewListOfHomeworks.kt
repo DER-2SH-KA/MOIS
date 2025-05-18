@@ -83,6 +83,9 @@ fun ViewListOfHomeworks(
     val oneBlockHeight = (config.screenHeightDp * 0.2).dp
     val contentVScroll = rememberScrollState(0)
 
+    val itemsSubjects = remember { mutableStateOf( listOf<StudySubject> () ) }
+    val itemsSubjectMap = remember { mutableStateOf( mutableMapOf<Long, String>() ) }
+
     val filterFieldsValues = FilterFieldsValues.getInstance()
 
     val filterTextField = remember { mutableStateOf( TextFieldValue(filterFieldsValues.homeWorkSearchString) ) }
@@ -95,13 +98,13 @@ fun ViewListOfHomeworks(
             mutableStateOf(
                 itemsHomework.value.filter { hw ->
                     hw.name.contains( filterTextField.value.text.trim(), true ) ||
-                        hw.description.contains( filterTextField.value.text.trim(), true )
+                        hw.description.contains( filterTextField.value.text.trim(), true ) ||
+                            itemsSubjectMap.value.get(hw.studySubjectId).toString()
+                                .contains(  filterTextField.value.text.trim(), true)
                 }.toList()
             )
         }
     }
-    val itemsSubjects = remember { mutableStateOf( listOf<StudySubject> () ) }
-    val itemsSubjectMap = remember { mutableStateOf( mutableMapOf<Long, String>() ) }
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
