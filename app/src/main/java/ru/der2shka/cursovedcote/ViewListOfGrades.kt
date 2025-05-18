@@ -498,15 +498,22 @@ fun ViewListOfGrades(
                             }
                         }
 
-                        LazyColumn() {
-                            items(itemsGrades.value, key = { item -> item.id }) { grade ->
-                                GradeItem(
-                                    navHostController,
-                                    grade,
-                                    itemsSubjectMap.value.get(grade.subjectStudyId).toString(),
-                                    itemsGradeTypesMap.value.get(grade.gradeTypeId).toString(),
-                                    database
-                                )
+                        Box(
+                            contentAlignment = Alignment.TopCenter,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.8f)
+                        ) {
+                            LazyColumn() {
+                                items(itemsGrades.value, key = { item -> item.id }) { grade ->
+                                    GradeItem(
+                                        navHostController,
+                                        grade,
+                                        itemsSubjectMap.value.get(grade.subjectStudyId).toString(),
+                                        itemsGradeTypesMap.value.get(grade.gradeTypeId).toString(),
+                                        database
+                                    )
+                                }
                             }
                         }
                     } else {

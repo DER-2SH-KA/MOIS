@@ -204,9 +204,16 @@ fun ViewListOfNotes(
                 }
 
                 if (itemsNoteFiltered.value.isNotEmpty()) {
-                    LazyColumn() {
-                        items( itemsNoteFiltered.value, key = { item -> item.id } ) { note ->
-                            NoteItem(navHostController, note)
+                    Box(
+                        contentAlignment = Alignment.TopCenter,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.8f)
+                    ) {
+                        LazyColumn() {
+                            items(itemsNoteFiltered.value, key = { item -> item.id }) { note ->
+                                NoteItem(navHostController, note)
+                            }
                         }
                     }
                 }
