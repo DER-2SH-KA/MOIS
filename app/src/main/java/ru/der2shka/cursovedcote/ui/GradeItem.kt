@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,6 +69,7 @@ fun GradeItem(
     modifier: Modifier = Modifier
 ) {
     val gradeHelper = GradeHelper.getInstance()
+    val showFullCard = remember { mutableStateOf(false) }
 
     // Date of write.
     var localDate = Instant
@@ -115,69 +120,256 @@ fun GradeItem(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(20.dp)
-            ) {
-                // Study subject.
-                Box(
-                    contentAlignment = Alignment.TopStart,
-                    modifier = Modifier
-                        .padding(20.dp, 0.dp, 0.dp, 0.dp)
-                        .fillMaxWidth()
-                ) {
-                    ScrollableAnimatedText(
-                        text = subjectName,
-                        textColor = Color.White,
-                        textAlign = TextAlign.Start,
-                        fontSize = font_size_main_text,
-                        fontWeight = FontWeight.Bold,
-                        lineHeight = line_height_main_text,
-                        maxLines = 1,
-                        containterModifier = Modifier.fillMaxWidth(),
-                        textModifier = Modifier.fillMaxWidth()
-                    )
-                }
 
-                // Grade info.
+            if (showFullCard.value) {
+
                 Column(
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier
-                        .padding(0.dp, 10.dp)
-                        .fillMaxWidth()
+                        .padding(20.dp)
                 ) {
-                    // Grade value.
+
+                    // Name and button.
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                     ) {
+                        // Study subject.
                         Box(
-                            contentAlignment = Alignment.CenterStart,
+                            contentAlignment = Alignment.TopStart,
                             modifier = Modifier
-                                .fillMaxWidth(0.5f)
+                                .padding(20.dp, 0.dp, 0.dp, 0.dp)
+                                .fillMaxWidth(0.8f)
                         ) {
                             ScrollableAnimatedText(
-                                text = "${stringResource(R.string.grade)}:",
+                                text = subjectName,
                                 textColor = Color.White,
                                 textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
+                        // Button.
+                        Icon(
+                            imageVector = if (showFullCard.value)
+                                Icons.Default.KeyboardArrowUp
+                            else
+                                Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    showFullCard.value = !showFullCard.value
+                                }
+                        )
+                    }
+
+                    // Grade value.
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .padding(0.dp, 10.dp)
+                            .fillMaxWidth()
+                    ) {
+                        // Grade value.
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = "${stringResource(R.string.grade)}:",
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f),
+                                    containterModifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
                                     .fillMaxWidth()
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = grade.gradeValue.toString(),
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.End,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f),
+                                    containterModifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+                        }
+
+                        // Grade type.
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = "${stringResource(R.string.grade_type)}:",
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f),
+                                    containterModifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = gradeTypeName,
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.End,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f),
+                                    containterModifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+                        }
+                    }
+
+                    // Dates.
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                        //.background(Color.Red)
+                    ) {
+                        // Date.
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = "${stringResource(R.string.date_of_write)}:",
+                                    textColor = Color.White,
+                                    textAlign = TextAlign.Start,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    textModifier = Modifier
+                                        .fillMaxWidth(0.9f),
+                                    containterModifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                            }
+
+                            Box(
+                                contentAlignment = Alignment.CenterStart,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                // .background( Color.Red )
+                            ) {
+                                ScrollableAnimatedText(
+                                    text = dateOfWriteString,
+                                    textColor = VeryLightGrayMostlyWhite,
+                                    textAlign = TextAlign.End,
+                                    fontSize = font_size_secondary_text,
+                                    fontStyle = FontStyle.Italic,
+                                    lineHeight = line_height_secondary_text,
+                                    maxLines = 1,
+                                    containterModifier = Modifier.fillMaxWidth(),
+                                    textModifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+
+                    }
+                }
+
+            } else {
+
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                ) {
+
+                    // Name and button.
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        // Study subject.
+                        Box(
+                            contentAlignment = Alignment.TopStart,
+                            modifier = Modifier
+                                .padding(20.dp, 0.dp, 0.dp, 0.dp)
+                                .fillMaxWidth(0.6f)
+                        ) {
+                            ScrollableAnimatedText(
+                                text = subjectName,
+                                textColor = Color.White,
+                                textAlign = TextAlign.Start,
+                                fontSize = font_size_main_text,
+                                fontWeight = FontWeight.Bold,
+                                lineHeight = line_height_main_text,
+                                maxLines = 1,
+                                containterModifier = Modifier.fillMaxWidth(),
+                                textModifier = Modifier.fillMaxWidth()
                             )
                         }
 
                         Box(
                             contentAlignment = Alignment.CenterStart,
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxWidth(0.2f)
                         ) {
                             ScrollableAnimatedText(
                                 text = grade.gradeValue.toString(),
@@ -192,106 +384,21 @@ fun GradeItem(
                                     .fillMaxWidth()
                             )
                         }
-                    }
 
-                    // Grade type.
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
+                        // Button.
+                        Icon(
+                            imageVector = if (showFullCard.value)
+                                Icons.Default.KeyboardArrowUp
+                            else
+                                Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = Color.White,
                             modifier = Modifier
                                 .fillMaxWidth(0.5f)
-                        ) {
-                            ScrollableAnimatedText(
-                                text = "${stringResource(R.string.grade_type)}:",
-                                textColor = Color.White,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                        }
-
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            ScrollableAnimatedText(
-                                text = gradeTypeName,
-                                textColor = Color.White,
-                                textAlign = TextAlign.End,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                        }
-                    }
-                }
-
-                // Dates.
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                    //.background(Color.Red)
-                ) {
-                    // Date.
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                        ) {
-                            ScrollableAnimatedText(
-                                text = "${stringResource(R.string.date_of_write)}:",
-                                textColor = Color.White,
-                                textAlign = TextAlign.Start,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                textModifier = Modifier
-                                    .fillMaxWidth(0.9f),
-                                containterModifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                        }
-
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                            // .background( Color.Red )
-                        ) {
-                            ScrollableAnimatedText(
-                                text = dateOfWriteString,
-                                textColor = VeryLightGrayMostlyWhite,
-                                textAlign = TextAlign.End,
-                                fontSize = font_size_secondary_text,
-                                fontStyle = FontStyle.Italic,
-                                lineHeight = line_height_secondary_text,
-                                maxLines = 1,
-                                containterModifier = Modifier.fillMaxWidth(),
-                                textModifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                                .clickable {
+                                    showFullCard.value = !showFullCard.value
+                                }
+                        )
                     }
 
                 }
